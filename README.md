@@ -23,14 +23,14 @@ $ composer require ozdemirburak/iris
 use OzdemirBurak\Iris\Color\Hex;
 
 $hex = new Hex('#ff00ff'); // same as new Hex('fuschia');
-$hex->red(); // ff
-$hex->green(); // 00
-$hex->blue(); // ff
-$hex->values(); // ['ff', '00', 'ff']
-$hex->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
-$hex->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
-$hex->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
-$hex->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+echo $hex->red(); // ff
+echo $hex->green(); // 00
+echo $hex->blue(); // ff
+echo $hex->values(); // ['ff', '00', 'ff']
+$hex = $hex->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
+$hsl = $hex->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsv = $hex->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
+$rgb = $hex->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
 echo $hex; // #ff00ff
 ```
 
@@ -40,15 +40,15 @@ echo $hex; // #ff00ff
 use OzdemirBurak\Iris\Color\Hex;
 
 $hsl = new Hsl('hsl(300,100%,50%)'); // same as new Hsl('fuschia');
-$hsl->hue(); // 300 
-$hsl->saturation(); // 100
-$hsl->lightness(); // 50
-$hsl->values(); // [300, '100%', '50%']
-$hsl->valuesInUnitInterval(); // [300/360, 100/100, 50/100]
-$hsl->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
-$hsl->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
-$hsl->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
-$hsl->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+echo $hsl->hue(); // 300 
+echo $hsl->saturation(); // 100
+echo $hsl->lightness(); // 50
+$values = $hsl->values(); // [300, '100%', '50%']
+$normalizedValues = $hsl->valuesInUnitInterval(); // [300/360, 100/100, 50/100]
+$hex = $hsl->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
+$hsl = $hsl->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsv = $hsl->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
+$rgb = $hsl->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
 echo $hsl; // hsl(300,100%,50%)
 ```
 
@@ -58,15 +58,15 @@ echo $hsl; // hsl(300,100%,50%)
 use OzdemirBurak\Iris\Color\Hsv;
 
 $hsv = new Hsv('hsv(300,100%,100%)'); // same as new Hsv('fuschia');
-$hsv->hue(); // 300 
-$hsv->saturation(); // 100
-$hsv->value(); // 100
-$hsv->values(); // [100, '100%', '100%']
-$hsv->valuesInUnitInterval(); // [300/360, 100/100, 100/100]
-$hsv->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
-$hsv->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
-$hsv->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
-$hsv->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+echo $hsv->hue(); // 300 
+echo $hsv->saturation(); // 100
+echo $hsv->value(); // 100
+$values = $hsv->values(); // [100, '100%', '100%']
+$normalizedValues = $hsv->valuesInUnitInterval(); // [300/360, 100/100, 100/100]
+$hex = $hsv->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
+$hsl = $hsv->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsv = $hsv->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
+$rgb = $hsv->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
 echo $hsv; // hsl(300,100%,100%)
 ```
 
@@ -77,14 +77,14 @@ use OzdemirBurak\Iris\Color\Rgb;
 
 $rgb = new Rgb('rgb(255, 0, 255)'); // same as new Rgb('fuschia');
 
-$rgb->red(); // 255
-$rgb->green(); // 0
-$rgb->blue(); // 255
-$rgb->values(); // [255, 0, 255]
-$rgb->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
-$rgb->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
-$rgb->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
-$rgb->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+echo $rgb->red(); // 255
+echo $rgb->green(); // 0
+echo $rgb->blue(); // 255
+$values = $rgb->values(); // [255, 0, 255]
+$hex = $rgb->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
+$hsl = $rgb->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsv = $rgb->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
+$rgb = $rgb->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
 echo $rgb; // rgb(255,0,255)
 ```
 
@@ -95,8 +95,6 @@ echo $rgb; // rgb(255,0,255)
 Saturate or desaturate by a percent.
 
 ``` php
-use OzdemirBurak\Iris\Color\Rgb;
-
 echo (new Hsl('90,80%,50%'))->saturate(20)->toHex(); // #80ff00
 echo (new Hsl('90, 80%, 50%'))->desaturate(20)->toRgb(); // rgb(128,204,51)
 echo (new Hex('#80cc33'))->grayscale(); // #808080, same as desaturate 100
