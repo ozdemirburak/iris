@@ -77,7 +77,7 @@ trait RgbTrait
      * @param string $property
      * @param float|int|string $value
      */
-    private function validateAndSet($property, $value)
+    protected function validateAndSet($property, $value)
     {
         if (!empty($this->castsInteger)) {
             $this->{$property} = $value >= 0 && $value <= 255 ? (int) round($value) : $this->{$property};
