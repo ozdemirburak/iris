@@ -39,7 +39,8 @@ class HsvTest extends TestCase
         try {
             $hsv = new Hsv('333,0,666');
         } catch (InvalidColorException $e) {
-            return $this->assertContains('Invalid HSV value', $e->getMessage());
+            $this->assertContains('Invalid HSV value', $e->getMessage());
+            return;
         }
         $this->fail('Exception has not been raised.');
     }

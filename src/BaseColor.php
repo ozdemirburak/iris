@@ -36,7 +36,7 @@ abstract class BaseColor
     abstract public function toHsl();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsla
      */
     abstract public function toHsla();
 
@@ -51,7 +51,7 @@ abstract class BaseColor
     abstract public function toRgb();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \Ozdemirburak\Iris\Color\Rgba
      */
     abstract public function toRgba();
 

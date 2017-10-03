@@ -39,7 +39,8 @@ class RgbTest extends TestCase
         try {
             $rgb = new Rgb('333,0,666');
         } catch (InvalidColorException $e) {
-            return $this->assertContains('Invalid RGB value', $e->getMessage());
+            $this->assertContains('Invalid RGB value', $e->getMessage());
+            return;
         }
         $this->fail('Exception has not been raised.');
     }

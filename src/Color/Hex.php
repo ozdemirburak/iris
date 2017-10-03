@@ -31,7 +31,7 @@ class Hex extends BaseColor
      */
     protected function initialize($color)
     {
-        list($this->red, $this->green, $this->blue) = str_split($color, 2);
+        return list($this->red, $this->green, $this->blue) = str_split($color, 2);
     }
 
     /**
@@ -52,7 +52,7 @@ class Hex extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsla
      */
     public function toHsla()
     {

@@ -39,7 +39,8 @@ class HslTest extends TestCase
         try {
             $hsl = new Hsl('333,0,666');
         } catch (InvalidColorException $e) {
-            return $this->assertContains('Invalid HSL value', $e->getMessage());
+            $this->assertContains('Invalid HSL value', $e->getMessage());
+            return;
         }
         $this->fail('Exception has not been raised.');
     }

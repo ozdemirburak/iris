@@ -48,7 +48,8 @@ class HexTest extends TestCase
         try {
             $hex = new Hex('66Z');
         } catch (InvalidColorException $e) {
-            return $this->assertContains('Invalid HEX value', $e->getMessage());
+            $this->assertContains('Invalid HEX value', $e->getMessage());
+            return;
         }
         $this->fail('Exception has not been raised.');
     }

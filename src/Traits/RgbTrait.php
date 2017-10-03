@@ -22,7 +22,7 @@ trait RgbTrait
     /**
      * @param int|string $red
      *
-     * @return int|string|this
+     * @return int|string|$this
      */
     public function red($red = null)
     {
@@ -36,7 +36,7 @@ trait RgbTrait
     /**
      * @param float|int|string $green
      *
-     * @return float|int|string|this
+     * @return float|int|string|$this
      */
     public function green($green = null)
     {
@@ -50,7 +50,7 @@ trait RgbTrait
     /**
      * @param float|int|string $blue
      *
-     * @return float|int|string|this
+     * @return float|int|string|$this
      */
     public function blue($blue = null)
     {
