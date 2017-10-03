@@ -73,7 +73,7 @@ class Hsla extends BaseColor
      */
     public function toHsla()
     {
-        return $this->toRgba()->toHsla();
+        return $this;
     }
 
     /**
