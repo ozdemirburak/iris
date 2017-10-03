@@ -3,7 +3,6 @@
 
 namespace OzdemirBurak\Iris\Tests\Color;
 
-
 use OzdemirBurak\Iris\Color\Rgba;
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
@@ -38,6 +37,18 @@ class RgbaTest extends TestCase
     {
         try {
             new Rgba("rgba(255,0,0,1.2)");
+        } catch (InvalidColorException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid RGBA value.');
+            return;
+        }
+        $this->fail('Exception has not been raised.');
+    }
+
+    /** @test */
+    public function cannot_construct_on_invalid_string()
+    {
+        try {
+            new Rgba("rgba(255,0,0,1.2,0.2.3)"); // Invalid string.
         } catch (InvalidColorException $e) {
             $this->assertEquals($e->getMessage(), 'Invalid RGBA value.');
             return;

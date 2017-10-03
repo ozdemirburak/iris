@@ -3,7 +3,6 @@
 
 namespace OzdemirBurak\Iris\Color;
 
-
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 
 class Rgba extends Rgb
@@ -12,10 +11,10 @@ class Rgba extends Rgb
 
     protected $exceptionMessage = 'Invalid RGBA value.';
 
-    protected function validate ($code)
+    protected function validate($code)
     {
         $color = str_replace(['rgba', '(', ')', ' '], '', DefinedColor::find($code, 1));
-        if(substr_count($color, ',') == 2) {
+        if (substr_count($color, ',') == 2) {
             $color = "{$color},0.0";
         }
         if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d)$/', $color, $matches)) {
@@ -53,20 +52,18 @@ class Rgba extends Rgb
         return $this->alpha;
     }
 
-    public function values ()
+    public function values()
     {
         return array_merge(parent::values(), [$this->alpha]);
     }
 
-    public function toRgb ()
+    public function toRgb()
     {
         return new Rgb("{$this->red()},{$this->green()},{$this->blue()}");
     }
 
-    public function __toString ()
+    public function __toString()
     {
         return 'rgba(' . implode(',', $this->values()) . ')';
     }
-
-
 }

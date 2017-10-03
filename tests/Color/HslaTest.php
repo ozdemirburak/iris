@@ -3,7 +3,6 @@
 
 namespace OzdemirBurak\Iris\Tests\Color;
 
-
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
@@ -19,6 +18,7 @@ class HslaTest extends TestCase
         $this->assertEquals('150', $hsl->hue());
         $this->assertEquals('100', $hsl->saturation());
         $this->assertEquals('50', $hsl->lightness());
+        $this->assertEquals(0.3, $hsl->alpha());
         $this->assertEquals([150, '100%', '50%', 0.3], $hsl->values());
     }
 
@@ -31,6 +31,7 @@ class HslaTest extends TestCase
         $this->assertEquals('300', $hsl->hue());
         $this->assertEquals('100', $hsl->saturation());
         $this->assertEquals('50', $hsl->lightness());
+        $this->assertEquals(0, $hsl->alpha());
         $this->assertEquals([300, '100%', '50%',0], $hsl->values());
     }
 
@@ -61,5 +62,27 @@ class HslaTest extends TestCase
         $hsl = new Hsla('hsla(150,100%,50%,0.3)');
         $rgba = $hsl->toRgba();
         $this->assertEquals('rgba(0,255,128,0.3)', $rgba->__toString());
+    }
+
+    /** @test */
+    public function cannot_construct_on_invalid_string()
+    {
+        try {
+            new Hsla("hsla(150,100%,50%,0.3.3,4)"); // Invalid string.
+        } catch (InvalidColorException $e) {
+            $this->assertEquals($e->getMessage(), 'Invalid HSLA value.');
+            return;
+        }
+        $this->fail('Exception has not been raised.');
+    }
+
+    /** @test */
+    public function can_change_alpha_value()
+    {
+        $hsl = new Hsla('hsla(150,100%,50%,0.3)');
+        $this->assertEquals(0.3, $hsl->alpha());
+
+        $hsl->alpha(0.0);
+        $this->assertEquals(0, $hsl->alpha());
     }
 }

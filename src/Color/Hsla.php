@@ -3,7 +3,6 @@
 
 namespace OzdemirBurak\Iris\Color;
 
-
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 
 class Hsla extends Hsl
@@ -15,16 +14,16 @@ class Hsla extends Hsl
     /**
      * @return Rgba
      */
-    public function toRgba ()
+    public function toRgba()
     {
         return $this->toRgb()->toRgba()->alpha($this->alpha());
     }
 
-    protected function validate ($code)
+    protected function validate($code)
     {
         list($class, $index) = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace(["{$class}a", '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
-        if(substr_count($color, ',') == 2) {
+        if (substr_count($color, ',') == 2) {
             $color = "{$color},0.0";
         }
         if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d)$/', $color, $matches)) {
@@ -36,7 +35,7 @@ class Hsla extends Hsl
         return false;
     }
 
-    protected function initialize ($color)
+    protected function initialize($color)
     {
         list($this->hue, $this->saturation, $this->lightness, $this->alpha) = explode(',', $color);
     }
@@ -55,7 +54,7 @@ class Hsla extends Hsl
         return (double) $this->alpha;
     }
 
-    public function values ()
+    public function values()
     {
         return array_merge(parent::values(), [$this->alpha]);
     }
