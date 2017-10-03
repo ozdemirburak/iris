@@ -11,11 +11,6 @@ class Hex extends BaseColor
     use RgbTrait;
 
     /**
-     * @var string
-     */
-    protected $exceptionMessage = 'Invalid HEX value.';
-
-    /**
      * @param string $code
      *
      * @return string|bool
@@ -57,6 +52,14 @@ class Hex extends BaseColor
     }
 
     /**
+     * @return \Ozdemirburak\Iris\Color\Hsl
+     */
+    public function toHsla()
+    {
+        return $this->toHsl()->toHsla();
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsv
      */
@@ -73,6 +76,14 @@ class Hex extends BaseColor
     {
         $rgb = implode(',', array_map('hexdec', $this->values()));
         return new Rgb($rgb);
+    }
+
+    /**
+     * @return \OzdemirBurak\Iris\Color\Rgba
+     */
+    public function toRgba()
+    {
+        return $this->toRgb()->toRgba();
     }
 
     /**

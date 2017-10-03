@@ -27,17 +27,18 @@ echo $hex->red(); // ff
 echo $hex->green(); // 00
 echo $hex->blue(); // ff
 echo $hex->values(); // ['ff', '00', 'ff']
-$hex = $hex->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
 $hsl = $hex->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsla = $hex->toHsla(); // \OzdemirBurak\Iris\Color\Hsla('300,100,50,1.0')
 $hsv = $hex->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
 $rgb = $hex->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+$rgba = $hex->toRgba(); // \OzdemirBurak\Iris\Color\Rgba('255,0,255,1.0')
 echo $hex; // #ff00ff
 ```
 
 ### HSL
 
 ``` php
-use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hsl;
 
 $hsl = new Hsl('hsl(300,100%,50%)'); // same as new Hsl('fuschia');
 echo $hsl->hue(); // 300 
@@ -46,10 +47,26 @@ echo $hsl->lightness(); // 50
 $values = $hsl->values(); // [300, '100%', '50%']
 $normalizedValues = $hsl->valuesInUnitInterval(); // [300/360, 100/100, 50/100]
 $hex = $hsl->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
-$hsl = $hsl->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
 $hsv = $hsl->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
 $rgb = $hsl->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+$rgba = $hsl->toRgba(); // \OzdemirBurak\Iris\Color\Rgba('255,0,255,1.0')
 echo $hsl; // hsl(300,100%,50%)
+```
+
+### HSLA
+
+``` php
+use OzdemirBurak\Iris\Color\Hsla;
+
+$hsla = new Hsla('hsla(150,100%,50%,0.3)');
+echo $hsla->hue(); // 150
+echo $hsla->saturation(); // 100
+echo $hsla->lightness(); // 50
+echo $hsla->alpha(); // 0.3
+$values = $hsla->values(); // [150, '100%', '50%', 0.3]
+$hex = $hsla->toHex(); // \OzdemirBurak\Iris\Color\Hex('b2ffd8')
+$hex = $hsla->toRgba(); // \OzdemirBurak\Iris\Color\Rgba('0,255,128,0.3')
+echo $hsla; // hsla(150,100%,50%,0.3)
 ```
 
 ### HSV
@@ -65,8 +82,10 @@ $values = $hsv->values(); // [100, '100%', '100%']
 $normalizedValues = $hsv->valuesInUnitInterval(); // [300/360, 100/100, 100/100]
 $hex = $hsv->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
 $hsl = $hsv->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsla = $hsv->toHsla(); // \OzdemirBurak\Iris\Color\Hsla('300,100,50,1.0')
 $hsv = $hsv->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
 $rgb = $hsv->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+$rgba = $hsv->toRgba(); // \OzdemirBurak\Iris\Color\Rgba('255,0,255,1.0')
 echo $hsv; // hsl(300,100%,100%)
 ```
 
@@ -83,9 +102,26 @@ echo $rgb->blue(); // 255
 $values = $rgb->values(); // [255, 0, 255]
 $hex = $rgb->toHex(); // \OzdemirBurak\Iris\Color\Hex('ff00ff')
 $hsl = $rgb->toHsl(); // \OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsla = $rgb->toHsla(); // \OzdemirBurak\Iris\Color\Hsla('300,100,50,1.0')
 $hsv = $rgb->toHsv(); // \OzdemirBurak\Iris\Color\Hsv('300,100,100')
 $rgb = $rgb->toRgb(); // \OzdemirBurak\Iris\Color\Rgb('255,0,255')
+$rgba = $rgb->toRgba(); // \OzdemirBurak\Iris\Color\Rgba('255,0,255,1.0')
 echo $rgb; // rgb(255,0,255)
+```
+
+### RGBA
+
+``` php
+use OzdemirBurak\Iris\Color\Rgba;
+
+$rgba = new Rgba('rgba(93,111,222,0.33)');
+
+echo $rgba->red(); // 93
+echo $rgba->green(); // 111
+echo $rgba->blue(); // 222
+echo $rgba->alpha(); // 0.33,
+$hex = $rgba->background((new Hex('ccc'))->toRgb())->toHex(); // \OzdemirBurak\Iris\Color\Hex('a7add1')
+echo $rgba; // rgba(127,127,127,0.5)
 ```
 
 ### Color Manipulation

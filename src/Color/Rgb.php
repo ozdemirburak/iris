@@ -16,11 +16,6 @@ class Rgb extends BaseColor
     protected $castsInteger = true;
 
     /**
-     * @var string
-     */
-    protected $exceptionMessage = 'Invalid RGB value.';
-
-    /**
      * @param string $code
      *
      * @return string|bool
@@ -77,6 +72,14 @@ class Rgb extends BaseColor
     }
 
     /**
+     * @return \OzdemirBurak\Iris\Color\Hsla
+     */
+    public function toHsla()
+    {
+        return $this->toHsl()->toHsla();
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsl
      */
@@ -100,11 +103,11 @@ class Rgb extends BaseColor
     }
 
     /**
-     * @return Rgba
+     * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba()
     {
-        return new Rgba("{$this->red()},{$this->green()},{$this->blue()},0.0");
+        return new Rgba(implode(',', array_merge($this->values(), ['1.0'])));
     }
 
     /**

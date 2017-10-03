@@ -1,32 +1,30 @@
 <?php
 
-
 namespace OzdemirBurak\Iris\Color;
 
+use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
+use OzdemirBurak\Iris\Traits\AlphaTrait;
+use OzdemirBurak\Iris\Traits\HslTrait;
 
-class Hsla extends Hsl
+class Hsla extends BaseColor
 {
-    protected $exceptionMessage = 'Invalid HSLA value.';
-
-    protected $alpha;
+    use AlphaTrait, HslTrait;
 
     /**
-     * @return Rgba
+     * @param string $code
+     *
+     * @return bool|mixed|string
      */
-    public function toRgba()
-    {
-        return $this->toRgb()->toRgba()->alpha($this->alpha());
-    }
-
     protected function validate($code)
     {
         list($class, $index) = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace(["{$class}a", '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
-        if (substr_count($color, ',') == 2) {
-            $color = "{$color},0.0";
+        if (substr_count($color, ',') === 2) {
+            $color = "{$color},1.0";
         }
-        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d)$/', $color, $matches)) {
+        $color = $this->fixPrecision($color);
+        if (preg_match($this->validationRules(), $color, $matches)) {
             if ($matches[1] > 360 || $matches[2] > 100 || $matches[3] > 100 || $matches[4] > 1) {
                 return false;
             }
@@ -35,28 +33,71 @@ class Hsla extends Hsl
         return false;
     }
 
+    /**
+     * @param string $color
+     *
+     * @return void
+     */
     protected function initialize($color)
     {
         list($this->hue, $this->saturation, $this->lightness, $this->alpha) = explode(',', $color);
+        $this->alpha = (double) $this->alpha;
     }
 
     /**
-     * @param int|string $alpha
-     *
-     * @return int|string|$this
+     * @return \Ozdemirburak\Iris\Color\Hsl
      */
-    public function alpha($alpha = null)
+    public function toHsl()
     {
-        if ($alpha !== null) {
-            $this->alpha = $alpha <= 1 ? $alpha : 0;
-            return $this;
-        }
-        return (double) $this->alpha;
+        return $this->toRgba()->toHsl();
     }
 
+    /**
+     * @return $this|float
+     */
+    public function toRgba()
+    {
+        return $this->convertToRgb()->toRgba()->alpha($this->alpha());
+    }
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Rgb
+     */
+    public function toRgb()
+    {
+        return $this->toRgba()->toRgb();
+    }
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Hsl
+     */
+    public function toHsla()
+    {
+        return $this->toRgba()->toHsl();
+    }
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Hsv
+     */
+    public function toHsv()
+    {
+        return $this->toRgba()->toHsv();
+    }
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Hex
+     */
+    public function toHex()
+    {
+        return $this->toRgba()->toHex();
+    }
+
+    /**
+     * @return array
+     */
     public function values()
     {
-        return array_merge(parent::values(), [$this->alpha]);
+        return array_merge($this->getValues(), [$this->alpha()]);
     }
 
     /**

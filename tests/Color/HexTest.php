@@ -4,8 +4,10 @@ namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hsl;
+use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
+use OzdemirBurak\Iris\Color\Rgba;
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +48,7 @@ class HexTest extends TestCase
         try {
             $hex = new Hex('66Z');
         } catch (InvalidColorException $e) {
-            return $this->assertEquals($e->getMessage(), 'Invalid HEX value.');
+            return $this->assertContains('Invalid HEX value', $e->getMessage());
         }
         $this->fail('Exception has not been raised.');
     }
@@ -63,8 +65,10 @@ class HexTest extends TestCase
         $this->assertEquals(['ff', '00', 'ff'], $hex->values());
         $this->assertEquals(new Hex('ff00ff'), $hex->toHex());
         $this->assertEquals(new Hsl('300,100,50'), $hex->toHsl());
+        $this->assertEquals(new Hsla('300,100,50,1.0'), $hex->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $hex->toHsv());
         $this->assertEquals(new Rgb('255,0,255'), $hex->toRgb());
+        $this->assertEquals(new Rgba('255,0,255,1.0'), $hex->toRgba());
         $this->assertEquals(new Hex('#ff00ff'), $hex->saturate(10));
     }
 }

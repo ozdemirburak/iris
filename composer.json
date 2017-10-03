@@ -2,7 +2,7 @@
     "name": "ozdemirburak/iris",
     "type": "library",
     "description": "PHP library for color manipulation and conversion.",
-    "keywords": ["color", "manipulation", "conversion", "transformation", "hex", "hsl", "hsv", "rgb"],
+    "keywords": ["color", "manipulation", "conversion", "transformation", "hex", "hsl", "hsla", "hsv", "rgb", "rgba"],
     "homepage": "https://github.com/ozdemirburak/iris",
     "license": "MIT",
     "authors": [

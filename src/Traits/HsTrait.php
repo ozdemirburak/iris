@@ -65,7 +65,7 @@ trait HsTrait
     /**
      * @return array
      */
-    public function values()
+    public function getValues()
     {
         return [
             $this->hue(),

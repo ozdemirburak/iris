@@ -4,8 +4,10 @@ namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hsl;
+use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
+use OzdemirBurak\Iris\Color\Rgba;
 use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +39,7 @@ class HslTest extends TestCase
         try {
             $hsl = new Hsl('333,0,666');
         } catch (InvalidColorException $e) {
-            return $this->assertEquals($e->getMessage(), 'Invalid HSL value.');
+            return $this->assertContains('Invalid HSL value', $e->getMessage());
         }
         $this->fail('Exception has not been raised.');
     }
@@ -55,7 +57,9 @@ class HslTest extends TestCase
         $this->assertEquals('hsl(300,100%,50%)', $hsl);
         $this->assertEquals(new Hex('ff00ff'), $hsl->toHex());
         $this->assertEquals(new Hsl('300,100,50'), $hsl->toHsl());
+        $this->assertEquals(new Hsla('300,100,50,1.0'), $hsl->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $hsl->toHsv());
         $this->assertEquals(new Rgb('255,0,255'), $hsl->toRgb());
+        $this->assertEquals(new Rgba('255,0,255,1.0'), $hsl->toRgba());
     }
 }
