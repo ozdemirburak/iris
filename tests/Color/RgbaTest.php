@@ -33,11 +33,6 @@ class RgbaTest extends TestCase
     public function testPredefinedString()
     {
         $rgba = new Rgba('FUSCHIA');
-//        $this->assertEquals(255, $rgba->red());
-//        $this->assertEquals(0, $rgba->green());
-//        $this->assertEquals(255, $rgba->blue());
-//        $this->assertEquals(1, $rgba->alpha());
-//        $this->assertEquals([255, 0, 255, 1], $rgba->values());
         $this->validateFuschia($rgba);
     }
 
