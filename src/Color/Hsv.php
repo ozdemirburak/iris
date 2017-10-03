@@ -21,7 +21,7 @@ class Hsv extends BaseColor
      */
     protected function initialize($color)
     {
-        list($this->hue, $this->saturation, $this->value) = explode(',', $color);
+        return list($this->hue, $this->saturation, $this->value) = explode(',', $color);
     }
 
     /**
@@ -35,7 +35,7 @@ class Hsv extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \Ozdemirburak\Iris\Color\Hsl
      */
     public function toHsl()
     {
@@ -47,7 +47,7 @@ class Hsv extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsla
      */
     public function toHsla()
     {

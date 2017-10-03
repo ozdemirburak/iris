@@ -16,7 +16,7 @@ class Hsl extends BaseColor
      */
     protected function initialize($color)
     {
-        list($this->hue, $this->saturation, $this->lightness) = explode(',', $color);
+        return list($this->hue, $this->saturation, $this->lightness) = explode(',', $color);
     }
 
     /**
