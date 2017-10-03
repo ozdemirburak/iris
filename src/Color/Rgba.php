@@ -40,7 +40,7 @@ class Rgba extends BaseColor
     /**
      * @param string $color
      *
-     * @return array
+     * @return void
      */
     protected function initialize($color)
     {
@@ -63,7 +63,7 @@ class Rgba extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \Ozdemirburak\Iris\Color\Rgba
      */
     public function toRgba()
     {
@@ -87,7 +87,7 @@ class Rgba extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsla|float
      */
     public function toHsla()
     {
@@ -95,7 +95,7 @@ class Rgba extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsv
      */
     public function toHsv()
     {

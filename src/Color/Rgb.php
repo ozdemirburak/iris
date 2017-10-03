@@ -39,7 +39,7 @@ class Rgb extends BaseColor
      */
     protected function initialize($color)
     {
-        list($this->red, $this->green, $this->blue) = explode(',', $color);
+        return list($this->red, $this->green, $this->blue) = explode(',', $color);
     }
 
     /**
@@ -81,7 +81,7 @@ class Rgb extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsv
      */
     public function toHsv()
     {
