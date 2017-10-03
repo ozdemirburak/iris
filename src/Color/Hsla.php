@@ -69,11 +69,11 @@ class Hsla extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \Ozdemirburak\Iris\Color\Hsla
      */
     public function toHsla()
     {
-        return $this->toRgba()->toHsl();
+        return $this->toRgba()->toHsla();
     }
 
     /**
