@@ -3,21 +3,11 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
-use OzdemirBurak\Iris\Traits\HsTrait;
+use OzdemirBurak\Iris\Traits\HslTrait;
 
 class Hsl extends BaseColor
 {
-    use HsTrait;
-
-    /**
-     * @var string
-     */
-    protected $exceptionMessage = 'Invalid HSL value.';
-
-    /**
-     * @var int
-     */
-    protected $lightness;
+    use HslTrait;
 
     /**
      * @param string $color
@@ -47,6 +37,14 @@ class Hsl extends BaseColor
     }
 
     /**
+     * @return \OzdemirBurak\Iris\Color\Hsla
+     */
+    public function toHsla()
+    {
+        return new Hsla(implode(',', array_merge($this->values(), [1.0])));
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsv
      */
@@ -60,27 +58,17 @@ class Hsl extends BaseColor
         return new Hsv($code);
     }
 
-    /**
-     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Rgb
-     */
     public function toRgb()
     {
-        list($h, $s, $l) = $this->valuesInUnitInterval();
-        if ($s === 0) {
-            $r = $g = $b = $l;
-        } else {
-            $q = $l < 0.5 ? $l * (1 + $s) :
-                $l + $s - $l * $s;
-            $p = 2 * $l - $q;
-            list($r, $g, $b) = [
-                $this->hueToRgb($p, $q, $h + 1/3),
-                $this->hueToRgb($p, $q, $h),
-                $this->hueToRgb($p, $q, $h - 1/3)
-            ];
-        }
-        $code = implode(',', [round($r * 255), round($g * 255), round($b * 255)]);
-        return new Rgb($code);
+        return $this->convertToRgb();
+    }
+
+    /**
+     * @return \OzdemirBurak\Iris\Color\Rgba
+     */
+    public function toRgba()
+    {
+        return $this->toRgb()->toRgba();
     }
 
     /**
@@ -92,43 +80,10 @@ class Hsl extends BaseColor
     }
 
     /**
-     * @param int|string $lightness
-     *
-     * @return int|$this
+     * @return array
      */
-    public function lightness($lightness = null)
+    public function values()
     {
-        if (is_numeric($lightness)) {
-            $this->lightness = $lightness >= 0 && $lightness <= 100 ? $lightness : $this->lightness;
-            return $this;
-        }
-        return (int) $this->lightness;
-    }
-
-    /**
-     * @param float $p
-     * @param float $q
-     * @param float $t
-     *
-     * @return mixed
-     */
-    private function hueToRgb($p, $q, $t)
-    {
-        if ($t < 0) {
-            $t++;
-        }
-        if ($t > 1) {
-            $t--;
-        }
-        if ($t < 1/6) {
-            return $p + ($q - $p) * 6 * $t;
-        }
-        if ($t < 1/2) {
-            return $q;
-        }
-        if ($t < 2/3) {
-            return $p + ($q - $p) * (2/3 - $t) * 6;
-        }
-        return $p;
+        return $this->getValues();
     }
 }

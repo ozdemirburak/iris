@@ -7,11 +7,6 @@ use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 abstract class BaseColor
 {
     /**
-     * @var string
-     */
-    protected $exceptionMessage = 'Invalid value.';
-
-    /**
      * @param string $code
      *
      * @return mixed
@@ -41,6 +36,11 @@ abstract class BaseColor
     abstract public function toHsl();
 
     /**
+     * @return \Ozdemirburak\Iris\Color\Hsl
+     */
+    abstract public function toHsla();
+
+    /**
      * @return \Ozdemirburak\Iris\Color\Hsv
      */
     abstract public function toHsv();
@@ -49,6 +49,11 @@ abstract class BaseColor
      * @return \Ozdemirburak\Iris\Color\Rgb
      */
     abstract public function toRgb();
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Rgb
+     */
+    abstract public function toRgba();
 
     /**
      * @return string
@@ -65,7 +70,7 @@ abstract class BaseColor
     public function __construct($code)
     {
         if (($color = $this->validate($code)) === false) {
-            throw new InvalidColorException($this->exceptionMessage);
+            throw new InvalidColorException($this->getExceptionMessage() . ' => ' . $code);
         }
         $this->initialize($color);
     }
@@ -191,10 +196,22 @@ abstract class BaseColor
             return $this->toHex();
         } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsl) {
             return $this->toHsl();
+        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsla) {
+            return $this->toHsla();
         } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsv) {
             return $this->toHsv();
-        } else {
+        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Rgb) {
             return $this->toRgb();
+        } else {
+            return $this->toRgba();
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getExceptionMessage()
+    {
+        return 'Invalid ' . strtoupper(substr(static::class, strrpos(static::class, '\\') + 1)) . ' value';
     }
 }

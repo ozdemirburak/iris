@@ -10,11 +10,6 @@ class Hsv extends BaseColor
     use HsTrait;
 
     /**
-     * @var string
-     */
-    protected $exceptionMessage = 'Invalid HSV value.';
-
-    /**
      * @var int
      */
     protected $value;
@@ -49,6 +44,14 @@ class Hsv extends BaseColor
         $s = $l && $l < 1 ? $s * $v / ($l < 0.5 ? $l * 2 : 2 - $l * 2) : $s;
         $code = implode(',', [round($h * 360), round($s * 100), round($l * 100)]);
         return new Hsl($code);
+    }
+
+    /**
+     * @return \Ozdemirburak\Iris\Color\Hsl
+     */
+    public function toHsla()
+    {
+        return $this->toHsl()->toHsla();
     }
 
     /**
@@ -96,6 +99,14 @@ class Hsv extends BaseColor
     }
 
     /**
+     * @return \Ozdemirburak\Iris\Color\Rgba
+     */
+    public function toRgba()
+    {
+        return $this->toRgb()->toRgba();
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -115,5 +126,13 @@ class Hsv extends BaseColor
             return $this;
         }
         return (int) $this->value;
+    }
+
+    /**
+     * @return array
+     */
+    public function values()
+    {
+        return $this->getValues();
     }
 }
