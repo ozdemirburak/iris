@@ -56,7 +56,8 @@ class Rgba extends BaseColor
     public function toRgb()
     {
         list($red, $green, $blue) = array_map(function ($attribute) {
-            return floor((1 - $this->alpha()) * $this->background->{$attribute}() + $this->alpha() * $this->{$attribute}());
+            $value = (1 - $this->alpha()) * $this->background->{$attribute}() + $this->alpha() * $this->{$attribute}();
+            return floor($value);
         }, ['red', 'green', 'blue']);
         return new Rgb(implode(',', [$red, $green, $blue]));
     }
