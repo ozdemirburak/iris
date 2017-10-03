@@ -45,6 +45,21 @@ class RgbTest extends TestCase
         $this->fail('Exception has not been raised.');
     }
 
+
+    /**
+     * @group rgb-construction
+     */
+    public function testGarbageColor()
+    {
+        try {
+            $rgb = new Rgb('ThisIsAnInvalidValue');
+        } catch (InvalidColorException $e) {
+            $this->assertContains('Invalid RGB value', $e->getMessage());
+            return;
+        }
+        $this->fail('Exception has not been raised.');
+    }
+
     /**
      * @param \OzdemirBurak\Iris\Color\Rgb $rgb
      */

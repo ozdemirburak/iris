@@ -46,6 +46,20 @@ class HslTest extends TestCase
     }
 
     /**
+     * @group rgb-construction
+     */
+    public function testGarbageColor()
+    {
+        try {
+            $hsl = new Hsl('ThisIsAnInvalidValue');
+        } catch (InvalidColorException $e) {
+            $this->assertContains('Invalid HSL value', $e->getMessage());
+            return;
+        }
+        $this->fail('Exception has not been raised.');
+    }
+
+    /**
      * @param \OzdemirBurak\Iris\Color\Hsl $hsl
      */
     private function validateFuschia(Hsl $hsl)
