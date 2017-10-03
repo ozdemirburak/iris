@@ -100,6 +100,14 @@ class Rgb extends BaseColor
     }
 
     /**
+     * @return Rgba
+     */
+    public function toRgba()
+    {
+        return new Rgba("{$this->red()},{$this->green()},{$this->blue()},0.0");
+    }
+
+    /**
      * @return string
      */
     public function __toString()
