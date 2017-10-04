@@ -37,6 +37,7 @@ class Hsl extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
     public function toHsla()
@@ -58,12 +59,17 @@ class Hsl extends BaseColor
         return new Hsv($code);
     }
 
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \Ozdemirburak\Iris\Color\Rgb
+     */
     public function toRgb()
     {
         return $this->convertToRgb();
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba()
