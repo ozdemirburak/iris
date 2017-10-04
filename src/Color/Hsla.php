@@ -45,6 +45,7 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsl
      */
     public function toHsl()
@@ -53,7 +54,8 @@ class Hsla extends BaseColor
     }
 
     /**
-     * @return $this|float
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \Ozdemirburak\Iris\Color\Rgba
      */
     public function toRgba()
     {
@@ -61,6 +63,7 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Rgb
      */
     public function toRgb()
@@ -77,6 +80,7 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsv
      */
     public function toHsv()
@@ -85,6 +89,7 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hex
      */
     public function toHex()

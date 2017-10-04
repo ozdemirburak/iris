@@ -72,6 +72,7 @@ class Rgb extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
     public function toHsla()
@@ -103,6 +104,7 @@ class Rgb extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba()

@@ -47,10 +47,11 @@ class Rgba extends BaseColor
         $colors = explode(',', $color);
         list($this->red, $this->green, $this->blue) = array_map('intval', $colors);
         $this->alpha = (double) $colors[3];
-        $this->background = new Rgb('255,255,255');
+        $this->background = $this->defaultBackground();
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function toRgb()
@@ -71,6 +72,7 @@ class Rgba extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
     public function toHex()
@@ -79,6 +81,7 @@ class Rgba extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsl
      */
     public function toHsl()
@@ -87,6 +90,7 @@ class Rgba extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsla|float
      */
     public function toHsla()
@@ -95,6 +99,7 @@ class Rgba extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsv
      */
     public function toHsv()
@@ -132,5 +137,13 @@ class Rgba extends BaseColor
     {
         $this->background = $rgb;
         return $this;
+    }
+
+    /**
+     * @return \OzdemirBurak\Iris\Color\Rgb
+     */
+    protected function defaultBackground()
+    {
+        return new Rgb('255,255,255');
     }
 }

@@ -47,6 +47,7 @@ class Hsv extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsla
      */
     public function toHsla()
@@ -99,6 +100,7 @@ class Hsv extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Rgba
      */
     public function toRgba()
