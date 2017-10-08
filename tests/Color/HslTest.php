@@ -37,7 +37,7 @@ class HslTest extends TestCase
     public function testInvalidColor()
     {
         try {
-            $hsl = new Hsl('333,0,666');
+            new Hsl('333,0,666');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid HSL value', $e->getMessage());
             return;
@@ -51,7 +51,7 @@ class HslTest extends TestCase
     public function testGarbageColor()
     {
         try {
-            $hsl = new Hsl('ThisIsAnInvalidValue');
+            new Hsl('ThisIsAnInvalidValue');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid HSL value', $e->getMessage());
             return;
