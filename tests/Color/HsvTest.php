@@ -37,12 +37,57 @@ class HsvTest extends TestCase
     public function testInvalidColor()
     {
         try {
-            $hsv = new Hsv('333,0,666');
+            new Hsv('333,0,666');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid HSV value', $e->getMessage());
             return;
         }
         $this->fail('Exception has not been raised.');
+    }
+
+    /**
+     * @dataProvider hsvToRgbPairs
+     * @param string $hsv
+     * @param string $rgb
+     * @param string $name
+     */
+    public function testCanConvertToRgb($hsv, $rgb, $name)
+    {
+        $this->assertEquals(new Rgb($rgb), (new Hsv($hsv))->toRgb(), "Can convert $name HSV to RGB");
+    }
+
+    public function hsvToRgbPairs()
+    {
+        return [
+            ['hsv(0,0%,0%)', '0,0,0', 'black'],
+            ['hsv(0,0%,100%)', '255,255,255', 'white'],
+            ['hsv(0,100%,100%)', '255,0,0', 'red'],
+            ['hsv(120,100%,100%)', '0,255,0', 'lime'],
+            ['hsv(240,100%,100%)', '0,0,255', 'blue'],
+            ['hsv(60,100%,100%)', '255,255,0', 'yellow'],
+            ['hsv(180,100%,100%)', '0,255,255', 'cyan'],
+            ['hsv(300,100%,100%)', '255,0,255', 'magenta'],
+            ['hsv(0,0%,75%)', '191,191,191', 'silver'],
+            ['hsv(0,0%,50%)', '128,128,128', 'gray'],
+            ['hsv(0,100%,50%)', '128,0,0', 'maroon'],
+            ['hsv(60,100%,50%)', '128,128,0', 'olive'],
+            ['hsv(120,100%,50%)', '0,128,0', 'green'],
+            ['hsv(300,100%,50%)', '128,0,128', 'purple'],
+            ['hsv(180,100%,50%)', '0,128,128', 'teal'],
+            ['hsv(240,100%,50%)', '0,0,128', 'navy'],
+        ];
+    }
+
+    public function testCanReadAndWriteComponentsSeparately()
+    {
+        $hsv = new Hsv('hsv(0,0%,0%');
+        $hsv->hue(41);
+        $this->assertEquals(41, $hsv->hue());
+        $hsv->saturation(42);
+        $this->assertEquals(42, $hsv->saturation());
+        $hsv->value(43);
+        $this->assertEquals(43, $hsv->value());
+        $this->assertEquals('hsv(41,42%,43%)', (string) $hsv);
     }
 
     /**

@@ -72,7 +72,7 @@ class HslaTest extends TestCase
     public function testGarbageColor()
     {
         try {
-            $hsla = new Hsla('hsla(361,1%,1%,0.3)');
+            new Hsla('hsla(361,1%,1%,0.3)');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid HSLA value', $e->getMessage());
             return;
