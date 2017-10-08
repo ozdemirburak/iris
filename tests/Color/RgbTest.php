@@ -37,7 +37,7 @@ class RgbTest extends TestCase
     public function testInvalidColor()
     {
         try {
-            $rgb = new Rgb('333,0,666');
+            new Rgb('333,0,666');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid RGB value', $e->getMessage());
             return;
@@ -52,7 +52,7 @@ class RgbTest extends TestCase
     public function testGarbageColor()
     {
         try {
-            $rgb = new Rgb('ThisIsAnInvalidValue');
+            new Rgb('ThisIsAnInvalidValue');
         } catch (InvalidColorException $e) {
             $this->assertContains('Invalid RGB value', $e->getMessage());
             return;
