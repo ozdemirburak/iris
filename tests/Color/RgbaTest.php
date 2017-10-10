@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
@@ -9,7 +8,6 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
-use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
 class RgbaTest extends TestCase
@@ -37,37 +35,24 @@ class RgbaTest extends TestCase
     }
 
     /**
+     * @dataProvider invalidColors
      * @group rgba-construction
+     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @expectedExceptionMessage Invalid RGBA value
+     * @param string $colorDefinition
      */
-    public function testInvalidColor()
+    public function testInvalidColorDefinitionsMustThrow($colorDefinition)
     {
-        try {
-            new Rgba('rgba(255,0,0,1.2)');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid RGBA value', $e->getMessage());
-            return;
-        }
-        try {
-            new Rgba('rgba(255,0,0,1.2,0.2.3)'); // Invalid string.
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid RGBA value', $e->getMessage());
-            return;
-        }
-        $this->fail('Exception has not been raised.');
+        new Rgba($colorDefinition);
     }
 
-    /**
-     * @group rgba-construction
-     */
-    public function testGarbageColor()
+    public function invalidColors()
     {
-        try {
-            new Rgba('ThisIsAnInvalidValue');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid RGBA value', $e->getMessage());
-            return;
-        }
-        $this->fail('Exception has not been raised.');
+        return [
+            ['rgba(255,0,0,1.2)'],
+            ['rgba(255,0,0,1.2,0.2.3)'], // Invalid string.
+            ['ThisIsAnInvalidValue'],
+        ];
     }
 
     /**

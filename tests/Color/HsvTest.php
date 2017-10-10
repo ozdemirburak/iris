@@ -8,7 +8,6 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
-use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
 class HsvTest extends TestCase
@@ -33,16 +32,12 @@ class HsvTest extends TestCase
 
     /**
      * @group rgb-construction
+     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @expectedExceptionMessage Invalid HSV value
      */
     public function testInvalidColor()
     {
-        try {
-            new Hsv('333,0,666');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid HSV value', $e->getMessage());
-            return;
-        }
-        $this->fail('Exception has not been raised.');
+        new Hsv('333,0,666');
     }
 
     /**
