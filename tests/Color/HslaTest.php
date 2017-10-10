@@ -9,7 +9,6 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
-use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
 class HslaTest extends TestCase
@@ -54,30 +53,22 @@ class HslaTest extends TestCase
 
     /**
      * @group hsla-construction
+     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @expectedExceptionMessage Invalid HSLA value
      */
     public function testInvalidColor()
     {
-        try {
-            new Hsla('hsla(150,100%,50%,0.3.3,4)');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid HSLA value', $e->getMessage());
-            return ;
-        }
-        $this->fail('Exception has not been raised.');
+        new Hsla('hsla(150,100%,50%,0.3.3,4)');
     }
 
     /**
      * @group hsla-construction
+     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @expectedExceptionMessage Invalid HSLA value
      */
     public function testGarbageColor()
     {
-        try {
-            new Hsla('hsla(361,1%,1%,0.3)');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid HSLA value', $e->getMessage());
-            return;
-        }
-        $this->fail('Exception has not been raised.');
+        new Hsla('hsla(361,1%,1%,0.3)');
     }
 
     /**

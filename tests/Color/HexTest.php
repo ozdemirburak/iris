@@ -8,7 +8,6 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
-use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 use PHPUnit\Framework\TestCase;
 
 class HexTest extends TestCase
@@ -42,16 +41,12 @@ class HexTest extends TestCase
 
     /**
      * @group hex-construction
+     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @expectedExceptionMessage Invalid HEX value
      */
     public function testInvalidColor()
     {
-        try {
-            new Hex('66Z');
-        } catch (InvalidColorException $e) {
-            $this->assertContains('Invalid HEX value', $e->getMessage());
-            return;
-        }
-        $this->fail('Exception has not been raised.');
+        new Hex('66Z');
     }
 
     /**
