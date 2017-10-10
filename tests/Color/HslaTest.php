@@ -35,7 +35,7 @@ class HslaTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $hsla = new Hsla('FUSCHIA');
+        $hsla = new Hsla('FUCHSIA');
         $this->assertEquals('300', $hsla->hue());
         $this->assertEquals('100', $hsla->saturation());
         $this->assertEquals('50', $hsla->lightness());
@@ -46,10 +46,10 @@ class HslaTest extends TestCase
     /**
      * @group hsla-construction
      */
-    public function testFuschiaString()
+    public function testFuchsiaString()
     {
-        $hsla = new Hsla('FUSCHIA');
-        $this->validateFuschia($hsla);
+        $hsla = new Hsla('FUCHSIA');
+        $this->validateFuchsia($hsla);
     }
 
     /**
@@ -94,7 +94,7 @@ class HslaTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Hsla $hsla
      */
-    private function validateFuschia(Hsla $hsla)
+    private function validateFuchsia(Hsla $hsla)
     {
         $this->assertEquals(new Hex('ff00ff'), $hsla->toHex());
         $this->assertEquals(new Hsl('300,100,50'), $hsla->toHsl());

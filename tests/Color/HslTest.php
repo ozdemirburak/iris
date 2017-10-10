@@ -19,7 +19,7 @@ class HslTest extends TestCase
     public function testDigitString()
     {
         $hsl = new Hsl('hsl(300,100%,50%)');
-        $this->validateFuschia($hsl);
+        $this->validateFuchsia($hsl);
     }
 
     /**
@@ -27,8 +27,8 @@ class HslTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $hsl = new Hsl('FUSCHIA');
-        $this->validateFuschia($hsl);
+        $hsl = new Hsl('FUCHSIA');
+        $this->validateFuchsia($hsl);
     }
 
     /**
@@ -62,7 +62,7 @@ class HslTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Hsl $hsl
      */
-    private function validateFuschia(Hsl $hsl)
+    private function validateFuchsia(Hsl $hsl)
     {
         $this->assertEquals('300', $hsl->hue());
         $this->assertEquals('100', $hsl->saturation());
