@@ -19,7 +19,7 @@ class HsvTest extends TestCase
     public function testDigitString()
     {
         $hsv = new Hsv('hsv(300,100%,100%)');
-        $this->validateFuschia($hsv);
+        $this->validateFuchsia($hsv);
     }
 
     /**
@@ -27,8 +27,8 @@ class HsvTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $hsv = new Hsv('FUSCHIA');
-        $this->validateFuschia($hsv);
+        $hsv = new Hsv('FUCHSIA');
+        $this->validateFuchsia($hsv);
     }
 
     /**
@@ -93,7 +93,7 @@ class HsvTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Hsv $hsv
      */
-    private function validateFuschia(Hsv $hsv)
+    private function validateFuchsia(Hsv $hsv)
     {
         $this->assertEquals('300', $hsv->hue());
         $this->assertEquals('100', $hsv->saturation());
