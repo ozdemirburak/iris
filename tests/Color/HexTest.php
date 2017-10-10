@@ -19,7 +19,7 @@ class HexTest extends TestCase
     public function testSixDigitString()
     {
         $hex = new Hex('#ff00ff');
-        $this->validateFuschia($hex);
+        $this->validateFuchsia($hex);
     }
 
     /**
@@ -28,7 +28,7 @@ class HexTest extends TestCase
     public function testThreeDigitString()
     {
         $hex = new Hex('#f0f');
-        $this->validateFuschia($hex);
+        $this->validateFuchsia($hex);
     }
 
     /**
@@ -36,8 +36,8 @@ class HexTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $hex = new Hex('FUSCHIA');
-        $this->validateFuschia($hex);
+        $hex = new Hex('FUCHSIA');
+        $this->validateFuchsia($hex);
     }
 
     /**
@@ -57,7 +57,7 @@ class HexTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Hex $hex
      */
-    private function validateFuschia(Hex $hex)
+    private function validateFuchsia(Hex $hex)
     {
         $this->assertEquals('ff', $hex->red());
         $this->assertEquals('00', $hex->green());

@@ -22,7 +22,7 @@ $ composer require ozdemirburak/iris
 ``` php
 use OzdemirBurak\Iris\Color\Hex;
 
-$hex = new Hex('#ff00ff'); // same as new Hex('fuschia');
+$hex = new Hex('#ff00ff'); // same as new Hex('fuchsia');
 echo $hex->red(); // ff
 echo $hex->green(); // 00
 echo $hex->blue(); // ff
@@ -40,7 +40,7 @@ echo $hex; // #ff00ff
 ``` php
 use OzdemirBurak\Iris\Color\Hsl;
 
-$hsl = new Hsl('hsl(300,100%,50%)'); // same as new Hsl('fuschia');
+$hsl = new Hsl('hsl(300,100%,50%)'); // same as new Hsl('fuchsia');
 echo $hsl->hue(); // 300 
 echo $hsl->saturation(); // 100
 echo $hsl->lightness(); // 50
@@ -74,7 +74,7 @@ echo $hsla; // hsla(150,100%,50%,0.3)
 ``` php
 use OzdemirBurak\Iris\Color\Hsv;
 
-$hsv = new Hsv('hsv(300,100%,100%)'); // same as new Hsv('fuschia');
+$hsv = new Hsv('hsv(300,100%,100%)'); // same as new Hsv('fuchsia');
 echo $hsv->hue(); // 300 
 echo $hsv->saturation(); // 100
 echo $hsv->value(); // 100
@@ -94,7 +94,7 @@ echo $hsv; // hsl(300,100%,100%)
 ``` php
 use OzdemirBurak\Iris\Color\Rgb;
 
-$rgb = new Rgb('rgb(255, 0, 255)'); // same as new Rgb('fuschia');
+$rgb = new Rgb('rgb(255, 0, 255)'); // same as new Rgb('fuchsia');
 
 echo $rgb->red(); // 255
 echo $rgb->green(); // 0
