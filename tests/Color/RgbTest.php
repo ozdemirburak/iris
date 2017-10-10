@@ -19,7 +19,7 @@ class RgbTest extends TestCase
     public function testDigitString()
     {
         $rgb = new Rgb('rgb(255, 0, 255)');
-        $this->validateFuschia($rgb);
+        $this->validateFuchsia($rgb);
     }
 
     /**
@@ -27,8 +27,8 @@ class RgbTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $rgb = new Rgb('FUSCHIA');
-        $this->validateFuschia($rgb);
+        $rgb = new Rgb('FUCHSIA');
+        $this->validateFuchsia($rgb);
     }
 
     /**
@@ -63,7 +63,7 @@ class RgbTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Rgb $rgb
      */
-    private function validateFuschia(Rgb $rgb)
+    private function validateFuchsia(Rgb $rgb)
     {
         $this->assertEquals(255, $rgb->red());
         $this->assertEquals(0, $rgb->green());

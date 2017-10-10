@@ -32,8 +32,8 @@ class RgbaTest extends TestCase
      */
     public function testPredefinedString()
     {
-        $rgba = new Rgba('FUSCHIA');
-        $this->validateFuschia($rgba);
+        $rgba = new Rgba('FUCHSIA');
+        $this->validateFuchsia($rgba);
     }
 
     /**
@@ -84,7 +84,7 @@ class RgbaTest extends TestCase
     /**
      * @param \OzdemirBurak\Iris\Color\Rgba $rgba
      */
-    private function validateFuschia(Rgba $rgba)
+    private function validateFuchsia(Rgba $rgba)
     {
         $this->assertEquals(255, $rgba->red());
         $this->assertEquals(0, $rgba->green());
