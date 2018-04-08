@@ -47,4 +47,27 @@ class OperationsTest extends TestCase
         $this->assertEquals(new Hex('#808080'), (new Hex('#000'))->mix(new Hex('#fff')));
         $this->assertEquals(new Hex('#ff8000'), (new Hex('#ff0000'))->mix(new Hex('#ffff00')));
     }
+
+    /**
+     * @group operations-is-light
+     */
+    public function testIsLight()
+    {
+        $this->assertFalse((new Hex('#000000'))->isLight());
+        $this->assertTrue((new Hex('#ffffff'))->isLight());
+        $this->assertTrue((new Hex('#808080'))->isLight());
+        $this->assertTrue((new Hex('#888888'))->isLight());
+        $this->assertFalse((new Hex('#777777'))->isLight());
+        $this->assertFalse((new Hex('#ff0000'))->isLight());
+        $this->assertTrue((new Hex('#ffff00'))->isLight());
+    }
+
+    /**
+     * @group operations-is-dark
+     */
+    public function testIsDark()
+    {
+        $this->assertTrue((new Hex('#000000'))->isDark());
+        $this->assertFalse((new Hex('#ffffff'))->isDark());
+    }
 }
