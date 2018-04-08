@@ -147,6 +147,25 @@ abstract class BaseColor
     }
 
     /**
+     * @link https://en.wikipedia.org/wiki/Luma_(video) Magic numbers taken from link
+     * @return boolean
+     */
+    public function isLight()
+    {
+        $color = $this->toRgb();
+        $darkness = 1 - (0.299 * $color->red() + 0.587 * $color->green() + 0.114 * $color->blue()) / 255;
+        return $darkness < 0.5;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDark()
+    {
+        return !$this->isLight();
+    }
+
+    /**
      * @param int $percent
      *
      * @return mixed
