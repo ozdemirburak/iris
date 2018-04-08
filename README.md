@@ -165,6 +165,16 @@ $hex = new Hex('#000');
 echo $hex->mix(new Hex('#fff'), 50); // #808080
 ```
 
+#### Is light or dark
+
+Determine if color is dark or light color.
+
+``` php
+$hex = new Hex('#000');
+echo $hex->isLight(); // false
+echo $hex->isDark(); // true
+```
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
