@@ -165,6 +165,15 @@ $hex = new Hex('#000');
 echo $hex->mix(new Hex('#fff'), 50); // #808080
 ```
 
+#### Tint
+
+Mix color with white by a percent.
+
+``` php
+$hex = new Hex('#000');
+echo $hex->tint(50); // #808080
+```
+
 #### Is light or dark
 
 Determine if color is dark or light color.

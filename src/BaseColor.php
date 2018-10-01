@@ -195,6 +195,19 @@ abstract class BaseColor
     }
 
     /**
+     * @param int $percent
+     *
+     * @return mixed
+     */
+    public function tint($percent = 50)
+    {
+        $clone = clone $this;
+        $white = $clone->toRgb()->red(255)->green(255)->blue(255);
+
+        return $this->mix($white, $percent);
+    }
+
+    /**
      * @param $value
      *
      * @return float
