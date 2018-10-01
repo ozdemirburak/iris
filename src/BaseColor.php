@@ -201,8 +201,8 @@ abstract class BaseColor
      */
     public function tint($percent = 50)
     {
-        $white = (clone $this)->toRgb()
-                              ->red(255)->green(255)->blue(255);
+        $clone = clone $this;
+        $white = $clone->toRgb()->red(255)->green(255)->blue(255);
 
         return $this->mix($white, $percent);
     }
