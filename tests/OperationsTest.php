@@ -70,4 +70,13 @@ class OperationsTest extends TestCase
         $this->assertTrue((new Hex('#000000'))->isDark());
         $this->assertFalse((new Hex('#ffffff'))->isDark());
     }
+
+    /**
+     * @group operations-tint
+     */
+    public function testTint()
+    {
+        $this->assertEquals(new Hex('#80bfff'), (new Hex('#007fff'))->tint(50));
+        $this->assertEquals(new Hex('#80bfff'), (new Hex('#007fff'))->tint());
+    }
 }
