@@ -208,6 +208,19 @@ abstract class BaseColor
     }
 
     /**
+     * @param int $percent
+     *
+     * @return mixed
+     */
+    public function shade($percent = 50)
+    {
+        $clone = clone $this;
+        $black = $clone->toRgb()->red(0)->green(0)->blue(0);
+
+        return $this->mix($black, $percent);
+    }
+
+    /**
      * @param $value
      *
      * @return float
