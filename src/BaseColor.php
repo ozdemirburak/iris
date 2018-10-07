@@ -235,19 +235,7 @@ abstract class BaseColor
      */
     protected function back(BaseColor $color)
     {
-        if ($color instanceof \OzdemirBurak\Iris\Color\Hex) {
-            return $this->toHex();
-        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsl) {
-            return $this->toHsl();
-        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsla) {
-            return $this->toHsla();
-        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Hsv) {
-            return $this->toHsv();
-        } elseif ($color instanceof \OzdemirBurak\Iris\Color\Rgb) {
-            return $this->toRgb();
-        } else {
-            return $this->toRgba();
-        }
+        return $this->{'to' . substr(strrchr(get_class($color), '\\'), 1)}();
     }
 
     /**

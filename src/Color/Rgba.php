@@ -51,6 +51,19 @@ class Rgba extends BaseColor
     }
 
     /**
+     * @return array
+     */
+    public function values()
+    {
+        return [
+            $this->red(),
+            $this->green(),
+            $this->blue(),
+            $this->alpha()
+        ];
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
@@ -113,19 +126,6 @@ class Rgba extends BaseColor
     public function __toString()
     {
         return 'rgba(' . implode(',', $this->values()) . ')';
-    }
-
-    /**
-     * @return array
-     */
-    public function values()
-    {
-        return [
-            $this->red(),
-            $this->green(),
-            $this->blue(),
-            $this->alpha()
-        ];
     }
 
     /**

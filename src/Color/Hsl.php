@@ -20,6 +20,14 @@ class Hsl extends BaseColor
     }
 
     /**
+     * @return array
+     */
+    public function values()
+    {
+        return $this->getValues();
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
@@ -83,13 +91,5 @@ class Hsl extends BaseColor
     public function __toString()
     {
         return 'hsl(' . implode(',', $this->values()) . ')';
-    }
-
-    /**
-     * @return array
-     */
-    public function values()
-    {
-        return $this->getValues();
     }
 }
