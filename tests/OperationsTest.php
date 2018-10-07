@@ -87,7 +87,5 @@ class OperationsTest extends TestCase
     {
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade(50));
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade());
-        $this->assertEquals(new Hex('#808080'), (new Hex('#FFF'))->shade());
     }
-
 }

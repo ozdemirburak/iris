@@ -203,7 +203,6 @@ abstract class BaseColor
     {
         $clone = clone $this;
         $white = $clone->toRgb()->red(255)->green(255)->blue(255);
-
         return $this->mix($white, $percent);
     }
 
@@ -216,7 +215,6 @@ abstract class BaseColor
     {
         $clone = clone $this;
         $black = $clone->toRgb()->red(0)->green(0)->blue(0);
-
         return $this->mix($black, $percent);
     }
 
