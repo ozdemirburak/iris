@@ -25,6 +25,14 @@ class Hsv extends BaseColor
     }
 
     /**
+     * @return array
+     */
+    public function values()
+    {
+        return $this->getValues();
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
@@ -128,13 +136,5 @@ class Hsv extends BaseColor
             return $this;
         }
         return (int) $this->value;
-    }
-
-    /**
-     * @return array
-     */
-    public function values()
-    {
-        return $this->getValues();
     }
 }

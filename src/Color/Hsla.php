@@ -45,6 +45,14 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @return array
+     */
+    public function values()
+    {
+        return array_merge($this->getValues(), [$this->alpha()]);
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \Ozdemirburak\Iris\Color\Hsl
      */
@@ -95,14 +103,6 @@ class Hsla extends BaseColor
     public function toHex()
     {
         return $this->toRgba()->toHex();
-    }
-
-    /**
-     * @return array
-     */
-    public function values()
-    {
-        return array_merge($this->getValues(), [$this->alpha()]);
     }
 
     /**
