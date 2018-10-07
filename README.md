@@ -180,7 +180,7 @@ Mix color with black by a percent.
 
 ``` php
 $hex = new Hex('#FFF');
-echo $hex->tint(50); // #808080
+echo $hex->shade(50); // #808080
 ```
 
 #### Is light or dark
