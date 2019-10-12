@@ -5,7 +5,7 @@
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-PHP library for color manipulation and conversion.
+PHP library for color manipulation and conversion. 
 
 ## Install
 
@@ -14,6 +14,8 @@ Via Composer
 ``` bash
 $ composer require ozdemirburak/iris
 ```
+
+For PHP 7.0 and below, use `~1.0` instead.
 
 ## Usage
 
