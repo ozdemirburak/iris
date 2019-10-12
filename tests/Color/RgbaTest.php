@@ -37,12 +37,12 @@ class RgbaTest extends TestCase
     /**
      * @dataProvider invalidColors
      * @group rgba-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid RGBA value
      * @param string $colorDefinition
      */
     public function testInvalidColorDefinitionsMustThrow($colorDefinition)
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid RGBA value');
         new Rgba($colorDefinition);
     }
 

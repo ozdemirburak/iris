@@ -2,6 +2,9 @@
 
 All Notable changes to `iris` will be documented in this file.
 
+## 2019-10-12
+- Added Factory class to attempt to guess the color.
+
 ## 2018-10-02
 - Added shade method.
 

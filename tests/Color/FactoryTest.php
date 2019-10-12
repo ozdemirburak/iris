@@ -88,11 +88,10 @@ class FactoryTest extends TestCase
 
     /**
      * @group factory-init
-     * @expectedException \OzdemirBurak\Iris\Exceptions\AmbiguousColorString
-     *
      */
     public function testAmbiguousString()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\AmbiguousColorString::class);
         Factory::init('100, 20%, 5%');
     }
 }

@@ -32,22 +32,22 @@ class RgbTest extends TestCase
 
     /**
      * @group rgb-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid RGB value
      */
     public function testInvalidColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid RGB value');
         new Rgb('333,0,666');
     }
 
 
     /**
      * @group rgb-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid RGB value
      */
     public function testGarbageColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid RGB value');
         new Rgb('ThisIsAnInvalidValue');
     }
 

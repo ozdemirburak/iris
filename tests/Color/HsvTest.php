@@ -32,11 +32,11 @@ class HsvTest extends TestCase
 
     /**
      * @group rgb-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HSV value
      */
     public function testInvalidColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HSV value');
         new Hsv('333,0,666');
     }
 
