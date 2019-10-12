@@ -32,21 +32,21 @@ class HslTest extends TestCase
 
     /**
      * @group rgb-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HSL value
      */
     public function testInvalidColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HSL value');
         new Hsl('333,0,666');
     }
 
     /**
      * @group rgb-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HSL value
      */
     public function testGarbageColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HSL value');
         new Hsl('ThisIsAnInvalidValue');
     }
 

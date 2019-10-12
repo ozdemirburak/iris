@@ -131,7 +131,7 @@ If you do not know what the color string will be (for example, you're getting it
 ``` php
 use OzdemirBurak\Iris\Color\Factory;
 
-$color = Fatory::init('rgba(93,111,222,0.33)');
+$color = Factory::init('rgba(93,111,222,0.33)');
 echo $color->red(); // 93
 echo $color->green(); // 111
 echo $color->blue(); // 222

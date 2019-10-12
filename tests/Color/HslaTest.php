@@ -53,21 +53,21 @@ class HslaTest extends TestCase
 
     /**
      * @group hsla-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HSLA value
      */
     public function testInvalidColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HSLA value');
         new Hsla('hsla(150,100%,50%,0.3.3,4)');
     }
 
     /**
      * @group hsla-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HSLA value
      */
     public function testGarbageColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HSLA value');
         new Hsla('hsla(361,1%,1%,0.3)');
     }
 

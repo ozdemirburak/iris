@@ -41,11 +41,11 @@ class HexTest extends TestCase
 
     /**
      * @group hex-construction
-     * @expectedException \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @expectedExceptionMessage Invalid HEX value
      */
     public function testInvalidColor()
     {
+        $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
+        $this->expectExceptionMessage('Invalid HEX value');
         new Hex('66Z');
     }
 
