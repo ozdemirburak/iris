@@ -124,6 +124,21 @@ $hex = $rgba->background((new Hex('ccc'))->toRgb())->toHex(); // \OzdemirBurak\I
 echo $rgba; // rgba(127,127,127,0.5)
 ```
 
+### Via Factory
+
+If you do not know what the color string will be (for example, you're getting it from a group of rows from a database), then you can attempt to factory the appropriate color class:
+
+``` php
+use OzdemirBurak\Iris\Color\Factory;
+
+$color = Fatory::init('rgba(93,111,222,0.33)');
+echo $color->red(); // 93
+echo $color->green(); // 111
+echo $color->blue(); // 222
+echo $color->alpha(); // 0.33
+```
+
+
 ### Color Manipulation
 
 #### Saturation
