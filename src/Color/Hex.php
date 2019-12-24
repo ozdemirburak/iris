@@ -44,7 +44,7 @@ class Hex extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()
     {
@@ -53,7 +53,7 @@ class Hex extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsla
+     * @return \OzdemirBurak\Iris\Color\Hsla
      */
     public function toHsla()
     {
@@ -62,7 +62,7 @@ class Hex extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \OzdemirBurak\Iris\Color\Hsv
      */
     public function toHsv()
     {
@@ -71,7 +71,7 @@ class Hex extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function toRgb()
     {

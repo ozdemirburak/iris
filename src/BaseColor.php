@@ -26,32 +26,32 @@ abstract class BaseColor
     abstract public function values();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hex
+     * @return \OzdemirBurak\Iris\Color\Hex
      */
     abstract public function toHex();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \OzdemirBurak\Iris\Color\Hsl
      */
     abstract public function toHsl();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsla
+     * @return \OzdemirBurak\Iris\Color\Hsla
      */
     abstract public function toHsla();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \OzdemirBurak\Iris\Color\Hsv
      */
     abstract public function toHsv();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \OzdemirBurak\Iris\Color\Rgb
      */
     abstract public function toRgb();
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgba
+     * @return \OzdemirBurak\Iris\Color\Rgba
      */
     abstract public function toRgba();
 
@@ -231,7 +231,7 @@ abstract class BaseColor
     /**
      * @param \OzdemirBurak\Iris\BaseColor $color
      *
-     * @return $this|\Ozdemirburak\Iris\Color\Hex|\Ozdemirburak\Iris\Color\Hsl|\Ozdemirburak\Iris\Color\Hsv|\Ozdemirburak\Iris\Color\Rgb
+     * @return $this|\OzdemirBurak\Iris\Color\Hex|\OzdemirBurak\Iris\Color\Hsl|\OzdemirBurak\Iris\Color\Hsv|\OzdemirBurak\Iris\Color\Rgb
      */
     protected function back(BaseColor $color)
     {
