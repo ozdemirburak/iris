@@ -54,7 +54,7 @@ class Rgb extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()
     {
@@ -82,7 +82,7 @@ class Rgb extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \OzdemirBurak\Iris\Color\Hsv
      */
     public function toHsv()
     {
@@ -96,7 +96,7 @@ class Rgb extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function toRgb()
     {
