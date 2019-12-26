@@ -43,7 +43,7 @@ class Hsv extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()
     {
@@ -56,7 +56,7 @@ class Hsv extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsla
+     * @return \OzdemirBurak\Iris\Color\Hsla
      */
     public function toHsla()
     {
@@ -64,7 +64,7 @@ class Hsv extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \OzdemirBurak\Iris\Color\Hsv
      */
     public function toHsv()
     {
@@ -73,7 +73,7 @@ class Hsv extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function toRgb()
     {
@@ -109,7 +109,7 @@ class Hsv extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Rgba
+     * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba()
     {

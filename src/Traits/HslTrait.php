@@ -29,7 +29,7 @@ trait HslTrait
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Rgb
+     * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function convertToRgb()
     {

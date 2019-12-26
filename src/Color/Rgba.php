@@ -77,7 +77,7 @@ class Rgba extends BaseColor
     }
 
     /**
-     * @return \Ozdemirburak\Iris\Color\Rgba
+     * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba()
     {
@@ -95,7 +95,7 @@ class Rgba extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsl
+     * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()
     {
@@ -104,7 +104,7 @@ class Rgba extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsla|float
+     * @return \OzdemirBurak\Iris\Color\Hsla|float
      */
     public function toHsla()
     {
@@ -113,7 +113,7 @@ class Rgba extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \Ozdemirburak\Iris\Color\Hsv
+     * @return \OzdemirBurak\Iris\Color\Hsv
      */
     public function toHsv()
     {
