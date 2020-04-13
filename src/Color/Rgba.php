@@ -41,11 +41,12 @@ class Rgba extends BaseColor
      * @param string $color
      *
      * @return void
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      */
     protected function initialize($color)
     {
         $colors = explode(',', $color);
-        list($this->red, $this->green, $this->blue) = array_map('intval', $colors);
+        [$this->red, $this->green, $this->blue] = array_map('intval', $colors);
         $this->alpha = (double) $colors[3];
         $this->background = $this->defaultBackground();
     }
@@ -69,7 +70,7 @@ class Rgba extends BaseColor
      */
     public function toRgb()
     {
-        list($red, $green, $blue) = array_map(function ($attribute) {
+        [$red, $green, $blue] = array_map(function ($attribute) {
             $value = (1 - $this->alpha()) * $this->background->{$attribute}() + $this->alpha() * $this->{$attribute}();
             return floor($value);
         }, ['red', 'green', 'blue']);
@@ -141,6 +142,7 @@ class Rgba extends BaseColor
 
     /**
      * @return \OzdemirBurak\Iris\Color\Rgb
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      */
     protected function defaultBackground()
     {
