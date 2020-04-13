@@ -41,6 +41,7 @@ trait AlphaTrait
         if (strpos($color, ',') !== false) {
             $parts = explode(',', $color);
             $parts[3] = strpos($parts[3], '.') === false ? $parts[3] . '.0' : $parts[3];
+            $parts[3] = round($parts[3], 2);
             $color = implode(',', $parts);
         }
         return $color;
