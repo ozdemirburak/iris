@@ -18,7 +18,7 @@ class Hsla extends BaseColor
      */
     protected function validate($code)
     {
-        list($class, $index) = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
+        [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace(["{$class}a", '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
         if (substr_count($color, ',') === 2) {
             $color = "{$color},1.0";
@@ -40,7 +40,7 @@ class Hsla extends BaseColor
      */
     protected function initialize($color)
     {
-        list($this->hue, $this->saturation, $this->lightness, $this->alpha) = explode(',', $color);
+        [$this->hue, $this->saturation, $this->lightness, $this->alpha] = explode(',', $color);
         $this->alpha = (double) $this->alpha;
     }
 

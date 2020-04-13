@@ -28,7 +28,7 @@ trait AlphaTrait
      */
     protected function validationRules()
     {
-        return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,2})$/';
+        return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/';
     }
 
     /**

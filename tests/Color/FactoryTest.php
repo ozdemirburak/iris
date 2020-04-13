@@ -51,7 +51,7 @@ class FactoryTest extends TestCase
      */
     public function testRgbaReturnType()
     {
-        foreach (['rgba(255, 2, 56, 0.5)', '30, 53,122, 1', '112,112,122,0.3'] as $c) {
+        foreach (['rgba(255, 2, 56, 0.5)', '30, 53,122, 1', '112,112,122,0.3', '66,66,66,0.333'] as $c) {
             $color = Factory::init($c);
             $this->assertInstanceOf(Rgba::class, $color);
         }
