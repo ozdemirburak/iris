@@ -28,7 +28,7 @@ trait AlphaTrait
      */
     protected function validationRules()
     {
-        return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/';
+        return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,2})$/';
     }
 
     /**
@@ -40,6 +40,7 @@ trait AlphaTrait
     {
         if (strpos($color, ',') !== false) {
             $parts = explode(',', $color);
+            $parts[3] = round($parts[3], 2);
             $parts[3] = strpos($parts[3], '.') === false ? $parts[3] . '.0' : $parts[3];
             $color = implode(',', $parts);
         }
