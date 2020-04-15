@@ -23,7 +23,7 @@ trait HsTrait
      */
     protected function validate($code)
     {
-        list($class, $index) = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
+        [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace([$class, '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
         if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
             if ($matches[1] > 360 || $matches[2] > 100 || $matches[3] > 100) {

@@ -31,7 +31,7 @@ class Hex extends BaseColor
      */
     protected function initialize($color)
     {
-        return list($this->red, $this->green, $this->blue) = str_split($color, 2);
+        return [$this->red, $this->green, $this->blue] = str_split($color, 2);
     }
 
     /**

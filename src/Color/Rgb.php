@@ -39,7 +39,7 @@ class Rgb extends BaseColor
      */
     protected function initialize($color)
     {
-        return list($this->red, $this->green, $this->blue) = explode(',', $color);
+        return [$this->red, $this->green, $this->blue] = explode(',', $color);
     }
 
     /**
@@ -58,7 +58,7 @@ class Rgb extends BaseColor
      */
     public function toHsl()
     {
-        list($r, $g, $b, $min, $max) =  $this->getHValues();
+        [$r, $g, $b, $min, $max] = $this->getHValues();
         $l = ($max + $min) / 2;
         if ($max === $min) {
             $h = $s = 0;
@@ -86,7 +86,7 @@ class Rgb extends BaseColor
      */
     public function toHsv()
     {
-        list($r, $g, $b, $min, $max) =  $this->getHValues();
+        [$r, $g, $b, $min, $max] = $this->getHValues();
         $v = $max;
         $d = $max - $min;
         $s = $max === 0 ? 0 : $d / $max;
@@ -153,10 +153,10 @@ class Rgb extends BaseColor
      */
     private function getHValues()
     {
-        list($r, $g, $b) = $values = array_map(function ($value) {
+        [$r, $g, $b] = $values = array_map(function ($value) {
             return $value / 255;
         }, $this->values());
-        list($min, $max) = [min($values), max($values)];
+        [$min, $max] = [min($values), max($values)];
         return [$r, $g, $b, $min, $max];
     }
 }

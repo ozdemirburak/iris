@@ -16,7 +16,7 @@ class Hsl extends BaseColor
      */
     protected function initialize($color)
     {
-        return list($this->hue, $this->saturation, $this->lightness) = explode(',', $color);
+        return [$this->hue, $this->saturation, $this->lightness] = explode(',', $color);
     }
 
     /**
@@ -59,7 +59,7 @@ class Hsl extends BaseColor
      */
     public function toHsv()
     {
-        list($h, $s, $l) = $this->valuesInUnitInterval();
+        [$h, $s, $l] = $this->valuesInUnitInterval();
         $t = $s * $l < 0.5 ? $l : 1 - $l;
         $s = 2 * $t / ($l + $t);
         $l += $t;
