@@ -4,6 +4,7 @@ namespace OzdemirBurak\Iris\Tests;
 
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hsl;
+use OzdemirBurak\Iris\Color\Rgba;
 use PHPUnit\Framework\TestCase;
 
 class OperationsTest extends TestCase
@@ -88,4 +89,12 @@ class OperationsTest extends TestCase
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade(50));
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade());
     }
+
+    /**
+     * @group operations-shade
+     */
+     public function testFade()
+     {
+        $this->assertEquals(new Rgba('128,242,13,0.1'), (new Hsl('90,90,50'))->fade(10));
+     }
 }

@@ -200,6 +200,16 @@ $hex = new Hex('#FFF');
 echo $hex->shade(50); // #808080
 ```
 
+#### Fade
+
+Set the absolute opacity of a color by a percent.
+
+``` php
+$hsl =new Hsl('90,90,50');
+echo $hsl->toRgba(); // rgba(128,242,13,1)
+echo $hsl->fade(10); // rgba(128,242,13,0.1)
+```
+
 #### Is light or dark
 
 Determine if color is dark or light color.
