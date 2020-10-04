@@ -219,6 +219,18 @@ abstract class BaseColor
     }
 
     /**
+     * @param number $percent
+     *
+     * @return OzdemirBurak\Iris\Color\Rgba;
+     */
+     public function fade($percent)
+     {
+         $color = $this->toRgba();
+         $color->alpha($percent/100);
+         return $color;
+     }
+
+    /**
      * @param $value
      *
      * @return float
