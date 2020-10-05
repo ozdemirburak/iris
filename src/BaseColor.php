@@ -221,13 +221,15 @@ abstract class BaseColor
     /**
      * @param number $percent
      *
-     * @return OzdemirBurak\Iris\Color\Rgba;
+     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
      */
      public function fade($percent)
      {
-         $color = $this->toRgba();
-         $color->alpha($percent/100);
-         return $color;
+         $percent = $this->clamp($percent / 100);
+         if ($this instanceof \OzdemirBurak\Iris\Color\Hsl) {
+             return $this->toHsla()->alpha($percent);
+         }
+         return $this->toRgba()->alpha($percent);
      }
 
     /**
