@@ -99,6 +99,5 @@ class OperationsTest extends TestCase
      {
         $this->assertEquals(new Hsla('90,90,50,0.1'), (new Hsl('90,90,50'))->fade(10));
         $this->assertEquals(new Rgba('128,242,13,0.1'), (new Rgb('128,242,13'))->fade(10));
-        echo (new Rgb('128,242,13'))->fade(10);
      }
 }
