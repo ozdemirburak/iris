@@ -233,6 +233,35 @@ abstract class BaseColor
      }
 
     /**
+     * @param number $percent
+     *
+     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
+     */
+     public function fadeIn($percent)
+     {
+         $percent = $percent / 100;
+         if ($this instanceof \OzdemirBurak\Iris\Color\Hsla || $this instanceof \OzdemirBurak\Iris\Color\Rgba) {
+             return $this->alpha($this->clamp($this->alpha() + $percent));
+         } elseif ($this instanceof \OzdemirBurak\Iris\Color\Hsl) {
+             $hsla = $this->toHsla();
+             return $hsla->alpha($this->clamp($hsla->alpha() + $percent));
+         }
+         $rgba = $this->toRgba();
+         return $rgba->alpha($this->clamp($rgba->alpha() + $percent));
+     }
+
+    /**
+     * @param number $percent
+     *
+     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
+     */
+     public function fadeOut($percent)
+     {
+         return $this->fadeIn(-1 * $percent);
+     }
+
+
+    /**
      * @param $value
      *
      * @return float
