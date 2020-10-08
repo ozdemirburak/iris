@@ -93,11 +93,29 @@ class OperationsTest extends TestCase
     }
 
     /**
-     * @group operations-shade
+     * @group operations-fade
      */
      public function testFade()
      {
         $this->assertEquals(new Hsla('90,90,50,0.1'), (new Hsl('90,90,50'))->fade(10));
         $this->assertEquals(new Rgba('128,242,13,0.1'), (new Rgb('128,242,13'))->fade(10));
+     }
+
+    /**
+     * @group operations-fadeIn
+     */
+     public function testFadeIn()
+     {
+        $this->assertEquals(new Hsla('90,90,50,0.4'), (new Hsla('90,90,50,0.3'))->fadeIn(10));
+        $this->assertEquals(new Rgba('128,242,13,0.4'), (new Rgba('128,242,13,0.3'))->fadeIn(10));
+     }
+
+    /**
+     * @group operations-fadeOut
+     */
+     public function testFadeOut()
+     {
+        $this->assertEquals(new Hsla('90,90,50,0.2'), (new Hsla('90,90,50,0.3'))->fadeOut(10));
+        $this->assertEquals(new Rgba('128,242,13,0.2'), (new Rgba('128,242,13,0.3'))->fadeOut(10));
      }
 }
