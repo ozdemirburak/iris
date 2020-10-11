@@ -195,6 +195,8 @@ abstract class BaseColor
     }
 
     /**
+     * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
+     *
      * @param int $percent
      *
      * @return mixed
@@ -207,6 +209,8 @@ abstract class BaseColor
     }
 
     /**
+     * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
+     *
      * @param int $percent
      *
      * @return mixed
@@ -219,47 +223,49 @@ abstract class BaseColor
     }
 
     /**
-     * @param number $percent
+     * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
      *
-     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
+     * @param $percent
+     *
+     * @return float|\OzdemirBurak\Iris\Color\Hsla|\OzdemirBurak\Iris\Color\Rgba
      */
-     public function fade($percent)
-     {
-         $percent = $this->clamp($percent / 100);
-         if ($this instanceof \OzdemirBurak\Iris\Color\Hsl) {
-             return $this->toHsla()->alpha($percent);
-         }
-         return $this->toRgba()->alpha($percent);
-     }
+    public function fade($percent)
+    {
+        [$model, $percent] = [$this->getColorModelName($this), $this->clamp($percent / 100)];
+        if ($model === 'Hsl') {
+            return $this->toHsla()->alpha($percent);
+        }
+        return $this->toRgba()->alpha($percent);
+    }
 
     /**
-     * @param number $percent
+     * @param $percent
      *
-     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
+     * @return float|\OzdemirBurak\Iris\Color\Hsla|\OzdemirBurak\Iris\Color\Rgba
      */
-     public function fadeIn($percent)
-     {
-         $percent = $percent / 100;
-         if ($this instanceof \OzdemirBurak\Iris\Color\Hsla || $this instanceof \OzdemirBurak\Iris\Color\Rgba) {
-             return $this->alpha($this->clamp($this->alpha() + $percent));
-         } elseif ($this instanceof \OzdemirBurak\Iris\Color\Hsl) {
-             $hsla = $this->toHsla();
-             return $hsla->alpha($this->clamp($hsla->alpha() + $percent));
-         }
-         $rgba = $this->toRgba();
-         return $rgba->alpha($this->clamp($rgba->alpha() + $percent));
-     }
+    public function fadeIn($percent)
+    {
+        [$model, $percent] = [$this->getColorModelName($this), $percent / 100];
+        if ($model === 'Hsla' || $model === 'Rgba') {
+            return $this->alpha($this->clamp($this->alpha() + $percent));
+        }
+        if ($model === 'Hsl') {
+            $hsla = $this->toHsla();
+            return $hsla->alpha($this->clamp($hsla->alpha() + $percent));
+        }
+        $rgba = $this->toRgba();
+        return $rgba->alpha($this->clamp($rgba->alpha() + $percent));
+    }
 
     /**
-     * @param number $percent
+     * @param $percent
      *
-     * @return OzdemirBurak\Iris\Color\Rgba|\OzdemirBurak\Iris\Color\Hsla;
+     * @return float|\OzdemirBurak\Iris\Color\Hsla|\OzdemirBurak\Iris\Color\Rgba
      */
-     public function fadeOut($percent)
-     {
-         return $this->fadeIn(-1 * $percent);
-     }
-
+    public function fadeOut($percent)
+    {
+        return $this->fadeIn(-1 * $percent);
+    }
 
     /**
      * @param $value
@@ -278,7 +284,7 @@ abstract class BaseColor
      */
     protected function back(BaseColor $color)
     {
-        return $this->{'to' . substr(strrchr(get_class($color), '\\'), 1)}();
+        return $this->{'to' . $this->getColorModelName($color)}();
     }
 
     /**
@@ -287,5 +293,15 @@ abstract class BaseColor
     protected function getExceptionMessage()
     {
         return 'Invalid ' . strtoupper(substr(static::class, strrpos(static::class, '\\') + 1)) . ' value';
+    }
+
+    /**
+     * @param \OzdemirBurak\Iris\BaseColor $color
+     *
+     * @return false|string
+     */
+    protected function getColorModelName(BaseColor $color)
+    {
+        return substr(strrchr(get_class($color), '\\'), 1);
     }
 }
