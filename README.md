@@ -205,11 +205,35 @@ echo $hex->shade(50); // #808080
 Set the absolute opacity of a color by a percent.
 
 ``` php
-$hsl =new Hsl('90,90,50');
+$hsl = new Hsl('90,90,50');
 echo $hsl->fade(10); // hsla(90,90%,50%,0.1)
 
 $rgb = new Rgb('128,242,13');
 echo $rgb->fade(10); // rgba(128,242,13,0.1)
+```
+
+#### FadeIn
+
+Increase the opacity of a color by a percent.
+
+``` php
+$hsla = new Hsla('90,90,50,0.3');
+echo $hsla->fadeIn(10); // hsla(90,90%,50%,0.4)
+
+$rgba = new Rgba('128,242,13,0.3');
+echo $rgba->fadeIn(10); // rgba(128,242,13,0.4)
+```
+
+#### FadeOut
+
+Decrease the opacity of a color by a percent.
+
+``` php
+$hsla = new Hsla('90,90,50,0.3');
+echo $hsla->fadeOut(10); // hsla(90,90%,50%,0.2)
+
+$rgba = new Rgba('128,242,13,0.3');
+echo $rgba->fadeOut(10); // rgba(128,242,13,0.2)
 ```
 
 #### Is light or dark
