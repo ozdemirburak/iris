@@ -94,4 +94,14 @@ class FactoryTest extends TestCase
         $this->expectException(\OzdemirBurak\Iris\Exceptions\AmbiguousColorString::class);
         Factory::init('100, 20%, 5%');
     }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\AmbiguousColorString
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     */
+    public function testSelfConversion()
+    {
+        $this->assertEquals(Factory::init("hsv(0, 36%, 72%)")->toHsl()->toHsv(), new Hsv("hsv(0, 36%, 72%)"));
+        $this->assertEquals(Factory::init("hsl(0, 33%, 66%)")->toHsv()->toHsl(), new Hsl("hsl(0, 33%, 66%)"));
+    }
 }

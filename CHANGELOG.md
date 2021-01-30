@@ -2,6 +2,9 @@
 
 All Notable changes to `iris` will be documented in this file.
 
+## 2021-01-31
+- Fix HSL to HSV conversion.
+
 ## 2020-12-06
 - PHP 8.0 support.
 

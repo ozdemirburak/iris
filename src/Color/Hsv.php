@@ -42,14 +42,17 @@ class Hsv extends BaseColor
     }
 
     /**
+     * Source: https://en.wikipedia.org/wiki/HSL_and_HSV#Interconversion
+     *
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()
     {
         [$h, $s, $v] = $this->valuesInUnitInterval();
-        $l = (2 - $s) * $v / 2;
-        $s = $l && $l < 1 ? $s * $v / ($l < 0.5 ? $l * 2 : 2 - $l * 2) : $s;
+        $l = $v * (1 - $s / 2);
+        $m = min($l, 1 - $l);
+        $s = $l && $l < 1 ? ($v - $l) / $m : 0;
         $code = implode(',', [round($h * 360), round($s * 100), round($l * 100)]);
         return new Hsl($code);
     }
