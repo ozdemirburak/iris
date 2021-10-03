@@ -4,6 +4,7 @@
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
@@ -79,6 +80,7 @@ class HslaTest extends TestCase
         $hsla = new Hsla('hsla(150,100%,50%,0.3)');
         $this->assertEquals(new Hex('b2ffd8'), $hsla->toHex());
         $this->assertEquals(new Rgba('0,255,128,0.3'), $hsla->toRgba());
+        $this->assertEquals(new Hexa('b2ffd84c'), $hsla->toHexa());
     }
 
 
@@ -88,6 +90,7 @@ class HslaTest extends TestCase
     private function validateFuchsia(Hsla $hsla)
     {
         $this->assertEquals(new Hex('ff00ff'), $hsla->toHex());
+        $this->assertEquals(new Hexa('ff00ffff'), $hsla->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $hsla->toHsl());
         $this->assertEquals(new Hsla('300,100,50,1.0'), $hsla->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $hsla->toHsv());

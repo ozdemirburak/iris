@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
@@ -62,6 +63,7 @@ class RgbTest extends TestCase
         $this->assertEquals([255, 0, 255], $rgb->values());
         $this->assertEquals('rgb(255,0,255)', $rgb);
         $this->assertEquals(new Hex('ff00ff'), $rgb->toHex());
+        $this->assertEquals(new Hexa('ff00ffff'), $rgb->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $rgb->toHsl());
         $this->assertEquals(new Hsla('300,100,50,1.0'), $rgb->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $rgb->toHsv());
