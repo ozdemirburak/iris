@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
@@ -60,6 +61,7 @@ class HexTest extends TestCase
         $this->assertEquals('#ff00ff', $hex);
         $this->assertEquals(['ff', '00', 'ff'], $hex->values());
         $this->assertEquals(new Hex('ff00ff'), $hex->toHex());
+        $this->assertEquals(new Hexa('ff00ffff'), $hex->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $hex->toHsl());
         $this->assertEquals(new Hsla('300,100,50,1.0'), $hex->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $hex->toHsv());

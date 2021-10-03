@@ -37,6 +37,15 @@ class Hsl extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hexa
+     */
+    public function toHexa()
+    {
+        return $this->toHex()->toHexa();
+    }
+
+    /**
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()

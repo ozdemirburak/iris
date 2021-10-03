@@ -10,12 +10,15 @@ class Factory
     {
         $color = str_replace(' ', '', $color);
         // Definitive types
-        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv|#))/i', $color, $match)) {
-            $class = ucfirst(strtolower($match['type'] === '#' ? 'hex' : $match['type']));
+        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv))/i', $color, $match)) {
+            $class = ucfirst(strtolower($match['type']));
             $class = 'OzdemirBurak\\Iris\\Color\\' . $class;
             return new $class($color);
         }
         // Best guess
+        if (preg_match('/^#?[a-f0-9]{8}$/i', $color)) {
+            return new Hexa($color);
+        }
         if (preg_match('/^#?[a-f0-9]{3}([a-f0-9]{3})?$/i', $color)) {
             return new Hex($color);
         }

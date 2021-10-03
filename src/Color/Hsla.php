@@ -106,6 +106,15 @@ class Hsla extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hexa
+     */
+    public function toHexa()
+    {
+        return $this->toHex()->toHexa()->alpha($this->alpha());
+    }
+
+    /**
      * @return string
      */
     public function __toString()

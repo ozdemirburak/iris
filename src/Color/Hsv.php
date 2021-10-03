@@ -42,6 +42,15 @@ class Hsv extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hexa
+     */
+    public function toHexa()
+    {
+        return $this->toRgb()->toHex()->toHexa();
+    }
+
+    /**
      * Source: https://en.wikipedia.org/wiki/HSL_and_HSV#Interconversion
      *
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException

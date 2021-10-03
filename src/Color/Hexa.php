@@ -4,11 +4,12 @@ namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
+use OzdemirBurak\Iris\Traits\AlphaTrait;
 use OzdemirBurak\Iris\Traits\RgbTrait;
 
-class Hex extends BaseColor
+class Hexa extends BaseColor
 {
-    use RgbTrait;
+    use AlphaTrait, RgbTrait;
 
     /**
      * @param string $code
@@ -18,10 +19,7 @@ class Hex extends BaseColor
     protected function validate($code)
     {
         $color = str_replace('#', '', DefinedColor::find($code));
-        if (strlen($color) === 3) {
-            $color = $color[0] . $color[0] . $color[1] . $color[1] . $color[2] . $color[2];
-        }
-        return preg_match('/^[a-f0-9]{6}$/i', $color) ? $color : false;
+        return preg_match('/^[a-f0-9]{6}([a-f0-9]{2})?$/i', $color) ? $color : false;
     }
 
     /**
@@ -31,7 +29,22 @@ class Hex extends BaseColor
      */
     protected function initialize($color)
     {
-        return [$this->red, $this->green, $this->blue] = str_split($color, 2);
+        [$this->red, $this->green, $this->blue, $this->alpha] = array_merge(str_split($color, 2), ['ff']);
+        $this->alpha = $this->alphaHexToFloat($this->alpha ?? 'ff');
+        return $this->values();
+    }
+
+    /**
+     * @return array
+     */
+    public function values()
+    {
+        return [
+            $this->red(),
+            $this->green(),
+            $this->blue(),
+            $this->alpha()
+        ];
     }
 
     /**
@@ -39,7 +52,7 @@ class Hex extends BaseColor
      */
     public function toHex()
     {
-        return $this;
+        return new Hex(implode([$this->red(), $this->green(), $this->blue()]));
     }
 
     /**
@@ -47,7 +60,7 @@ class Hex extends BaseColor
      */
     public function toHexa()
     {
-        return new Hexa((string)$this . 'FF');
+        return $this;
     }
 
     /**
@@ -65,7 +78,7 @@ class Hex extends BaseColor
      */
     public function toHsla()
     {
-        return $this->toHsl()->toHsla();
+        return $this->toHsl()->toHsla()->alpha($this->alpha());
     }
 
     /**
@@ -83,7 +96,7 @@ class Hex extends BaseColor
      */
     public function toRgb()
     {
-        $rgb = implode(',', array_map('hexdec', $this->values()));
+        $rgb = implode(',', array_map('hexdec', [$this->red(), $this->green(), $this->blue()]));
         return new Rgb($rgb);
     }
 
@@ -93,7 +106,7 @@ class Hex extends BaseColor
      */
     public function toRgba()
     {
-        return $this->toRgb()->toRgba();
+        return $this->toRgb()->toRgba()->alpha($this->alpha());
     }
 
     /**
@@ -101,6 +114,7 @@ class Hex extends BaseColor
      */
     public function __toString()
     {
-        return '#' . implode('', $this->values());
+        [$r, $g, $b, $a] = $this->values();
+        return '#' . implode('', [$r, $g, $b, $this->alphaFloatToHex($a)]);
     }
 }
