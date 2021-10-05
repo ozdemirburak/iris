@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Iris Test Suite">
+        <testsuite name="iris Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

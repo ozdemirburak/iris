@@ -15,8 +15,6 @@ Via Composer
 $ composer require ozdemirburak/iris
 ```
 
-For PHP 7.0 and below, use `~1.0` instead.
-
 ## Usage
 
 ### Hex

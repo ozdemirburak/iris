@@ -2,6 +2,9 @@
 
 All Notable changes to `iris` will be documented in this file.
 
+## 2021-10-05
+- Added Hexa support.
+
 ## 2021-01-31
 - Fix HSL to HSV conversion.
 
