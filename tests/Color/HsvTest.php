@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
@@ -97,6 +98,7 @@ class HsvTest extends TestCase
         $this->assertEquals([300/360, 100/100, 100/100], $hsv->valuesInUnitInterval());
         $this->assertEquals('hsv(300,100%,100%)', $hsv);
         $this->assertEquals(new Hex('ff00ff'), $hsv->toHex());
+        $this->assertEquals(new Hexa('ff00ffff'), $hsv->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $hsv->toHsl());
         $this->assertEquals(new Hsla('300,100,50,1.0'), $hsv->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $hsv->toHsv());

@@ -43,6 +43,14 @@ class Hex extends BaseColor
     }
 
     /**
+     * @return \OzdemirBurak\Iris\Color\Hexa
+     */
+    public function toHexa()
+    {
+        return new Hexa((string)$this . 'FF');
+    }
+
+    /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
