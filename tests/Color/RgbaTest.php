@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
@@ -62,6 +63,7 @@ class RgbaTest extends TestCase
     {
         $rgba = new Rgba('rgba(11,22,33,0.2)');
         $this->assertEquals(new Hex('ced0d2'), $rgba->toHex());
+        $this->assertEquals(new Hexa('ced0d233'), $rgba->toHexa());
         $rgba = new Rgba('rgba(93,111,222,0.33)');
         $this->assertEquals(new Hex('a7add1'), $rgba->background((new Hex('ccc'))->toRgb())->toHex());
     }
@@ -78,6 +80,7 @@ class RgbaTest extends TestCase
         $this->assertEquals([255, 0, 255, 1.0], $rgba->values());
         $this->assertEquals('rgba(255,0,255,1)', $rgba->toRgba()->__toString());
         $this->assertEquals(new Hex('ff00ff'), $rgba->toHex());
+        $this->assertEquals(new Hexa('ff00ffff'), $rgba->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $rgba->toHsl());
         $this->assertEquals(new Hsla('300,100,50,1.0'), $rgba->toHsla());
         $this->assertEquals(new Hsv('300,100,100'), $rgba->toHsv());

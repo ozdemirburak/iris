@@ -96,6 +96,15 @@ class Rgba extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hexa
+     */
+    public function toHexa()
+    {
+        return $this->toRgb()->toHex()->toHexa()->alpha($this->alpha());
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
     public function toHsl()

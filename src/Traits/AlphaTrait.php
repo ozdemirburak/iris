@@ -45,4 +45,22 @@ trait AlphaTrait
         }
         return $color;
     }
+
+    /**
+     * @param string $alpha
+     * @return float
+     */
+    protected function alphaHexToFloat(string $alpha): float
+    {
+        return sprintf('%0.2f', hexdec($alpha) / 255);
+    }
+
+    /**
+     * @param float $alpha
+     * @return string
+     */
+    protected function alphaFloatToHex(float $alpha): string
+    {
+        return dechex($alpha * 255);
+    }
 }
