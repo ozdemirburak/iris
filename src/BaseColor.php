@@ -195,6 +195,42 @@ abstract class BaseColor
     }
 
     /**
+     * @param \OzdemirBurak\Iris\BaseColor $color
+     * @param int                          $percent
+     *
+     * @return mixed
+     */
+    public function mixInHsv(BaseColor $color, $percent = 50)
+    {
+        $first = $this->toHsv();
+        $second = $color->toHsv();
+        $weight = $percent / 100;
+
+        $hue = $first->hue() * (1 - $weight) + $second->hue() * $weight;
+
+        // choose hue in the middle of the shortest way between first and second
+        if (abs($second->hue() - $first->hue()) > 180.) {
+            $hue += 180.;
+        }
+
+        // normalize hue
+        if ($hue >= 360.) {
+            $hue -= 360.;
+        }
+
+        $saturation = $first->saturation() * (1 - $weight)
+            + $second->saturation() * $weight;
+
+        $value = $first->value() * (1 - $weight) + $second->value() * $weight;
+
+        return $first
+            ->hue((int)($hue + .5))
+            ->saturation((int)($saturation + .5))
+            ->value((int)($value + .5))
+            ->back($this);
+    }
+
+    /**
      * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
      *
      * @param int $percent

@@ -5,6 +5,7 @@ namespace OzdemirBurak\Iris\Tests;
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
+use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
 use PHPUnit\Framework\TestCase;
@@ -49,6 +50,32 @@ class OperationsTest extends TestCase
     {
         $this->assertEquals(new Hex('#808080'), (new Hex('#000'))->mix(new Hex('#fff')));
         $this->assertEquals(new Hex('#ff8000'), (new Hex('#ff0000'))->mix(new Hex('#ffff00')));
+    }
+
+    /**
+     * @group operations-mixInHsv
+     */
+    public function testMixInHsv()
+    {
+        $this->assertEquals(
+            new Hsv('275,20,40'),
+            (new Hsv('300,10,20'))->mixInHsv((new Hsv('200,50,100'))->toRgb(), 25)
+        );
+
+        $this->assertEquals(
+            (new Hsv('270,30,55'))->toRgba(),
+            (new Hsv('300,20,50'))->toRgba()->mixInHsv(new Hsv('240,40,60'))
+        );
+
+        $this->assertEquals(
+            new Hsv('345,60,25'),
+            (new Hsv('0,100,50'))->mixInHsv(new Hsv('330,20,0'))
+        );
+
+        $this->assertEquals(
+            new Hsv('20,25,40'),
+            (new Hsv('100,0,50'))->mixInHsv(new Hsv('300,50,30'))
+        );
     }
 
     /**
