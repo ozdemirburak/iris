@@ -11,8 +11,7 @@ class Factory
         $color = str_replace(' ', '', $color);
         // Definitive types
         if (preg_match('/^(?P<type>(rgba?|hsla?|hsv))/i', $color, $match)) {
-            $class = ucfirst(strtolower($match['type']));
-            $class = 'OzdemirBurak\\Iris\\Color\\' . $class;
+            $class = self::resolveClass($match['type']);
             return new $class($color);
         }
         // Best guess
@@ -36,5 +35,14 @@ class Factory
         }
         // Cannot determine between hsv and hsl
         throw new AmbiguousColorString("Cannot determine color type of '{$color}'");
+    }
+
+    /**
+     * @param string $class
+     * @return string
+     */
+    private static function resolveClass(string $class): string
+    {
+        return __NAMESPACE__ . '\\' . ucfirst(strtolower($class));
     }
 }
