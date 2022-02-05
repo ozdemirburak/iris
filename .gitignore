@@ -1,6 +1,7 @@
-.idea
+.idea/
+.vscode/
+/build/
+/vendor/
 .phpunit.cache
 .phpunit.result.cache
-build
 composer.lock
-vendor
