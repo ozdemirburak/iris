@@ -4,9 +4,15 @@ namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Exceptions\AmbiguousColorString;
+use OzdemirBurak\Iris\Exceptions\InvalidColorException;
 
 class Factory
 {
+    /**
+     * @param string $color
+     * @return BaseColor
+     * @throws AmbiguousColorString|InvalidColorException
+     */
     public static function init(string $color): BaseColor
     {
         $color = str_replace(' ', '', $color);
