@@ -2,11 +2,12 @@
 
 namespace OzdemirBurak\Iris\Color;
 
+use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Exceptions\AmbiguousColorString;
 
 class Factory
 {
-    public static function init($color)
+    public static function init(string $color): BaseColor
     {
         $color = str_replace(' ', '', $color);
         // Definitive types
