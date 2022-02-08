@@ -282,7 +282,7 @@ abstract class BaseColor
      *
      * @return $this|\OzdemirBurak\Iris\Color\Hex|\OzdemirBurak\Iris\Color\Hsl|\OzdemirBurak\Iris\Color\Hsv|\OzdemirBurak\Iris\Color\Rgb
      */
-    protected function back(BaseColor $color)
+    public function back(BaseColor $color)
     {
         return $this->{'to' . $this->getColorModelName($color)}();
     }
@@ -300,7 +300,7 @@ abstract class BaseColor
      *
      * @return false|string
      */
-    protected function getColorModelName(BaseColor $color)
+    public function getColorModelName(BaseColor $color)
     {
         return substr(strrchr(get_class($color), '\\'), 1);
     }
