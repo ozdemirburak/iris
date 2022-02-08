@@ -19,9 +19,9 @@ class Rgba extends BaseColor
     /**
      * @param string $code
      *
-     * @return bool|mixed|string
+     * @return bool|string
      */
-    protected function validate($code)
+    protected function validate(string $code): bool|string
     {
         $color = str_replace(['rgba', '(', ')', ' '], '', DefinedColor::find($code, 1));
         if (substr_count($color, ',') === 2) {
@@ -40,21 +40,21 @@ class Rgba extends BaseColor
     /**
      * @param string $color
      *
-     * @return void
-     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return array
      */
-    protected function initialize($color)
+    protected function initialize(string $color): array
     {
         $colors = explode(',', $color);
         [$this->red, $this->green, $this->blue] = array_map('intval', $colors);
         $this->alpha = (double) $colors[3];
         $this->background = $this->defaultBackground();
+        return $this->values();
     }
 
     /**
      * @return array
      */
-    public function values()
+    public function values(): array
     {
         return [
             $this->red(),
@@ -68,7 +68,7 @@ class Rgba extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function toRgb()
+    public function toRgb(): Rgb
     {
         [$red, $green, $blue] = array_map(function ($attribute) {
             $value = (1 - $this->alpha()) * $this->background->{$attribute}() + $this->alpha() * $this->{$attribute}();
@@ -80,7 +80,7 @@ class Rgba extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    public function toRgba()
+    public function toRgba(): Rgba
     {
         return $this;
     }
@@ -89,7 +89,7 @@ class Rgba extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    public function toHex()
+    public function toHex(): Hex
     {
         return $this->toRgb()->toHex();
     }
@@ -98,7 +98,7 @@ class Rgba extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
-    public function toHexa()
+    public function toHexa(): Hexa
     {
         return $this->toRgb()->toHex()->toHexa()->alpha($this->alpha());
     }
@@ -107,16 +107,16 @@ class Rgba extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    public function toHsl()
+    public function toHsl(): Hsl
     {
         return $this->toRgb()->toHsl();
     }
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \OzdemirBurak\Iris\Color\Hsla|float
+     * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    public function toHsla()
+    public function toHsla(): Hsla
     {
         return $this->toHsl()->toHsla()->alpha($this->alpha());
     }
@@ -125,7 +125,7 @@ class Rgba extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    public function toHsv()
+    public function toHsv(): Hsv
     {
         return $this->toRgb()->toHsv();
     }
@@ -133,7 +133,7 @@ class Rgba extends BaseColor
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'rgba(' . implode(',', $this->values()) . ')';
     }
@@ -143,7 +143,7 @@ class Rgba extends BaseColor
      *
      * @return $this
      */
-    public function background(Rgb $rgb)
+    public function background(Rgb $rgb): static
     {
         $this->background = $rgb;
         return $this;
@@ -151,9 +151,8 @@ class Rgba extends BaseColor
 
     /**
      * @return \OzdemirBurak\Iris\Color\Rgb
-     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      */
-    protected function defaultBackground()
+    protected function defaultBackground(): Rgb
     {
         return new Rgb('255,255,255');
     }

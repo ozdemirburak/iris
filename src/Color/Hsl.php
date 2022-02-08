@@ -14,7 +14,7 @@ class Hsl extends BaseColor
      *
      * @return array
      */
-    protected function initialize($color)
+    protected function initialize(string $color): array
     {
         return [$this->hue, $this->saturation, $this->lightness] = explode(',', $color);
     }
@@ -22,7 +22,7 @@ class Hsl extends BaseColor
     /**
      * @return array
      */
-    public function values()
+    public function values(): array
     {
         return $this->getValues();
     }
@@ -31,7 +31,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    public function toHex()
+    public function toHex(): Hex
     {
         return $this->toRgb()->toHex();
     }
@@ -40,7 +40,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
-    public function toHexa()
+    public function toHexa(): Hexa
     {
         return $this->toHex()->toHexa();
     }
@@ -48,7 +48,7 @@ class Hsl extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    public function toHsl()
+    public function toHsl(): Hsl
     {
         return $this;
     }
@@ -57,7 +57,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    public function toHsla()
+    public function toHsla(): Hsla
     {
         return new Hsla(implode(',', array_merge($this->values(), [1.0])));
     }
@@ -68,7 +68,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    public function toHsv()
+    public function toHsv(): Hsv
     {
         [$h, $s, $l] = $this->valuesInUnitInterval();
         $v = $s * min($l, 1 - $l) + $l;
@@ -81,7 +81,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function toRgb()
+    public function toRgb(): Rgb
     {
         return $this->convertToRgb();
     }
@@ -90,7 +90,7 @@ class Hsl extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    public function toRgba()
+    public function toRgba(): Rgba
     {
         return $this->toRgb()->toRgba();
     }
@@ -98,7 +98,7 @@ class Hsl extends BaseColor
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'hsl(' . implode(',', $this->values()) . ')';
     }

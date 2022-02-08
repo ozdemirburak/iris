@@ -7,24 +7,24 @@ trait RgbTrait
     /**
      * @var string|int
      */
-    protected $red;
+    protected string|int $red;
 
     /**
      * @var string|int
      */
-    protected $green;
+    protected string|int $green;
 
     /**
      * @var string|int
      */
-    protected $blue;
+    protected string|int $blue;
 
     /**
      * @param int|string $red
      *
      * @return int|string|$this
      */
-    public function red($red = null)
+    public function red($red = null): int|string|static
     {
         if ($red !== null) {
             $this->validateAndSet('red', $red);
@@ -38,7 +38,7 @@ trait RgbTrait
      *
      * @return float|int|string|$this
      */
-    public function green($green = null)
+    public function green($green = null): float|int|string|static
     {
         if ($green !== null) {
             $this->validateAndSet('green', $green);
@@ -52,7 +52,7 @@ trait RgbTrait
      *
      * @return float|int|string|$this
      */
-    public function blue($blue = null)
+    public function blue($blue = null): float|int|string|static
     {
         if ($blue !== null) {
             $this->validateAndSet('blue', $blue);
@@ -64,7 +64,7 @@ trait RgbTrait
     /**
      * @return array
      */
-    public function values()
+    public function values(): array
     {
         return [
             $this->red(),
@@ -74,10 +74,10 @@ trait RgbTrait
     }
 
     /**
-     * @param string $property
+     * @param string           $property
      * @param float|int|string $value
      */
-    protected function validateAndSet($property, $value)
+    protected function validateAndSet(string $property, float|int|string $value): void
     {
         if (!empty($this->castsInteger)) {
             $this->{$property} = $value >= 0 && $value <= 255 ? (int) round($value) : $this->{$property};

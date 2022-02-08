@@ -11,14 +11,14 @@ trait HslTrait
     /**
      * @var int
      */
-    protected $lightness;
+    protected int $lightness;
 
     /**
      * @param int|string $lightness
      *
      * @return int|$this
      */
-    public function lightness($lightness = null)
+    public function lightness($lightness = null): int|static
     {
         if (is_numeric($lightness)) {
             $this->lightness = $lightness >= 0 && $lightness <= 100 ? $lightness : $this->lightness;
@@ -31,7 +31,7 @@ trait HslTrait
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function convertToRgb()
+    public function convertToRgb(): Rgb
     {
         [$h, $s, $l] = $this->valuesInUnitInterval();
         if ($s === 0) {

@@ -16,7 +16,7 @@ class Hexa extends BaseColor
      *
      * @return string|bool
      */
-    protected function validate($code)
+    protected function validate(string $code): bool|string
     {
         $color = str_replace('#', '', DefinedColor::find($code));
         return preg_match('/^[a-f0-9]{6}([a-f0-9]{2})?$/i', $color) ? $color : false;
@@ -27,7 +27,7 @@ class Hexa extends BaseColor
      *
      * @return array
      */
-    protected function initialize($color)
+    protected function initialize(string $color): array
     {
         [$this->red, $this->green, $this->blue, $this->alpha] = array_merge(str_split($color, 2), ['ff']);
         $this->alpha = $this->alphaHexToFloat($this->alpha ?? 'ff');
@@ -37,7 +37,7 @@ class Hexa extends BaseColor
     /**
      * @return array
      */
-    public function values()
+    public function values(): array
     {
         return [
             $this->red(),
@@ -50,7 +50,7 @@ class Hexa extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    public function toHex()
+    public function toHex(): Hex
     {
         return new Hex(implode([$this->red(), $this->green(), $this->blue()]));
     }
@@ -58,7 +58,7 @@ class Hexa extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
-    public function toHexa()
+    public function toHexa(): Hexa
     {
         return $this;
     }
@@ -67,7 +67,7 @@ class Hexa extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    public function toHsl()
+    public function toHsl(): Hsl
     {
         return $this->toRgb()->toHsl();
     }
@@ -76,7 +76,7 @@ class Hexa extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    public function toHsla()
+    public function toHsla(): Hsla
     {
         return $this->toHsl()->toHsla()->alpha($this->alpha());
     }
@@ -85,7 +85,7 @@ class Hexa extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    public function toHsv()
+    public function toHsv(): Hsv
     {
         return $this->toRgb()->toHsv();
     }
@@ -94,7 +94,7 @@ class Hexa extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function toRgb()
+    public function toRgb(): Rgb
     {
         $rgb = implode(',', array_map('hexdec', [$this->red(), $this->green(), $this->blue()]));
         return new Rgb($rgb);
@@ -104,7 +104,7 @@ class Hexa extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    public function toRgba()
+    public function toRgba(): Rgba
     {
         return $this->toRgb()->toRgba()->alpha($this->alpha());
     }
@@ -112,7 +112,7 @@ class Hexa extends BaseColor
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         [$r, $g, $b, $a] = $this->values();
         return '#' . implode('', [$r, $g, $b, $this->alphaFloatToHex($a)]);

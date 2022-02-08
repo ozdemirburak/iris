@@ -13,14 +13,14 @@ class Rgb extends BaseColor
     /**
      * @var bool
      */
-    protected $castsInteger = true;
+    protected bool $castsInteger = true;
 
     /**
      * @param string $code
      *
      * @return string|bool
      */
-    protected function validate($code)
+    protected function validate(string $code): bool|string
     {
         $color = str_replace(['rgb', '(', ')', ' '], '', DefinedColor::find($code, 1));
         if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
@@ -37,7 +37,7 @@ class Rgb extends BaseColor
      *
      * @return array
      */
-    protected function initialize($color)
+    protected function initialize(string $color): array
     {
         return [$this->red, $this->green, $this->blue] = explode(',', $color);
     }
@@ -46,7 +46,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    public function toHex()
+    public function toHex(): Hex
     {
         $code = sprintf('%02x%02x%02x', $this->red(), $this->green(), $this->blue());
         return new Hex($code);
@@ -56,7 +56,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
-    public function toHexa()
+    public function toHexa(): Hexa
     {
         return $this->toHex()->toHexa();
     }
@@ -65,7 +65,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    public function toHsl()
+    public function toHsl(): Hsl
     {
         [$r, $g, $b, $min, $max] = $this->getHValues();
         $l = ($max + $min) / 2;
@@ -84,7 +84,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    public function toHsla()
+    public function toHsla(): Hsla
     {
         return $this->toHsl()->toHsla();
     }
@@ -93,7 +93,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    public function toHsv()
+    public function toHsv(): Hsv
     {
         [$r, $g, $b, $min, $max] = $this->getHValues();
         $v = $max;
@@ -107,7 +107,7 @@ class Rgb extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function toRgb()
+    public function toRgb(): Rgb
     {
         return $this;
     }
@@ -116,7 +116,7 @@ class Rgb extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    public function toRgba()
+    public function toRgba(): Rgba
     {
         return new Rgba(implode(',', array_merge($this->values(), ['1.0'])));
     }
@@ -124,7 +124,7 @@ class Rgb extends BaseColor
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'rgb(' . implode(',', $this->values()) . ')';
     }
@@ -138,29 +138,21 @@ class Rgb extends BaseColor
      *
      * @return float
      */
-    private function getH($max, $r, $g, $b, $d)
+    private function getH($max, $r, $g, $b, $d): float
     {
-        switch ($max) {
-            case $r:
-                $h = ($g - $b) / $d + ($g < $b ? 6 : 0);
-                break;
-            case $g:
-                $h = ($b - $r) / $d + 2;
-                break;
-            case $b:
-                $h = ($r - $g) / $d + 4;
-                break;
-            default:
-                $h = $max;
-                break;
-        }
+        $h = match ($max) {
+            $r => ($g - $b) / $d + ($g < $b ? 6 : 0),
+            $g => ($b - $r) / $d + 2,
+            $b => ($r - $g) / $d + 4,
+            default => $max,
+        };
         return $h / 6;
     }
 
     /**
      * @return array
      */
-    private function getHValues()
+    private function getHValues(): array
     {
         [$r, $g, $b] = $values = array_map(function ($value) {
             return $value / 255;

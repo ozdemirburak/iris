@@ -9,56 +9,56 @@ abstract class BaseColor
     /**
      * @param string $code
      *
-     * @return mixed
+     * @return bool|string
      */
-    abstract protected function validate($code);
+    abstract protected function validate(string $code): bool|string;
 
     /**
      * @param string $color
      *
-     * @return mixed
+     * @return array
      */
-    abstract protected function initialize($color);
+    abstract protected function initialize(string $color): array;
 
     /**
      * @return array
      */
-    abstract public function values();
+    abstract public function values(): array;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    abstract public function toHex();
+    abstract public function toHex(): Color\Hex;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    abstract public function toHsl();
+    abstract public function toHsl(): Color\Hsl;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    abstract public function toHsla();
+    abstract public function toHsla(): Color\Hsla;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    abstract public function toHsv();
+    abstract public function toHsv(): Color\Hsv;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    abstract public function toRgb();
+    abstract public function toRgb(): Color\Rgb;
 
     /**
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    abstract public function toRgba();
+    abstract public function toRgba(): Color\Rgba;
 
     /**
      * @return string
      */
-    abstract public function __toString();
+    abstract public function __toString(): string;
 
     /**
      * Color constructor.
@@ -67,7 +67,7 @@ abstract class BaseColor
      *
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      */
-    public function __construct($code)
+    public function __construct(string $code)
     {
         if (($color = $this->validate($code)) === false) {
             throw new InvalidColorException($this->getExceptionMessage() . ' => ' . $code);
@@ -80,7 +80,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function saturate($percent)
+    public function saturate(int $percent)
     {
         $color = $this->toHsl();
         $saturation = $this->clamp(($color->saturation() + $percent) / 100);
@@ -92,7 +92,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function desaturate($percent)
+    public function desaturate(int $percent)
     {
         $color = $this->toHsl();
         $saturation = $this->clamp(($color->saturation() - $percent) / 100);
@@ -112,7 +112,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function brighten($percent)
+    public function brighten(int $percent)
     {
         $percent *= -1;
         $color = $this->toRgb();
@@ -127,7 +127,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function lighten($percent)
+    public function lighten(int $percent)
     {
         $color = $this->toHsl();
         $lightness = $this->clamp(($color->lightness() + $percent) / 100);
@@ -139,7 +139,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function darken($percent)
+    public function darken(int $percent)
     {
         $color = $this->toHsl();
         $lightness = $this->clamp(($color->lightness() - $percent) / 100);
@@ -170,7 +170,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function spin($percent)
+    public function spin(int $percent)
     {
         $color = $this->toHsl();
         $hue = ($color->hue() + $percent) % 360;
@@ -183,7 +183,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function mix(BaseColor $color, $percent = 50)
+    public function mix(BaseColor $color, int $percent = 50)
     {
         $first = $this->toRgb();
         $second = $color->toRgb();
@@ -290,7 +290,7 @@ abstract class BaseColor
     /**
      * @return string
      */
-    protected function getExceptionMessage()
+    protected function getExceptionMessage(): string
     {
         return 'Invalid ' . strtoupper(substr(static::class, strrpos(static::class, '\\') + 1)) . ' value';
     }
