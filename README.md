@@ -151,7 +151,8 @@ echo $rgba; // rgba(127,127,127,0.5)
 
 ### Via Factory
 
-If you do not know what the color string will be (for example, you're getting it from a group of rows from a database), then you can attempt to factory the appropriate color class:
+If you do not know what the color string will be (for example, you're getting it from a group of rows from a database),
+then you can try using Factory to instantiate an appropriate color class:
 
 ``` php
 use OzdemirBurak\Iris\Color\Factory;
