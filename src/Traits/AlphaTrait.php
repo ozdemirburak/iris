@@ -14,10 +14,10 @@ trait AlphaTrait
      *
      * @return $this|float
      */
-    public function alpha($alpha = null)
+    public function alpha($alpha = null): float|static
     {
         if ($alpha !== null) {
-            $this->alpha = $alpha <= 1 ? $alpha : 1;
+            $this->alpha = min($alpha, 1);
             return $this;
         }
         return $this->alpha;
@@ -26,7 +26,7 @@ trait AlphaTrait
     /**
      * @return string
      */
-    protected function validationRules()
+    protected function validationRules(): string
     {
         return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/';
     }
@@ -36,11 +36,11 @@ trait AlphaTrait
      *
      * @return string
      */
-    protected function fixPrecision($color)
+    protected function fixPrecision($color): string
     {
-        if (strpos($color, ',') !== false) {
+        if (str_contains($color, ',')) {
             $parts = explode(',', $color);
-            $parts[3] = strpos($parts[3], '.') === false ? $parts[3] . '.0' : $parts[3];
+            $parts[3] = !str_contains($parts[3], '.') ? $parts[3] . '.0' : $parts[3];
             $color = implode(',', $parts);
         }
         return $color;

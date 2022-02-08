@@ -2,6 +2,13 @@
 
 All Notable changes to `iris` will be documented in this file.
 
+## 2022-02-08
+- Remove PHP 7 support, will only support PHP 8
+- Added type hinting and return type declarations
+- Made BaseColor::back() and BaseColor::getColorModelName() public @rv1971
+- Use non-locale aware output for the alpha value @Jako
+- Updated .gitignore, and some code refactoring @kudashevs
+
 ## 2021-10-05
 - Added Hexa support.
 

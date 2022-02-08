@@ -5,12 +5,12 @@ namespace OzdemirBurak\Iris\Helpers;
 class DefinedColor
 {
     /**
-     * @param     $code
-     * @param int $index
+     * @param string $code
+     * @param int    $index
      *
      * @return string
      */
-    public static function find($code, $index = 0)
+    public static function find(string $code, int $index = 0): string
     {
         $code = strtolower($code);
         $colors = static::get();
@@ -20,7 +20,7 @@ class DefinedColor
     /**
      * @return array
      */
-    public static function get()
+    public static function get(): array
     {
         /*
          * <color name> => [<hex>, <rgb>, <hsl>, <hsv>]

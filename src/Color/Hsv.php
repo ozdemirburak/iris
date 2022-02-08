@@ -12,14 +12,14 @@ class Hsv extends BaseColor
     /**
      * @var int
      */
-    protected $value;
+    protected int $value;
 
     /**
      * @param string $color
      *
      * @return array
      */
-    protected function initialize($color)
+    protected function initialize(string $color): array
     {
         return [$this->hue, $this->saturation, $this->value] = explode(',', $color);
     }
@@ -27,7 +27,7 @@ class Hsv extends BaseColor
     /**
      * @return array
      */
-    public function values()
+    public function values(): array
     {
         return $this->getValues();
     }
@@ -36,7 +36,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
-    public function toHex()
+    public function toHex(): Hex
     {
         return $this->toRgb()->toHex();
     }
@@ -45,7 +45,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
-    public function toHexa()
+    public function toHexa(): Hexa
     {
         return $this->toRgb()->toHex()->toHexa();
     }
@@ -56,7 +56,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsl
      */
-    public function toHsl()
+    public function toHsl(): Hsl
     {
         [$h, $s, $v] = $this->valuesInUnitInterval();
         $l = $v * (1 - $s / 2);
@@ -70,7 +70,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hsla
      */
-    public function toHsla()
+    public function toHsla(): Hsla
     {
         return $this->toHsl()->toHsla();
     }
@@ -78,7 +78,7 @@ class Hsv extends BaseColor
     /**
      * @return \OzdemirBurak\Iris\Color\Hsv
      */
-    public function toHsv()
+    public function toHsv(): Hsv
     {
         return $this;
     }
@@ -87,7 +87,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
-    public function toRgb()
+    public function toRgb(): Rgb
     {
         [$h, $s, $v] = $this->valuesInUnitInterval();
         $i = floor($h * 6);
@@ -123,7 +123,7 @@ class Hsv extends BaseColor
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
-    public function toRgba()
+    public function toRgba(): Rgba
     {
         return $this->toRgb()->toRgba();
     }
@@ -131,7 +131,7 @@ class Hsv extends BaseColor
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'hsv(' . implode(',', $this->values()) . ')';
     }
@@ -141,7 +141,7 @@ class Hsv extends BaseColor
      *
      * @return int|$this
      */
-    public function value($value = null)
+    public function value($value = null): int|static
     {
         if (is_numeric($value)) {
             $this->value = $value >= 0 && $value <= 100 ? $value : $this->value;
