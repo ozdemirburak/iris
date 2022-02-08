@@ -52,7 +52,7 @@ trait AlphaTrait
      */
     protected function alphaHexToFloat(string $alpha): float
     {
-        return sprintf('%0.2f', hexdec($alpha) / 255);
+        return sprintf('%0.2F', hexdec($alpha) / 255);
     }
 
     /**
