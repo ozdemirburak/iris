@@ -22,7 +22,7 @@
         "psr-4": { "OzdemirBurak\\Iris\\": "src" }
     },
     "autoload-dev": {
-        "psr-4": { "OzdemirBurak\\Iris\\": "tests" }
+        "psr-4": { "OzdemirBurak\\Iris\\Tests\\": "tests" }
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
