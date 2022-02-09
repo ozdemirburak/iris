@@ -198,6 +198,11 @@ abstract class BaseColor
      * @param \OzdemirBurak\Iris\BaseColor $color
      * @param int                          $percent
      *
+     * Do a linear interpolation between the two colors in HSV space. Given
+     * that the hue component is circular, there are two possible solutions;
+     * the algorithm chooses the solution on the shorter arc and normalizes
+     * the resulting hue to a value between 0 and 360.
+     *
      * @return mixed
      */
     public function mixInHsv(BaseColor $color, $percent = 50)

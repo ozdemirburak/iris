@@ -205,6 +205,18 @@ $hex = new Hex('#000');
 echo $hex->mix(new Hex('#fff'), 50); // #808080
 ```
 
+#### Mix in HSV space
+
+Same as mix(), but interpolation is done in HSV space rather than in
+RGB space. The result may be closer to what the human eye perceives as
+"the color in between".
+
+``` php
+$hex = new Hex('#ff000');
+echo $hex->mixInHsv(new Hex('#00ff00'), 50); // ##ffff00
+                                             // mix() would return #808000
+```
+
 #### Tint
 
 Mix color with white by a percent.
