@@ -21,7 +21,7 @@ class Rgba extends BaseColor
      *
      * @return bool|string
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         $color = str_replace(['rgba', '(', ')', ' '], '', DefinedColor::find($code, 1));
         if (substr_count($color, ',') === 2) {
@@ -143,7 +143,7 @@ class Rgba extends BaseColor
      *
      * @return $this
      */
-    public function background(Rgb $rgb): static
+    public function background(Rgb $rgb): self
     {
         $this->background = $rgb;
         return $this;

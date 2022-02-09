@@ -13,14 +13,14 @@ class Rgb extends BaseColor
     /**
      * @var bool
      */
-    protected bool $castsInteger = true;
+    protected $castsInteger = true;
 
     /**
      * @param string $code
      *
      * @return string|bool
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         $color = str_replace(['rgb', '(', ')', ' '], '', DefinedColor::find($code, 1));
         if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
@@ -140,12 +140,20 @@ class Rgb extends BaseColor
      */
     private function getH($max, $r, $g, $b, $d): float
     {
-        $h = match ($max) {
-            $r => ($g - $b) / $d + ($g < $b ? 6 : 0),
-            $g => ($b - $r) / $d + 2,
-            $b => ($r - $g) / $d + 4,
-            default => $max,
-        };
+        switch ($max) {
+            case $r:
+                $h = ($g - $b) / $d + ($g < $b ? 6 : 0);
+                break;
+            case $g:
+                $h = ($b - $r) / $d + 2;
+                break;
+            case $b:
+                $h = ($r - $g) / $d + 4;
+                break;
+            default:
+                $h = $max;
+                break;
+        }
         return $h / 6;
     }
 

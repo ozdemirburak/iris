@@ -12,7 +12,7 @@ class Hsv extends BaseColor
     /**
      * @var int
      */
-    protected int $value;
+    protected $value;
 
     /**
      * @param string $color
@@ -141,7 +141,7 @@ class Hsv extends BaseColor
      *
      * @return int|$this
      */
-    public function value($value = null): int|static
+    public function value($value = null)
     {
         if (is_numeric($value)) {
             $this->value = $value >= 0 && $value <= 100 ? $value : $this->value;

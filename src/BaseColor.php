@@ -11,7 +11,7 @@ abstract class BaseColor
      *
      * @return bool|string
      */
-    abstract protected function validate(string $code): bool|string;
+    abstract protected function validate(string $code);
 
     /**
      * @param string $color

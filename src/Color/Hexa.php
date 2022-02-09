@@ -16,7 +16,7 @@ class Hexa extends BaseColor
      *
      * @return string|bool
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         $color = str_replace('#', '', DefinedColor::find($code));
         return preg_match('/^[a-f0-9]{6}([a-f0-9]{2})?$/i', $color) ? $color : false;

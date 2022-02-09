@@ -16,7 +16,7 @@ class Hsla extends BaseColor
      *
      * @return false|string
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace(["{$class}a", '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
