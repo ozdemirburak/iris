@@ -5,7 +5,9 @@
 [![Build Status][ico-travis]][link-travis]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-PHP library for color manipulation and conversion. 
+PHP library for color manipulation and conversion.
+
+For PHP 7.3 or PHP 7.4, use version ^2.5, and check the [php-7 branch](https://github.com/ozdemirburak/iris/tree/php-7).
 
 ## Install
 
