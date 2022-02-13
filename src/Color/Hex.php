@@ -15,7 +15,7 @@ class Hex extends BaseColor
      *
      * @return string|bool
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         $color = str_replace('#', '', DefinedColor::find($code));
         if (strlen($color) === 3) {

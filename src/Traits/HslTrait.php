@@ -11,14 +11,14 @@ trait HslTrait
     /**
      * @var int
      */
-    protected int $lightness;
+    protected $lightness;
 
     /**
      * @param int|string $lightness
      *
      * @return int|$this
      */
-    public function lightness($lightness = null): int|static
+    public function lightness($lightness = null)
     {
         if (is_numeric($lightness)) {
             $this->lightness = $lightness >= 0 && $lightness <= 100 ? $lightness : $this->lightness;

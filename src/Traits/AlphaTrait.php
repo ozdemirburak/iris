@@ -14,7 +14,7 @@ trait AlphaTrait
      *
      * @return $this|float
      */
-    public function alpha($alpha = null): float|static
+    public function alpha($alpha = null)
     {
         if ($alpha !== null) {
             $this->alpha = min($alpha, 1);
@@ -38,9 +38,9 @@ trait AlphaTrait
      */
     protected function fixPrecision($color): string
     {
-        if (str_contains($color, ',')) {
+        if (strpos($color, ',') !== false) {
             $parts = explode(',', $color);
-            $parts[3] = !str_contains($parts[3], '.') ? $parts[3] . '.0' : $parts[3];
+            $parts[3] = strpos($parts[3], '.') === false ? $parts[3] . '.0' : $parts[3];
             $color = implode(',', $parts);
         }
         return $color;

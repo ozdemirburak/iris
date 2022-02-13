@@ -9,19 +9,19 @@ trait HsTrait
     /**
      * @var int
      */
-    protected int $hue;
+    protected $hue;
 
     /**
      * @var int
      */
-    protected int $saturation;
+    protected $saturation;
 
     /**
      * @param string $code
      *
      * @return string|bool
      */
-    protected function validate(string $code): bool|string
+    protected function validate(string $code)
     {
         [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace([$class, '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
@@ -39,7 +39,7 @@ trait HsTrait
      *
      * @return int|$this
      */
-    public function hue($hue = null): int|static
+    public function hue($hue = null)
     {
         if (is_numeric($hue)) {
             $this->hue = $hue >= 0 && $hue <= 360 ? $hue : $this->hue;
@@ -53,7 +53,7 @@ trait HsTrait
      *
      * @return int|$this
      */
-    public function saturation($saturation = null): int|static
+    public function saturation($saturation = null)
     {
         if (is_numeric($saturation)) {
             $this->saturation = $saturation >= 0 && $saturation <= 100 ? $saturation : $this->saturation;
