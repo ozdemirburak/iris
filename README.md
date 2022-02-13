@@ -12,7 +12,7 @@ PHP library for color manipulation and conversion.
 Via Composer
 
 ``` bash
-$ composer require ozdemirburak/iris
+$ composer require ozdemirburak/iris "^2.5"
 ```
 
 ## Usage
@@ -214,8 +214,7 @@ RGB space. The result may be closer to what the human eye perceives as
 
 ``` php
 $hex = new Hex('#ff000');
-echo $hex->mixInHsv(new Hex('#00ff00'), 50); // ##ffff00
-                                             // mix() would return #808000
+echo $hex->mixInHsv(new Hex('#00ff00'), 50); // ##ffff00 - mix() would return #808000
 ```
 
 #### Tint
