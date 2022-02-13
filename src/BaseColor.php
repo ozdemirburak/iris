@@ -205,34 +205,23 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function mixInHsv(BaseColor $color, $percent = 50)
+    public function mixInHsv(BaseColor $color, int $percent = 50)
     {
         $first = $this->toHsv();
         $second = $color->toHsv();
         $weight = $percent / 100;
-
         $hue = $first->hue() * (1 - $weight) + $second->hue() * $weight;
-
         // choose hue in the middle of the shortest way between first and second
         if (abs($second->hue() - $first->hue()) > 180.) {
             $hue += 180.;
         }
-
         // normalize hue
         if ($hue >= 360.) {
             $hue -= 360.;
         }
-
-        $saturation = $first->saturation() * (1 - $weight)
-            + $second->saturation() * $weight;
-
+        $saturation = $first->saturation() * (1 - $weight) + $second->saturation() * $weight;
         $value = $first->value() * (1 - $weight) + $second->value() * $weight;
-
-        return $first
-            ->hue((int)($hue + .5))
-            ->saturation((int)($saturation + .5))
-            ->value((int)($value + .5))
-            ->back($this);
+        return $first->hue((int)($hue + .5))->saturation((int)($saturation + .5))->value((int)($value + .5))->back($this);
     }
 
     /**
@@ -242,7 +231,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function tint($percent = 50)
+    public function tint(int $percent = 50)
     {
         $clone = clone $this;
         $white = $clone->toRgb()->red(255)->green(255)->blue(255);
@@ -256,7 +245,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function shade($percent = 50)
+    public function shade(int $percent = 50)
     {
         $clone = clone $this;
         $black = $clone->toRgb()->red(0)->green(0)->blue(0);
