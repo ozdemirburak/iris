@@ -88,11 +88,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function desaturate(int $percent)
+    public function desaturate(float $percent)
     {
         $color = $this->toHsl();
         $saturation = $this->clamp(($color->saturation() - $percent) / 100);
@@ -108,11 +108,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function brighten(int $percent)
+    public function brighten(float $percent)
     {
         $percent *= -1;
         $color = $this->toRgb();
@@ -123,11 +123,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function lighten(int $percent)
+    public function lighten(float $percent)
     {
         $color = $this->toHsl();
         $lightness = $this->clamp(($color->lightness() + $percent) / 100);
@@ -135,11 +135,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function darken(int $percent)
+    public function darken(float $percent)
     {
         $color = $this->toHsl();
         $lightness = $this->clamp(($color->lightness() - $percent) / 100);
@@ -166,11 +166,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function spin(int $percent)
+    public function spin(float $percent)
     {
         $color = $this->toHsl();
         $hue = ($color->hue() + $percent) % 360;
@@ -183,7 +183,7 @@ abstract class BaseColor
      *
      * @return mixed
      */
-    public function mix(BaseColor $color, int $percent = 50)
+    public function mix(BaseColor $color, float $percent = 50)
     {
         $first = $this->toRgb();
         $second = $color->toRgb();
@@ -197,7 +197,7 @@ abstract class BaseColor
     /**
      * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
      *
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
@@ -211,7 +211,7 @@ abstract class BaseColor
     /**
      * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
      *
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
