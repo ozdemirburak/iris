@@ -76,11 +76,11 @@ abstract class BaseColor
     }
 
     /**
-     * @param int $percent
+     * @param float $percent
      *
      * @return mixed
      */
-    public function saturate(int $percent)
+    public function saturate(float $percent)
     {
         $color = $this->toHsl();
         $saturation = $this->clamp(($color->saturation() + $percent) / 100);
