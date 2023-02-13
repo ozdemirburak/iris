@@ -9,22 +9,22 @@ trait HslTrait
     use HsTrait;
 
     /**
-     * @var int
+     * @var float
      */
-    protected int $lightness;
+    protected float $lightness;
 
     /**
-     * @param int|string $lightness
+     * @param float|string $lightness
      *
-     * @return int|$this
+     * @return float|$this
      */
-    public function lightness($lightness = null): int|static
+    public function lightness($lightness = null): float|static
     {
         if (is_numeric($lightness)) {
             $this->lightness = $lightness >= 0 && $lightness <= 100 ? $lightness : $this->lightness;
             return $this;
         }
-        return (int) $this->lightness;
+        return (float) $this->lightness;
     }
 
     /**
