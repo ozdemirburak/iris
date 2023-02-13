@@ -79,7 +79,7 @@ trait HsTrait
      *
      * @return array
      */
-    public function valuesInUnitFloaterval(): array
+    public function valuesInUnitInterval(): array
     {
         return [
             $this->hue() / 360,
