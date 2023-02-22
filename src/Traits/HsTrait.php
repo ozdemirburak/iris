@@ -7,14 +7,14 @@ use OzdemirBurak\Iris\Helpers\DefinedColor;
 trait HsTrait
 {
     /**
-     * @var int
+     * @var float
      */
-    protected int $hue;
+    protected float $hue;
 
     /**
-     * @var int
+     * @var float
      */
-    protected int $saturation;
+    protected float $saturation;
 
     /**
      * @param string $code
@@ -35,31 +35,31 @@ trait HsTrait
     }
 
     /**
-     * @param int|string $hue
+     * @param float|string $hue
      *
-     * @return int|$this
+     * @return float|$this
      */
-    public function hue($hue = null): int|static
+    public function hue($hue = null): float|static
     {
         if (is_numeric($hue)) {
             $this->hue = $hue >= 0 && $hue <= 360 ? $hue : $this->hue;
             return $this;
         }
-        return (int) $this->hue;
+        return (float) $this->hue;
     }
 
     /**
-     * @param int|string $saturation
+     * @param float|string $saturation
      *
-     * @return int|$this
+     * @return float|$this
      */
-    public function saturation($saturation = null): int|static
+    public function saturation($saturation = null): float|static
     {
         if (is_numeric($saturation)) {
             $this->saturation = $saturation >= 0 && $saturation <= 100 ? $saturation : $this->saturation;
             return $this;
         }
-        return (int) $this->saturation;
+        return (float) $this->saturation;
     }
 
     /**
