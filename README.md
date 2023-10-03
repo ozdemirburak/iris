@@ -166,6 +166,36 @@ echo $color->blue(); // 222
 echo $color->alpha(); // 0.33
 ```
 
+### Color Cloning
+
+There's some case that you need to clone the existing object. In this case, you
+can use `clone()` feature to do such feat.
+
+```php
+use OzdemirBurak\Iris\Color\Hex;
+
+$hex = new Hex('#b2b2b2');
+$hexa1 = $hex->toHexa()->alpha(0.5); // OzdemirBurak\Iris\Color\Hexa('#b2b2b27f')
+
+$hexa2 = $hexa1->clone(); // OzdemirBurak\Iris\Color\Hexa('#b2b2b27f')
+$hexa2->alpha(0.7); // OzdemirBurak\Iris\Color\Hexa('#b2b2b2b2')
+$hexa2->red('14');  // OzdemirBurak\Iris\Color\Hexa('#14b2b2b2')
+$hexa2->green('b8'); // OzdemirBurak\Iris\Color\Hexa('#14b8b2b2')
+$hexa2->blue('a6'); // OzdemirBurak\Iris\Color\Hexa('#14b8a6b2')
+
+echo $hexa1->red(); // b2
+echo $hexa1->green(); // b2
+echo $hexa1->blue(); // b2
+echo $hexa1->alpha(); // 0.5
+
+echo $hexa2->red(); // 14
+echo $hexa2->green(); // b8
+echo $hexa2->blue(); // a6
+echo $hexa2->alpha(); // 0.5
+
+echo $hexa1; // OzdemirBurak\Iris\Color\Hexa('#b2b2b27f')
+echo $hexa2; // OzdemirBurak\Iris\Color\Hexa('#14b8a6b2')
+```
 
 ### Color Manipulation
 
