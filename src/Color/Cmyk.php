@@ -4,11 +4,11 @@ namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
-use OzdemirBurak\Iris\Traits\RgbTrait;
+use OzdemirBurak\Iris\Traits\CmykTrait;
 
-class Hex extends BaseColor
+class Cmyk extends BaseColor
 {
-    use RgbTrait;
+    use CmykTrait;
 
     /**
      * @param string $code
@@ -17,11 +17,14 @@ class Hex extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace('#', '', DefinedColor::find($code));
-        if (strlen($color) === 3) {
-            $color = $color[0] . $color[0] . $color[1] . $color[1] . $color[2] . $color[2];
+        $color = str_replace(['cmyk', '(', ')', ' ', '%'], '', DefinedColor::find($code, 4));
+        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
+            if ($matches[1] > 100 || $matches[2] > 100 || $matches[3] > 100 || $matches[4] > 100) {
+                return false;
+            }
+            return $color;
         }
-        return preg_match('/^[a-f0-9]{6}$/i', $color) ? $color : false;
+        return false;
     }
 
     /**
@@ -31,23 +34,38 @@ class Hex extends BaseColor
      */
     protected function initialize(string $color): array
     {
-        return [$this->red, $this->green, $this->blue] = str_split($color, 2);
+        return [$this->cyan, $this->magenta, $this->yellow, $this->black] = explode(',', $color);
     }
 
     /**
+     * @return array
+     */
+    public function values(): array
+    {
+        return [
+            $this->cyan(),
+            $this->magenta(),
+            $this->yellow(),
+            $this->black(),
+        ];
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hex
      */
     public function toHex(): Hex
     {
-        return $this;
+        return $this->toRgb()->toHex();
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Hexa
      */
     public function toHexa(): Hexa
     {
-        return new Hexa((string)$this . 'FF');
+        return $this->toHex()->toHexa();
     }
 
     /**
@@ -65,7 +83,7 @@ class Hex extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this->toHsl()->toHsla();
+        return $this->toRgb()->toHsla();
     }
 
     /**
@@ -83,8 +101,21 @@ class Hex extends BaseColor
      */
     public function toRgb(): Rgb
     {
-        $rgb = implode(',', array_map('hexdec', $this->values()));
-        return new Rgb($rgb);
+        [$c, $m, $y, $k] = $this->values();
+        $r = 255 * (1 - ($c / 100)) * (1 - ($k / 100));
+        $g = 255 * (1 - ($m / 100)) * (1 - ($k / 100));
+        $b = 255 * (1 - ($y / 100)) * (1 - ($k / 100));
+        $code = implode(',', [$r, $g, $b]);
+        return new Rgb($code);
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Cmyk
+     */
+    public function toCmyk(): Cmyk
+    {
+        return $this;
     }
 
     /**
@@ -97,19 +128,10 @@ class Hex extends BaseColor
     }
 
     /**
-     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     * @return \OzdemirBurak\Iris\Color\Cmyk
-     */
-    public function toCmyk(): Cmyk
-    {
-        return $this->toRgb()->toCmyk();
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
     {
-        return '#' . implode('', $this->values());
+        return 'cmyk(' . implode(',', $this->values()) . ')';
     }
 }

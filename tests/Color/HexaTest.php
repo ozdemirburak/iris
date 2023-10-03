@@ -2,6 +2,7 @@
 
 namespace OzdemirBurak\Iris\Tests\Color;
 
+use OzdemirBurak\Iris\Color\Cmyk;
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
@@ -55,6 +56,7 @@ class HexaTest extends TestCase
         $this->assertEquals(new Hsl('300,100,50'), $hexa->toHsl());
         $this->assertEquals(new Hsv('300,100,100'), $hexa->toHsv());
         $this->assertEquals(new Rgb('255,0,255'), $hexa->toRgb());
+        $this->assertEquals(new Cmyk('0,100,0,0'), $hexa->toCmyk());
     }
 
     /**
