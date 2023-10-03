@@ -304,4 +304,12 @@ abstract class BaseColor
     {
         return substr(strrchr(get_class($color), '\\'), 1);
     }
+
+    /**
+     * @return static
+     */
+    public function clone()
+    {
+        return clone $this;
+    }
 }
