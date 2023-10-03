@@ -122,6 +122,21 @@ class Rgb extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Cmyk
+     */
+    public function toCmyk(): Cmyk
+    {
+        [$r, $g, $b] = $this->values();
+        $k = 1 - (max($r, $g, $b) / 255);
+        $c = (1 - $r / 255 - $k) / (1 - $k);
+        $m = (1 - $g / 255 - $k) / (1 - $k);
+        $y = (1 - $b / 255 - $k) / (1 - $k);
+        $code = implode(',', [$c * 100, $m * 100, $y * 100, $k * 100]);
+        return new Cmyk($code);
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

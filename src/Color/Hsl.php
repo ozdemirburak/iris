@@ -88,6 +88,15 @@ class Hsl extends BaseColor
 
     /**
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Cmyk
+     */
+    public function toCmyk(): Cmyk
+    {
+        return $this->toRgb()->toCmyk();
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
     public function toRgba(): Rgba
