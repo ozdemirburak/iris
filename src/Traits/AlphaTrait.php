@@ -24,7 +24,7 @@ trait AlphaTrait
     }
 
     /**
-     * @param null $alpha
+     * @param float $alpha
      *
      * @return $this|float
      */
@@ -32,7 +32,7 @@ trait AlphaTrait
     {
         setlocale(LC_NUMERIC, 'C');
 
-        $safeAlpha = $alpha;
+        $safeAlpha = round($alpha, 2);
 
         setlocale(LC_NUMERIC, 0);
 
