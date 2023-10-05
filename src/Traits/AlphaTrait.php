@@ -17,10 +17,26 @@ trait AlphaTrait
     public function alpha($alpha = null)
     {
         if ($alpha !== null) {
-            $this->alpha = min($alpha, 1);
+            $this->alpha = $this->localeSafeAlpha(min($alpha, 1));
             return $this;
         }
-        return $this->alpha;
+        return $this->localeSafeAlpha($this->alpha);
+    }
+
+    /**
+     * @param float $alpha
+     *
+     * @return $this|float
+     */
+    public function localeSafeAlpha($alpha)
+    {
+        setlocale(LC_NUMERIC, 'C');
+
+        $safeAlpha = round($alpha, 2);
+
+        setlocale(LC_NUMERIC, 0);
+
+        return $safeAlpha;
     }
 
     /**
