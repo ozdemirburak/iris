@@ -112,7 +112,14 @@ class Hsla extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this->toHex()->toHexa()->alpha($this->alpha());
+        $old_alpha = $this->alpha();
+
+        return $this
+            ->clone()
+            ->alpha(1)
+            ->toHex()
+            ->toHexa()
+            ->alpha($old_alpha);
     }
 
     /**
