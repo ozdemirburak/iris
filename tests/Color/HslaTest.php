@@ -80,7 +80,7 @@ class HslaTest extends TestCase
         $hsla = new Hsla('hsla(150,100%,50%,0.3)');
         $this->assertEquals(new Hex('b2ffd8'), $hsla->toHex());
         $this->assertEquals(new Rgba('0,255,128,0.3'), $hsla->toRgba());
-        $this->assertEquals(new Hexa('b2ffd84c'), $hsla->toHexa());
+        $this->assertEquals(new Hexa('00ff804c'), $hsla->toHexa());
     }
 
 
