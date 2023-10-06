@@ -100,7 +100,14 @@ class Rgba extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this->toRgb()->toHex()->toHexa()->alpha($this->alpha());
+        $old_alpha = $this->alpha();
+
+        return $this
+            ->clone()
+            ->alpha(1)
+            ->toRgb()
+            ->toHexa()
+            ->alpha($old_alpha);
     }
 
     /**
@@ -118,7 +125,14 @@ class Rgba extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this->toHsl()->toHsla()->alpha($this->alpha());
+        $old_alpha = $this->alpha();
+
+        return $this
+            ->clone()
+            ->alpha(1)
+            ->toHsl()
+            ->toHsla()
+            ->alpha($old_alpha);
     }
 
     /**

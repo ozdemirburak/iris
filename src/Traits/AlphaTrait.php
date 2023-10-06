@@ -61,6 +61,6 @@ trait AlphaTrait
      */
     protected function alphaFloatToHex(float $alpha): string
     {
-        return dechex($alpha * 255);
+        return dechex(intval($alpha * 255));
     }
 }

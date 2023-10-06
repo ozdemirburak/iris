@@ -63,7 +63,7 @@ class RgbaTest extends TestCase
     {
         $rgba = new Rgba('rgba(11,22,33,0.2)');
         $this->assertEquals(new Hex('ced0d2'), $rgba->toHex());
-        $this->assertEquals(new Hexa('ced0d233'), $rgba->toHexa());
+        $this->assertEquals(new Hexa('0b162133'), $rgba->toHexa());
         $rgba = new Rgba('rgba(93,111,222,0.33)');
         $this->assertEquals(new Hex('a7add1'), $rgba->background((new Hex('ccc'))->toRgb())->toHex());
     }
