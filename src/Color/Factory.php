@@ -17,11 +17,14 @@ class Factory
     {
         $color = str_replace(' ', '', $color);
         // Definitive types
-        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv))/i', $color, $match)) {
+        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv|cmyk))/i', $color, $match)) {
             $class = self::resolveClass($match['type']);
             return new $class($color);
         }
         // Best guess
+        if (preg_match('/^\d{1,3},\d{1,3},\d{1,3},\d{1,3}[^.]$/', $color)) {
+            return new Cmyk($color);
+        }
         if (preg_match('/^#?[a-f0-9]{8}$/i', $color)) {
             return new Hexa($color);
         }
