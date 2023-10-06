@@ -51,6 +51,11 @@ abstract class BaseColor
     abstract public function toRgb(): Color\Rgb;
 
     /**
+     * @return \OzdemirBurak\Iris\Color\Cmyk
+     */
+    abstract public function toCmyk(): Color\Cmyk;
+
+    /**
      * @return \OzdemirBurak\Iris\Color\Rgba
      */
     abstract public function toRgba(): Color\Rgba;

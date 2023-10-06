@@ -97,6 +97,15 @@ class Hex extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Cmyk
+     */
+    public function toCmyk(): Cmyk
+    {
+        return $this->toRgb()->toCmyk();
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

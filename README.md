@@ -151,6 +151,29 @@ $hexa = $rgba->toHexa(); // \OzdemirBurak\Iris\Color\Hexa('a7add154')
 echo $rgba; // rgba(127,127,127,0.5)
 ```
 
+### CMYK
+```php
+use OzdemirBurak\Iris\Color\Cmyk;
+
+$cmyk = new Cmyk('cmyk(0,100,0,0');
+
+echo $cmyk->cyan(); // 0
+echo $cmyk->magenta(); // 100
+echo $cmyk->yellow(); // 0
+echo $cmyk->black(); // 0
+
+$values = $cmyk->values(); // [0, 100, 0, 0]
+$hex = $cmyk->toHex(); // OzdemirBurak\Iris\Color\Hex('ff00ff')
+$hexa = $cmyk->toHexa(); // OzdemirBurak\Iris\Color\Hexa('ff00ffff')
+$hsl = $cmyk->toHsl(); // OzdemirBurak\Iris\Color\Hsl('300,100,50')
+$hsla = $cmyk->toHsla(); // OzdemirBurak\Iris\Color\Hsla('300,100,50,1.0')
+$hsv = $cmyk->toHsv(); // OzdemirBurak\Iris\Color\Hsv('300,100,100')
+$rgb = $cmyk->toRgb(); // OzdemirBurak\Iris\Color\Rgb('255,0,255')
+$rgba = $cmyk->toRgba(); // OzdemirBurak\Iris\Color\Rgba('255,0,255,1.0')
+
+echo $cmyk; // cmyk(0,100,0,0)
+```
+
 ### Via Factory
 
 If you do not know what the color string will be (for example, you're getting it from a group of rows from a database),

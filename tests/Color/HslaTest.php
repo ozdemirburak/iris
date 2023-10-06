@@ -3,6 +3,7 @@
 
 namespace OzdemirBurak\Iris\Tests\Color;
 
+use OzdemirBurak\Iris\Color\Cmyk;
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hexa;
 use OzdemirBurak\Iris\Color\Hsl;
@@ -96,5 +97,6 @@ class HslaTest extends TestCase
         $this->assertEquals(new Hsv('300,100,100'), $hsla->toHsv());
         $this->assertEquals(new Rgb('255,0,255'), $hsla->toRgb());
         $this->assertEquals(new Rgba('255,0,255,1.0'), $hsla->toRgba());
+        $this->assertEquals(new Cmyk('0,100,0,0'), $hsla->toCmyk());
     }
 }
