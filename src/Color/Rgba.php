@@ -28,7 +28,7 @@ class Rgba extends BaseColor
             $color = "{$color},1.0";
         }
         $color = $this->fixPrecision($color);
-        if (preg_match($this->validationRules(), $color, $matches)) {
+        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/', $color, $matches)) {
             if ($matches[1] > 255 || $matches[2] > 255 || $matches[3] > 255 || $matches[4] > 1) {
                 return false;
             }
@@ -118,7 +118,9 @@ class Rgba extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this->toHsl()->toHsla()->alpha($this->alpha());
+        [$h, $s, $l] = $this->getHslValues();
+        [$h, $s, $l, $a] = [round($h * 360, 1), round($s * 100, 1), round($l * 100, 1), $this->alpha];
+        return new Hsla("{$h},{$s}%,{$l}%,{$a}");
     }
 
     /**

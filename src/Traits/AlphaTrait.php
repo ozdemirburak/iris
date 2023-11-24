@@ -24,14 +24,6 @@ trait AlphaTrait
     }
 
     /**
-     * @return string
-     */
-    protected function validationRules(): string
-    {
-        return '/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/';
-    }
-
-    /**
      * @param $color
      *
      * @return string
@@ -61,6 +53,6 @@ trait AlphaTrait
      */
     protected function alphaFloatToHex(float $alpha): string
     {
-        return dechex($alpha * 255);
+        return dechex((int) ($alpha * 255));
     }
 }

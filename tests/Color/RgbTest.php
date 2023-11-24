@@ -42,7 +42,6 @@ class RgbTest extends TestCase
         new Rgb('333,0,666');
     }
 
-
     /**
      * @group rgb-construction
      */
