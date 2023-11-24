@@ -25,13 +25,24 @@ trait HsTrait
     {
         [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
         $color = str_replace([$class, '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
-        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
+        if (preg_match($this->validationRules(), $color, $matches)) {
             if ($matches[1] > 360 || $matches[2] > 100 || $matches[3] > 100) {
                 return false;
             }
             return $color;
         }
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    protected function validationRules(): string
+    {
+        if (property_exists($this, 'alpha')) {
+            return '/^(\d{1,3}(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d+(?:\.\d+)?)$/';
+        }
+        return '/^(\d{1,3}(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?)$/';
     }
 
     /**

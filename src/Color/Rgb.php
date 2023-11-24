@@ -67,16 +67,8 @@ class Rgb extends BaseColor
      */
     public function toHsl(): Hsl
     {
-        [$r, $g, $b, $min, $max] = $this->getHValues();
-        $l = ($max + $min) / 2;
-        if ($max === $min) {
-            $h = $s = 0;
-        } else {
-            $d = $max - $min;
-            $s = $l > 0.5 ? $d / (2 - $max - $min) : $d / ($max + $min);
-            $h = $this->getH($max, $r, $g, $b, $d);
-        }
-        $code = implode(',', [round($h * 360), round($s * 100), round($l * 100)]);
+        [$h, $s, $l] = $this->getHslValues();
+        $code = implode(',', [round($h * 360, 1), round($s * 100, 1), round($l * 100, 1)]);
         return new Hsl($code);
     }
 
@@ -142,37 +134,5 @@ class Rgb extends BaseColor
     public function __toString(): string
     {
         return 'rgb(' . implode(',', $this->values()) . ')';
-    }
-
-    /**
-     * @param float $max
-     * @param float $r
-     * @param float $g
-     * @param float $b
-     * @param float $d
-     *
-     * @return float
-     */
-    private function getH($max, $r, $g, $b, $d): float
-    {
-        $h = match ($max) {
-            $r => ($g - $b) / $d + ($g < $b ? 6 : 0),
-            $g => ($b - $r) / $d + 2,
-            $b => ($r - $g) / $d + 4,
-            default => $max,
-        };
-        return $h / 6;
-    }
-
-    /**
-     * @return array
-     */
-    private function getHValues(): array
-    {
-        [$r, $g, $b] = $values = array_map(function ($value) {
-            return $value / 255;
-        }, $this->values());
-        [$min, $max] = [min($values), max($values)];
-        return [$r, $g, $b, $min, $max];
     }
 }
