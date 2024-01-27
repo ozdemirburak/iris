@@ -155,7 +155,7 @@ echo $rgba; // rgba(127,127,127,0.5)
 ```php
 use OzdemirBurak\Iris\Color\Cmyk;
 
-$cmyk = new Cmyk('cmyk(0,100,0,0');
+$cmyk = new Cmyk('cmyk(0,100,0,0)');
 
 echo $cmyk->cyan(); // 0
 echo $cmyk->magenta(); // 100
