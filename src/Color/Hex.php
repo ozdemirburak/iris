@@ -106,6 +106,15 @@ class Hex extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    public function toOklch(): Oklch
+    {
+        return $this->toRgb()->toOklch();
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

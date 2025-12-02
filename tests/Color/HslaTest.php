@@ -1,6 +1,5 @@
 <?php
 
-
 namespace OzdemirBurak\Iris\Tests\Color;
 
 use OzdemirBurak\Iris\Color\Cmyk;
@@ -11,13 +10,12 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class HslaTest extends TestCase
 {
-    /**
-     * @group hsla-construction
-     */
+    #[Group('hsla-construction')]
     public function testDigitString()
     {
         $hsla = new Hsla('hsla(150,100%,50%,0.3)');
@@ -31,9 +29,7 @@ class HslaTest extends TestCase
         $this->assertEquals('hsla(150,100%,50%,0)', $hsla->__toString());
     }
 
-    /**
-     * @group hsla-construction
-     */
+    #[Group('hsla-construction')]
     public function testPredefinedString()
     {
         $hsla = new Hsla('FUCHSIA');
@@ -44,18 +40,14 @@ class HslaTest extends TestCase
         $this->assertEquals([300, '100%', '50%', 1], $hsla->values());
     }
 
-    /**
-     * @group hsla-construction
-     */
+    #[Group('hsla-construction')]
     public function testFuchsiaString()
     {
         $hsla = new Hsla('FUCHSIA');
         $this->validateFuchsia($hsla);
     }
 
-    /**
-     * @group hsla-construction
-     */
+    #[Group('hsla-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -63,9 +55,7 @@ class HslaTest extends TestCase
         new Hsla('hsla(150,100%,50%,0.3.3,4)');
     }
 
-    /**
-     * @group hsla-construction
-     */
+    #[Group('hsla-construction')]
     public function testGarbageColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -73,21 +63,17 @@ class HslaTest extends TestCase
         new Hsla('hsla(361,1%,1%,0.3)');
     }
 
-    /**
-     * @group hsla-conversion
-     */
+    #[Group('hsla-conversion')]
     public function testHslaConversion()
     {
         $hsla = new Hsla('hsla(150,100%,50%,0.3)');
+        // toHex applies alpha compositing against white background
         $this->assertEquals(new Hex('b2ffd8'), $hsla->toHex());
         $this->assertEquals(new Rgba('0,255,128,0.3'), $hsla->toRgba());
-        $this->assertEquals(new Hexa('b2ffd84c'), $hsla->toHexa());
+        // toHexa preserves original color values with alpha
+        $this->assertEquals('#00ff804d', (string) $hsla->toHexa());
     }
 
-
-    /**
-     * @param \OzdemirBurak\Iris\Color\Hsla $hsla
-     */
     private function validateFuchsia(Hsla $hsla)
     {
         $this->assertEquals(new Hex('ff00ff'), $hsla->toHex());

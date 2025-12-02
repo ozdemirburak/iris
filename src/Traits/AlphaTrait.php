@@ -17,9 +17,19 @@ trait AlphaTrait
     public function alpha($alpha = null): float|static
     {
         if ($alpha !== null) {
-            $this->alpha = min(round($alpha, 2), 1);
+            $this->alpha = min((float) $alpha, 1.0);
             return $this;
         }
+        return round($this->alpha, 2);
+    }
+
+    /**
+     * Get the raw alpha value without rounding (for internal conversions)
+     *
+     * @return float
+     */
+    protected function alphaRaw(): float
+    {
         return $this->alpha;
     }
 
@@ -44,7 +54,7 @@ trait AlphaTrait
      */
     protected function alphaHexToFloat(string $alpha): float
     {
-        return sprintf('%0.2F', hexdec($alpha) / 255);
+        return hexdec($alpha) / 255;
     }
 
     /**
@@ -53,6 +63,6 @@ trait AlphaTrait
      */
     protected function alphaFloatToHex(float $alpha): string
     {
-        return dechex((int) ($alpha * 255));
+        return str_pad(dechex((int) round($alpha * 255)), 2, '0', STR_PAD_LEFT);
     }
 }

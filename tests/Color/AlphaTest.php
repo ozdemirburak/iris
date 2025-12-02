@@ -10,48 +10,44 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class AlphaTest extends TestCase
 {
-    /**
-     * @group alpha
-     */
+    #[Group('alpha')]
     public function testRgb()
     {
         [$rgba, $hex] = $this->getBaseValues();
         $this->assertEquals($hex, $rgba->toRgb()->toHex());
         $this->assertEquals($hex, $rgba->toHex());
     }
-    /**
-     * @group alpha
-     */
+
+    #[Group('alpha')]
     public function testHexa()
     {
         [$rgba, $hex] = $this->getBaseValues();
-        $this->assertEquals($hex, $rgba->toHexa()->toHex());
+        // toHexa preserves original RGB values, toHex applies alpha compositing
+        $this->assertEquals(new Hex('666666'), $rgba->toHexa()->toHex());
+        // When going through toRgb() first, alpha compositing is applied
+        $this->assertEquals($hex, $rgba->toRgb()->toHex());
     }
-    /**
-     * @group alpha
-     */
+
+    #[Group('alpha')]
     public function testHsl()
     {
         [$rgba, $hex] = $this->getBaseValues();
         $this->assertEquals($hex, $rgba->toHsl()->toHex());
     }
 
-    /**
-     * @group alpha
-     */
+    #[Group('alpha')]
     public function testHsla()
     {
         [$rgba, $hex] = $this->getBaseValues();
         $this->assertEquals($hex, $rgba->toHsla()->toHex());
     }
 
-    /**
-     * @group alpha
-     */
+    #[Group('alpha')]
     public function testIssueValues()
     {
         [$rgb, $hsl] = [new Rgb('127,127,127'), new Hsl('0, 0%, 49.8%')];
@@ -61,9 +57,6 @@ class AlphaTest extends TestCase
 
     }
 
-    /**
-     * @return array
-     */
     protected function getBaseValues(): array
     {
         return [new Rgba('rgba(102, 102, 102, 0.5)'), new Hex('b2b2b2')];

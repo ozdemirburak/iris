@@ -78,7 +78,7 @@ class Hexa extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this->toHsl()->toHsla()->alpha($this->alpha());
+        return $this->toHsl()->toHsla()->alpha($this->alphaRaw());
     }
 
     /**
@@ -106,7 +106,7 @@ class Hexa extends BaseColor
      */
     public function toRgba(): Rgba
     {
-        return $this->toRgb()->toRgba()->alpha($this->alpha());
+        return $this->toRgb()->toRgba()->alpha($this->alphaRaw());
     }
 
     /**
@@ -119,11 +119,19 @@ class Hexa extends BaseColor
     }
 
     /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    public function toOklch(): Oklch
+    {
+        return $this->toRgb()->toOklch();
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string
     {
-        [$r, $g, $b, $a] = $this->values();
-        return '#' . implode('', [$r, $g, $b, $this->alphaFloatToHex($a)]);
+        return '#' . implode('', [$this->red(), $this->green(), $this->blue(), $this->alphaFloatToHex($this->alphaRaw())]);
     }
 }

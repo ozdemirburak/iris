@@ -10,13 +10,13 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class RgbaTest extends TestCase
 {
-    /**
-     * @group rgba-construction
-     */
+    #[Group('rgba-construction')]
     public function testDigitString()
     {
         $rgba = new Rgba('rgba(255,0,0,0.3)');
@@ -27,20 +27,15 @@ class RgbaTest extends TestCase
         $this->assertEquals([255, 0, 0, 0.3], $rgba->values());
     }
 
-    /**
-     * @group rgba-construction
-     */
+    #[Group('rgba-construction')]
     public function testPredefinedString()
     {
         $rgba = new Rgba('FUCHSIA');
         $this->validateFuchsia($rgba);
     }
 
-    /**
-     * @dataProvider invalidColors
-     * @group rgba-construction
-     * @param string $colorDefinition
-     */
+    #[DataProvider('invalidColors')]
+    #[Group('rgba-construction')]
     public function testInvalidColorDefinitionsMustThrow($colorDefinition)
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -48,7 +43,7 @@ class RgbaTest extends TestCase
         new Rgba($colorDefinition);
     }
 
-    public function invalidColors()
+    public static function invalidColors(): array
     {
         return [
             ['rgba(255,0,0,1.2)'],
@@ -57,21 +52,18 @@ class RgbaTest extends TestCase
         ];
     }
 
-    /**
-     * @group rgba-conversion
-     */
+    #[Group('rgba-conversion')]
     public function testRgbaConversion()
     {
         $rgba = new Rgba('rgba(11,22,33,0.2)');
+        // toHex applies alpha compositing against white background
         $this->assertEquals(new Hex('ced0d2'), $rgba->toHex());
-        $this->assertEquals(new Hexa('ced0d233'), $rgba->toHexa());
+        // toHexa preserves original RGB values with alpha channel
+        $this->assertEquals(new Hexa('0b162133'), $rgba->toHexa());
         $rgba = new Rgba('rgba(93,111,222,0.33)');
         $this->assertEquals(new Hex('a7add1'), $rgba->background((new Hex('ccc'))->toRgb())->toHex());
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Rgba $rgba
-     */
     private function validateFuchsia(Rgba $rgba)
     {
         $this->assertEquals(255, $rgba->red());
