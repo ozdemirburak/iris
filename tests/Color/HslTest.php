@@ -10,31 +10,26 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class HslTest extends TestCase
 {
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsl-construction')]
     public function testDigitString()
     {
         $hsl = new Hsl('hsl(300,100%,50%)');
         $this->validateFuchsia($hsl);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsl-construction')]
     public function testPredefinedString()
     {
         $hsl = new Hsl('FUCHSIA');
         $this->validateFuchsia($hsl);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsl-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -42,9 +37,7 @@ class HslTest extends TestCase
         new Hsl('333,0,666');
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsl-construction')]
     public function testGarbageColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -52,9 +45,6 @@ class HslTest extends TestCase
         new Hsl('ThisIsAnInvalidValue');
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Hsl $hsl
-     */
     private function validateFuchsia(Hsl $hsl)
     {
         $this->assertEquals('300', $hsl->hue());

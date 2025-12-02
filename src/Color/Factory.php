@@ -17,7 +17,7 @@ class Factory
     {
         $color = str_replace(' ', '', $color);
         // Definitive types
-        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv|cmyk))/i', $color, $match)) {
+        if (preg_match('/^(?P<type>(rgba?|hsla?|hsv|cmyk|oklch))/i', $color, $match)) {
             $class = self::resolveClass($match['type']);
             return new $class($color);
         }

@@ -100,7 +100,9 @@ class Rgba extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this->toRgb()->toHex()->toHexa()->alpha($this->alpha());
+        $hex = sprintf('%02x%02x%02x', $this->red(), $this->green(), $this->blue());
+        $hexa = new Hexa($hex . 'ff');
+        return $hexa->alpha($this->alphaRaw());
     }
 
     /**
@@ -139,6 +141,15 @@ class Rgba extends BaseColor
     public function toCmyk(): Cmyk
     {
         return $this->toRgb()->toCmyk();
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    public function toOklch(): Oklch
+    {
+        return $this->toRgb()->toOklch();
     }
 
     /**

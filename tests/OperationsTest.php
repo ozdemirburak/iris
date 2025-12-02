@@ -7,13 +7,12 @@ use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class OperationsTest extends TestCase
 {
-    /**
-     * @group operations-saturate
-     */
+    #[Group('operations-saturate')]
     public function testSaturation()
     {
         $this->assertEquals(new Hex('#80ff00'), (new Hsl('90, 80%, 50%'))->saturate(20)->toHex());
@@ -22,9 +21,7 @@ class OperationsTest extends TestCase
         $this->assertEquals(new Hex('#808080'), (new Hex('#80cc33'))->grayscale());
     }
 
-    /**
-     * @group operations-lighten
-     */
+    #[Group('operations-lighten')]
     public function testLightness()
     {
         $this->assertEquals(new Hex('#b3f075'), (new Hsl('90, 80%, 50%'))->lighten(20)->toHex());
@@ -33,27 +30,21 @@ class OperationsTest extends TestCase
         $this->assertEquals(new Hex('#b3ff66'), (new Hex('#80cc33'))->brighten(20));
     }
 
-    /**
-     * @group operations-spin
-     */
+    #[Group('operations-spin')]
     public function testSpin()
     {
         $this->assertEquals(new Hex('#f2a60d'), (new Hsl('10,90%,50'))->spin(30)->toHex());
         $this->assertEquals(new Hex('#f20d59'), (new Hsl('10,90%,50'))->spin(-30)->toHex());
     }
 
-    /**
-     * @group operations-mix
-     */
+    #[Group('operations-mix')]
     public function testMix()
     {
         $this->assertEquals(new Hex('#808080'), (new Hex('#000'))->mix(new Hex('#fff')));
         $this->assertEquals(new Hex('#ff8000'), (new Hex('#ff0000'))->mix(new Hex('#ffff00')));
     }
 
-    /**
-     * @group operations-is-light
-     */
+    #[Group('operations-is-light')]
     public function testIsLight()
     {
         $this->assertFalse((new Hex('#000000'))->isLight());
@@ -65,57 +56,45 @@ class OperationsTest extends TestCase
         $this->assertTrue((new Hex('#ffff00'))->isLight());
     }
 
-    /**
-     * @group operations-is-dark
-     */
+    #[Group('operations-is-dark')]
     public function testIsDark()
     {
         $this->assertTrue((new Hex('#000000'))->isDark());
         $this->assertFalse((new Hex('#ffffff'))->isDark());
     }
 
-    /**
-     * @group operations-tint
-     */
+    #[Group('operations-tint')]
     public function testTint()
     {
         $this->assertEquals(new Hex('#80bfff'), (new Hex('#007fff'))->tint(50));
         $this->assertEquals(new Hex('#80bfff'), (new Hex('#007fff'))->tint());
     }
 
-    /**
-     * @group operations-shade
-     */
+    #[Group('operations-shade')]
     public function testShade()
     {
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade(50));
         $this->assertEquals(new Hex('#004080'), (new Hex('#007fff'))->shade());
     }
 
-    /**
-     * @group operations-fade
-     */
+    #[Group('operations-fade')]
     public function testFade()
     {
         $this->assertEquals(new Hsla('90,90,50,0.1'), (new Hsl('90,90,50'))->fade(10));
         $this->assertEquals(new Rgba('128,242,13,0.1'), (new Rgb('128,242,13'))->fade(10));
     }
 
-    /**
-     * @group operations-fadeIn
-     */
+    #[Group('operations-fadeIn')]
     public function testFadeIn()
     {
         $this->assertEquals(new Hsla('90,90,50,0.4'), (new Hsla('90,90,50,0.3'))->fadeIn(10));
         $this->assertEquals(new Rgba('128,242,13,0.4'), (new Rgba('128,242,13,0.3'))->fadeIn(10));
     }
 
-    /**
-     * @group operations-fadeOut
-     */
+    #[Group('operations-fadeOut')]
     public function testFadeOut()
     {
-        $this->assertEquals(new Hsla('90,90,50,0.2'), (new Hsla('90,90,50,0.3'))->fadeOut(10));
-        $this->assertEquals(new Rgba('128,242,13,0.2'), (new Rgba('128,242,13,0.3'))->fadeOut(10));
+        $this->assertEquals('hsla(90,90%,50%,0.2)', (string) (new Hsla('90,90,50,0.3'))->fadeOut(10));
+        $this->assertEquals('rgba(128,242,13,0.2)', (string) (new Rgba('128,242,13,0.3'))->fadeOut(10));
     }
 }

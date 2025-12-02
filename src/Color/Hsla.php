@@ -112,7 +112,7 @@ class Hsla extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this->toHex()->toHexa()->alpha($this->alpha());
+        return $this->toRgba()->toHexa();
     }
 
     /**
@@ -122,6 +122,15 @@ class Hsla extends BaseColor
     public function toCmyk(): Cmyk
     {
         return $this->toRgb()->toCmyk();
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    public function toOklch(): Oklch
+    {
+        return $this->toRgb()->toOklch();
     }
 
     /**

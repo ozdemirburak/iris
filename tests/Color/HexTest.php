@@ -10,40 +10,33 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class HexTest extends TestCase
 {
-    /**
-     * @group hex-construction
-     */
+    #[Group('hex-construction')]
     public function testSixDigitString()
     {
         $hex = new Hex('#ff00ff');
         $this->validateFuchsia($hex);
     }
 
-    /**
-     * @group hex-construction
-     */
+    #[Group('hex-construction')]
     public function testThreeDigitString()
     {
         $hex = new Hex('#f0f');
         $this->validateFuchsia($hex);
     }
 
-    /**
-     * @group hex-construction
-     */
+    #[Group('hex-construction')]
     public function testPredefinedString()
     {
         $hex = new Hex('FUCHSIA');
         $this->validateFuchsia($hex);
     }
 
-    /**
-     * @group hex-construction
-     */
+    #[Group('hex-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -51,9 +44,6 @@ class HexTest extends TestCase
         new Hex('66Z');
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Hex $hex
-     */
     private function validateFuchsia(Hex $hex)
     {
         $this->assertEquals('ff', $hex->red());

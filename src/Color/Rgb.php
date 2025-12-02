@@ -121,11 +121,20 @@ class Rgb extends BaseColor
     {
         [$r, $g, $b] = $this->values();
         $k = 1 - (max($r, $g, $b) / 255);
-        $c = (1 - $r / 255 - $k) / (1 - $k);
-        $m = (1 - $g / 255 - $k) / (1 - $k);
-        $y = (1 - $b / 255 - $k) / (1 - $k);
-        $code = implode(',', [$c * 100, $m * 100, $y * 100, $k * 100]);
+        $c = $k < 1 ? (1 - $r / 255 - $k) / (1 - $k) : 0;
+        $m = $k < 1 ? (1 - $g / 255 - $k) / (1 - $k) : 0;
+        $y = $k < 1 ? (1 - $b / 255 - $k) / (1 - $k) : 0;
+        $code = implode(',', [round($c * 100), round($m * 100), round($y * 100), round($k * 100)]);
         return new Cmyk($code);
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    public function toOklch(): Oklch
+    {
+        return Oklch::fromRgb($this->red(), $this->green(), $this->blue());
     }
 
     /**

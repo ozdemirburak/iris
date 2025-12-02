@@ -61,6 +61,11 @@ abstract class BaseColor
     abstract public function toRgba(): Color\Rgba;
 
     /**
+     * @return \OzdemirBurak\Iris\Color\Oklch
+     */
+    abstract public function toOklch(): Color\Oklch;
+
+    /**
      * @return string
      */
     abstract public function __toString(): string;

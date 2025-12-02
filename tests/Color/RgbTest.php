@@ -10,31 +10,26 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class RgbTest extends TestCase
 {
-    /**
-     * @group rgb-construction
-     */
+    #[Group('rgb-construction')]
     public function testDigitString()
     {
         $rgb = new Rgb('rgb(255, 0, 255)');
         $this->validateFuchsia($rgb);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('rgb-construction')]
     public function testPredefinedString()
     {
         $rgb = new Rgb('FUCHSIA');
         $this->validateFuchsia($rgb);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('rgb-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -42,9 +37,7 @@ class RgbTest extends TestCase
         new Rgb('333,0,666');
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('rgb-construction')]
     public function testGarbageColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -52,9 +45,6 @@ class RgbTest extends TestCase
         new Rgb('ThisIsAnInvalidValue');
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Rgb $rgb
-     */
     private function validateFuchsia(Rgb $rgb)
     {
         $this->assertEquals(255, $rgb->red());

@@ -10,31 +10,26 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class CmykTest extends TestCase
 {
-    /**
-     * @group cmyk-construction
-     */
+    #[Group('cmyk-construction')]
     public function testDigitString()
     {
         $cmyk = new Cmyk('cmyk(0%, 100%, 0%, 0%)');
         $this->validateFuchsia($cmyk);
     }
 
-    /**
-     * @group cmyk-construction
-     */
+    #[Group('cmyk-construction')]
     public function testPredefinedString()
     {
         $cmyk = new Cmyk('FUCHSIA');
         $this->validateFuchsia($cmyk);
     }
 
-    /**
-     * @group cmyk-construction
-     */
+    #[Group('cmyk-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -42,10 +37,7 @@ class CmykTest extends TestCase
         new Cmyk('255,0,666,200');
     }
 
-
-    /**
-     * @group cmyk-construction
-     */
+    #[Group('cmyk-construction')]
     public function testGarbageColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -53,9 +45,6 @@ class CmykTest extends TestCase
         new Cmyk('ThisIsAnInvalidValue');
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Cmyk $cmyk
-     */
     private function validateFuchsia(Cmyk $cmyk)
     {
         $this->assertEquals(0, $cmyk->cyan());

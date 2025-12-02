@@ -10,31 +10,27 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class HsvTest extends TestCase
 {
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsv-construction')]
     public function testDigitString()
     {
         $hsv = new Hsv('hsv(300,100%,100%)');
         $this->validateFuchsia($hsv);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsv-construction')]
     public function testPredefinedString()
     {
         $hsv = new Hsv('FUCHSIA');
         $this->validateFuchsia($hsv);
     }
 
-    /**
-     * @group rgb-construction
-     */
+    #[Group('hsv-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -42,18 +38,13 @@ class HsvTest extends TestCase
         new Hsv('333,0,666');
     }
 
-    /**
-     * @dataProvider hsvToRgbPairs
-     * @param string $hsv
-     * @param string $rgb
-     * @param string $name
-     */
+    #[DataProvider('hsvToRgbPairs')]
     public function testCanConvertToRgb($hsv, $rgb, $name)
     {
         $this->assertEquals(new Rgb($rgb), (new Hsv($hsv))->toRgb(), "Can convert $name HSV to RGB");
     }
 
-    public function hsvToRgbPairs()
+    public static function hsvToRgbPairs(): array
     {
         return [
             ['hsv(0,0%,0%)', '0,0,0', 'black'],
@@ -87,9 +78,6 @@ class HsvTest extends TestCase
         $this->assertEquals('hsv(41,42%,43%)', (string) $hsv);
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Hsv $hsv
-     */
     private function validateFuchsia(Hsv $hsv)
     {
         $this->assertEquals('300', $hsv->hue());

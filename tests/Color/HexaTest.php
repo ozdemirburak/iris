@@ -10,13 +10,12 @@ use OzdemirBurak\Iris\Color\Hsla;
 use OzdemirBurak\Iris\Color\Hsv;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class HexaTest extends TestCase
 {
-    /**
-     * @group hexa-construction
-     */
+    #[Group('hexa-construction')]
     public function testDigitString()
     {
         $hexa = new Hexa('#ff00ff99');
@@ -24,9 +23,7 @@ class HexaTest extends TestCase
         $this->validateAlpha($hexa, '99', 0.6);
     }
 
-    /**
-     * @group hexa-construction
-     */
+    #[Group('hexa-construction')]
     public function testPredefinedString()
     {
         $hexa = new Hexa('FUCHSIA');
@@ -34,9 +31,7 @@ class HexaTest extends TestCase
         $this->validateAlpha($hexa, 'ff', 1);
     }
 
-    /**
-     * @group hex-construction
-     */
+    #[Group('hexa-construction')]
     public function testInvalidColor()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
@@ -44,9 +39,6 @@ class HexaTest extends TestCase
         new Hexa('6F87DEZ');
     }
 
-    /**
-     * @param \OzdemirBurak\Iris\Color\Hexa $hexa
-     */
     private function validateNonAlpha(Hexa $hexa)
     {
         $this->assertEquals('ff', $hexa->red());
@@ -59,12 +51,6 @@ class HexaTest extends TestCase
         $this->assertEquals(new Cmyk('0,100,0,0'), $hexa->toCmyk());
     }
 
-    /**
-     * @param Hexa $hexa
-     * @param string $expectedAlphaHex
-     * @param float $expectedAlphaFloat
-     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
-     */
     private function validateAlpha(Hexa $hexa, string $expectedAlphaHex, float $expectedAlphaFloat)
     {
         $this->assertEquals($expectedAlphaFloat, $hexa->alpha());
