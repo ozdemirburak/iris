@@ -17,7 +17,12 @@ class Oklch extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace(['oklch', '(', ')', ' ', '%'], '', strtolower($code));
+        $color = str_replace(['oklch', '(', ')', '%'], '', strtolower($code));
+        // Remove alpha channel if present (e.g., "/ 0.5" or "/0.5")
+        $color = preg_replace('/\s*\/\s*[\d.]+/', '', $color);
+        // Normalize: convert spaces to commas, then collapse multiple commas, trim edges
+        $color = preg_replace('/[\s,]+/', ',', trim($color));
+        $color = trim($color, ',');
         if (preg_match('/^([\d.]+),([\d.]+),([\d.]+)$/', $color, $matches)) {
             if ($matches[1] > 100 || $matches[2] > 0.5 || $matches[3] > 360) {
                 return false;
