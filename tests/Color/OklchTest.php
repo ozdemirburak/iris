@@ -27,6 +27,53 @@ class OklchTest extends TestCase
     }
 
     #[Group('oklch-construction')]
+    public function testSpaceSeparatedSyntax(): void
+    {
+        $oklch = new Oklch('oklch(40.1% 0.123 21.57)');
+        $this->assertEquals(40.1, $oklch->lightness());
+        $this->assertEquals(0.123, $oklch->chroma());
+        $this->assertEquals(21.57, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
+    public function testSpaceSeparatedSyntaxWithoutPercent(): void
+    {
+        $oklch = new Oklch('oklch(59.69% 0.156 49.77)');
+        $this->assertEquals(59.69, $oklch->lightness());
+        $this->assertEquals(0.156, $oklch->chroma());
+        $this->assertEquals(49.77, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
+    public function testSpaceSeparatedWithAlpha(): void
+    {
+        // Alpha is stripped but the color should still parse
+        $oklch = new Oklch('oklch(59.69% 0.156 49.77 / .5)');
+        $this->assertEquals(59.69, $oklch->lightness());
+        $this->assertEquals(0.156, $oklch->chroma());
+        $this->assertEquals(49.77, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
+    public function testSpaceSeparatedWithAlphaNoSpace(): void
+    {
+        $oklch = new Oklch('oklch(59.69% 0.156 49.77/.5)');
+        $this->assertEquals(59.69, $oklch->lightness());
+        $this->assertEquals(0.156, $oklch->chroma());
+        $this->assertEquals(49.77, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
+    public function testMixedSeparators(): void
+    {
+        // Mix of spaces and commas should work
+        $oklch = new Oklch('oklch(50%, 0.1 180)');
+        $this->assertEquals(50, $oklch->lightness());
+        $this->assertEquals(0.1, $oklch->chroma());
+        $this->assertEquals(180, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
     public function testInvalidColor(): void
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);

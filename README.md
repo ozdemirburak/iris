@@ -177,24 +177,34 @@ echo $cmyk; // cmyk(0,100,0,0)
 use OzdemirBurak\Iris\Color\Oklch;
 use OzdemirBurak\Iris\Color\Hex;
 
+// Comma-separated syntax
 $oklch = new Oklch('oklch(70%, 0.15, 150)');
 
-echo $oklch->lightness(); // 70
-echo $oklch->chroma(); // 0.15
-echo $oklch->hue(); // 150
+// Space-separated syntax (CSS Color Level 4)
+$oklch = new Oklch('oklch(40.1% 0.123 21.57)');
+$oklch = new Oklch('oklch(59.69% 0.156 49.77)');
 
-$values = $oklch->values(); // [70, 0.15, 150]
-$hex = $oklch->toHex(); // OzdemirBurak\Iris\Color\Hex('4cb86a')
-$rgb = $oklch->toRgb(); // OzdemirBurak\Iris\Color\Rgb('76,184,106')
-$hsl = $oklch->toHsl(); // OzdemirBurak\Iris\Color\Hsl('136.7,43.2,51')
+echo $oklch->lightness(); // 59.69
+echo $oklch->chroma(); // 0.156
+echo $oklch->hue(); // 49.77
 
-echo $oklch; // oklch(70% 0.15 150)
+$values = $oklch->values(); // [59.69, 0.156, 49.77]
+$hex = $oklch->toHex(); // OzdemirBurak\Iris\Color\Hex
+$rgb = $oklch->toRgb(); // OzdemirBurak\Iris\Color\Rgb
+$hsl = $oklch->toHsl(); // OzdemirBurak\Iris\Color\Hsl
+
+echo $oklch; // oklch(59.69% 0.156 49.77)
 
 // Convert from other formats to OKLCH
 $hex = new Hex('#ff0000');
 $oklch = $hex->toOklch();
 echo $oklch; // oklch(62.8% 0.2577 29.23)
 ```
+
+**Note:** The following are not supported:
+
+- Alpha values (e.g., `oklch(59.69% 0.156 49.77 / .5)`) - alpha is ignored
+- Relative color syntax with `from` keyword (e.g., `oklch(from green l c h)`)
 
 ### Via Factory
 
