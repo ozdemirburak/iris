@@ -4,29 +4,14 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Total Downloads][ico-downloads]][link-downloads]
 
-PHP library for color manipulation and conversion.
-
-**Requires PHP 8.1+**
+PHP library for color manipulation and conversion. Requires PHP 8.1+ and supports 
+Hex, Hexa, RGB, RGBA, HSL, HSLA, HSV, CMYK, and OKLCH color formats.
 
 ## Install
-
-Via Composer
 
 ``` bash
 $ composer require ozdemirburak/iris
 ```
-
-## Supported Color Formats
-
-- **Hex** - `#ff00ff`
-- **Hexa** - `#ff00ff80` (hex with alpha)
-- **RGB** - `rgb(255, 0, 255)`
-- **RGBA** - `rgba(255, 0, 255, 0.5)`
-- **HSL** - `hsl(300, 100%, 50%)`
-- **HSLA** - `hsla(300, 100%, 50%, 0.5)`
-- **HSV** - `hsv(300, 100%, 100%)`
-- **CMYK** - `cmyk(0, 100, 0, 0)`
-- **OKLCH** - `oklch(70%, 0.15, 150)` (perceptually uniform)
 
 ## Usage
 
