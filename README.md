@@ -337,6 +337,27 @@ echo $hex->isLight(); // false
 echo $hex->isDark(); // true
 ```
 
+#### Gradient
+
+Generate an array of colors (gradient) between two or more colors.
+
+``` php
+use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Color\Rgb;
+
+// Two-color gradient: 5 steps from red to blue
+$gradient = (new Hex('#ff0000'))->gradient(new Hex('#0000ff'), 5);
+// ['#ff0000', '#bf0040', '#800080', '#4000bf', '#0000ff']
+
+// Multi-color gradient with pivot: red → yellow → green in 7 steps
+$gradient = (new Hex('#ff0000'))->gradient([new Hex('#ffff00'), new Hex('#00ff00')], 7);
+// ['#ff0000', '#ff5500', '#ffaa00', '#ffff00', '#aaff00', '#55ff00', '#00ff00']
+
+// Works with any color type - output matches the starting color type
+$gradient = (new Rgb('255,0,0'))->gradient(new Rgb('0,0,255'), 3);
+// [rgb(255,0,0), rgb(128,0,128), rgb(0,0,255)]
+```
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.

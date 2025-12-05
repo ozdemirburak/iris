@@ -2,9 +2,12 @@
 
 namespace OzdemirBurak\Iris\Tests;
 
+use OzdemirBurak\Iris\Color\Cmyk;
 use OzdemirBurak\Iris\Color\Hex;
 use OzdemirBurak\Iris\Color\Hsl;
 use OzdemirBurak\Iris\Color\Hsla;
+use OzdemirBurak\Iris\Color\Hsv;
+use OzdemirBurak\Iris\Color\Oklch;
 use OzdemirBurak\Iris\Color\Rgb;
 use OzdemirBurak\Iris\Color\Rgba;
 use PHPUnit\Framework\Attributes\Group;
@@ -96,5 +99,174 @@ class OperationsTest extends TestCase
     {
         $this->assertEquals('hsla(90,90%,50%,0.2)', (string) (new Hsla('90,90,50,0.3'))->fadeOut(10));
         $this->assertEquals('rgba(128,242,13,0.2)', (string) (new Rgba('128,242,13,0.3'))->fadeOut(10));
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientTwoColors()
+    {
+        $gradient = (new Hex('#000000'))->gradient(new Hex('#ffffff'), 5);
+
+        $this->assertCount(5, $gradient);
+        $this->assertEquals('#000000', (string) $gradient[0]);
+        $this->assertEquals('#404040', (string) $gradient[1]);
+        $this->assertEquals('#808080', (string) $gradient[2]);
+        $this->assertEquals('#bfbfbf', (string) $gradient[3]);
+        $this->assertEquals('#ffffff', (string) $gradient[4]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientMultipleColors()
+    {
+        $gradient = (new Hex('#ff0000'))->gradient([new Hex('#00ff00'), new Hex('#0000ff')], 5);
+
+        $this->assertCount(5, $gradient);
+        $this->assertEquals('#ff0000', (string) $gradient[0]);
+        $this->assertEquals('#808000', (string) $gradient[1]);
+        $this->assertEquals('#00ff00', (string) $gradient[2]);
+        $this->assertEquals('#008080', (string) $gradient[3]);
+        $this->assertEquals('#0000ff', (string) $gradient[4]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientPreservesColorType()
+    {
+        $gradient = (new Rgb('255,0,0'))->gradient(new Rgb('0,0,255'), 3);
+
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Rgb::class, $gradient[0]);
+        $this->assertInstanceOf(Rgb::class, $gradient[1]);
+        $this->assertInstanceOf(Rgb::class, $gradient[2]);
+        $this->assertEquals('rgb(255,0,0)', (string) $gradient[0]);
+        $this->assertEquals('rgb(128,0,128)', (string) $gradient[1]);
+        $this->assertEquals('rgb(0,0,255)', (string) $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientMinimumSteps()
+    {
+        $gradient = (new Hex('#000000'))->gradient(new Hex('#ffffff'), 1);
+        $this->assertCount(1, $gradient);
+        $this->assertEquals('#000000', (string) $gradient[0]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientTwoSteps()
+    {
+        $gradient = (new Hex('#000000'))->gradient(new Hex('#ffffff'), 2);
+        $this->assertCount(2, $gradient);
+        $this->assertEquals('#000000', (string) $gradient[0]);
+        $this->assertEquals('#ffffff', (string) $gradient[1]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientSameColor()
+    {
+        $gradient = (new Hex('#ff0000'))->gradient(new Hex('#ff0000'), 5);
+        $this->assertCount(5, $gradient);
+        foreach ($gradient as $color) {
+            $this->assertEquals('#ff0000', (string) $color);
+        }
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithHsl()
+    {
+        $gradient = (new Hsl('0,100%,50%'))->gradient(new Hsl('240,100%,50%'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Hsl::class, $gradient[0]);
+        $this->assertInstanceOf(Hsl::class, $gradient[1]);
+        $this->assertInstanceOf(Hsl::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithHsv()
+    {
+        $gradient = (new Hsv('0,100%,100%'))->gradient(new Hsv('240,100%,100%'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Hsv::class, $gradient[0]);
+        $this->assertInstanceOf(Hsv::class, $gradient[1]);
+        $this->assertInstanceOf(Hsv::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithCmyk()
+    {
+        $gradient = (new Cmyk('0,100,100,0'))->gradient(new Cmyk('100,0,0,0'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Cmyk::class, $gradient[0]);
+        $this->assertInstanceOf(Cmyk::class, $gradient[1]);
+        $this->assertInstanceOf(Cmyk::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithOklch()
+    {
+        $gradient = (new Oklch('0.63 0.26 29'))->gradient(new Oklch('0.45 0.31 264'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Oklch::class, $gradient[0]);
+        $this->assertInstanceOf(Oklch::class, $gradient[1]);
+        $this->assertInstanceOf(Oklch::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithRgba()
+    {
+        $gradient = (new Rgba('255,0,0,0.5'))->gradient(new Rgba('0,0,255,1.0'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Rgba::class, $gradient[0]);
+        $this->assertInstanceOf(Rgba::class, $gradient[1]);
+        $this->assertInstanceOf(Rgba::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientWithHsla()
+    {
+        $gradient = (new Hsla('0,100%,50%,0.5'))->gradient(new Hsla('240,100%,50%,1.0'), 3);
+        $this->assertCount(3, $gradient);
+        $this->assertInstanceOf(Hsla::class, $gradient[0]);
+        $this->assertInstanceOf(Hsla::class, $gradient[1]);
+        $this->assertInstanceOf(Hsla::class, $gradient[2]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientFourColors()
+    {
+        $gradient = (new Hex('#ff0000'))->gradient([
+            new Hex('#ffff00'),
+            new Hex('#00ff00'),
+            new Hex('#0000ff')
+        ], 7);
+
+        $this->assertCount(7, $gradient);
+        $this->assertEquals('#ff0000', (string) $gradient[0]);
+        $this->assertEquals('#0000ff', (string) $gradient[6]);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientDefaultSteps()
+    {
+        $gradient = (new Hex('#000000'))->gradient(new Hex('#ffffff'));
+        $this->assertCount(10, $gradient);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientDoesNotMutateOriginal()
+    {
+        $start = new Hex('#ff0000');
+        $end = new Hex('#0000ff');
+
+        $gradient = $start->gradient($end, 5);
+
+        $this->assertEquals('#ff0000', (string) $start);
+        $this->assertEquals('#0000ff', (string) $end);
+    }
+
+    #[Group('operations-gradient')]
+    public function testGradientLargeSteps()
+    {
+        $gradient = (new Hex('#000000'))->gradient(new Hex('#ffffff'), 100);
+        $this->assertCount(100, $gradient);
+        $this->assertEquals('#000000', (string) $gradient[0]);
+        $this->assertEquals('#ffffff', (string) $gradient[99]);
     }
 }
