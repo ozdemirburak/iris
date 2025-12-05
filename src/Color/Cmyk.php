@@ -102,9 +102,9 @@ class Cmyk extends BaseColor
     public function toRgb(): Rgb
     {
         [$c, $m, $y, $k] = $this->values();
-        $r = 255 * (1 - ($c / 100)) * (1 - ($k / 100));
-        $g = 255 * (1 - ($m / 100)) * (1 - ($k / 100));
-        $b = 255 * (1 - ($y / 100)) * (1 - ($k / 100));
+        $r = round(255 * (1 - ($c / 100)) * (1 - ($k / 100)));
+        $g = round(255 * (1 - ($m / 100)) * (1 - ($k / 100)));
+        $b = round(255 * (1 - ($y / 100)) * (1 - ($k / 100)));
         $code = implode(',', [$r, $g, $b]);
         return new Rgb($code);
     }
