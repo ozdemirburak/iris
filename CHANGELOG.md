@@ -2,6 +2,21 @@
 
 All Notable changes to `iris` will be documented in this file.
 
+## 2025-12-05
+
+### Added
+
+- `gradient()` method to generate color scales between two or more colors (#51)
+  - Supports two-color gradients: `$colorA->gradient($colorB, $steps)`
+  - Supports multi-color gradients with pivot colors: `$colorA->gradient([$colorB, $colorC], $steps)`
+  - Works with all color types (Hex, RGB, HSL, HSV, CMYK, OKLCH, etc.)
+  - Returns array of colors matching the starting color type
+
+### Fixed
+
+- CMYK to RGB conversion now rounds values to produce valid integers (#52)
+  - Previously, CMYK values that didn't produce clean 0 or 255 RGB values would fail validation
+
 ## 2025-12-02
 
 ### Added

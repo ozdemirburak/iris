@@ -233,6 +233,59 @@ abstract class BaseColor
     }
 
     /**
+     * Generate a gradient (array of colors) between this color and one or more target colors.
+     *
+     * @param \OzdemirBurak\Iris\BaseColor|array $colors Target color(s) - single color or array of colors
+     * @param int $steps Number of colors to generate (including start and end)
+     *
+     * @return array Array of colors of the same type as the starting color
+     */
+    public function gradient(BaseColor|array $colors, int $steps = 10): array
+    {
+        if ($steps < 2) {
+            return [$this->clone()];
+        }
+        $colorArray = is_array($colors) ? $colors : [$colors];
+        array_unshift($colorArray, $this);
+        $totalColors = count($colorArray);
+        if ($totalColors === 2) {
+            return $this->generateGradientBetweenTwo($colorArray[0], $colorArray[1], $steps);
+        }
+        $segments = $totalColors - 1;
+        $stepsPerSegment = (int) floor(($steps - 1) / $segments);
+        $remainder = ($steps - 1) % $segments;
+        $result = [];
+        for ($i = 0; $i < $segments; $i++) {
+            $segmentSteps = $stepsPerSegment + ($i < $remainder ? 1 : 0) + 1;
+            $segmentColors = $this->generateGradientBetweenTwo($colorArray[$i], $colorArray[$i + 1], $segmentSteps);
+            if ($i > 0) {
+                array_shift($segmentColors);
+            }
+            $result = array_merge($result, $segmentColors);
+        }
+        return $result;
+    }
+
+    /**
+     * Generate gradient between exactly two colors.
+     *
+     * @param \OzdemirBurak\Iris\BaseColor $start
+     * @param \OzdemirBurak\Iris\BaseColor $end
+     * @param int $steps
+     *
+     * @return array
+     */
+    protected function generateGradientBetweenTwo(BaseColor $start, BaseColor $end, int $steps): array
+    {
+        $result = [];
+        for ($i = 0; $i < $steps; $i++) {
+            $percent = ($steps > 1) ? ($i / ($steps - 1)) * 100 : 0;
+            $result[] = $start->clone()->mix($end, $percent)->back($this);
+        }
+        return $result;
+    }
+
+    /**
      * @link https://github.com/less/less.js/blob/master/packages/less/src/less/functions/color.js
      *
      * @param $percent
