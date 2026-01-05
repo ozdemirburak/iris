@@ -10,7 +10,7 @@ trait AlphaTrait
     protected $alpha;
 
     /**
-     * @param null $alpha
+     * @param $alpha
      *
      * @return $this|float
      */
