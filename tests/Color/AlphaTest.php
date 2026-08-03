@@ -57,6 +57,45 @@ class AlphaTest extends TestCase
 
     }
 
+    #[Group('alpha')]
+    public function testNegativeAlphaIsClampedToZero()
+    {
+        foreach ($this->alphaColors() as $color) {
+            $color->alpha(-0.3);
+            $this->assertEquals(0.0, $color->alpha(), get_class($color));
+            // the serialized string must be a valid input to its own constructor
+            $class = get_class($color);
+            $this->assertEquals(0.0, (new $class((string) $color))->alpha());
+        }
+    }
+
+    #[Group('alpha')]
+    public function testAlphaAboveOneStillClampsToOne()
+    {
+        foreach ($this->alphaColors() as $color) {
+            $color->alpha(1.7);
+            $this->assertEquals(1.0, $color->alpha(), get_class($color));
+            $class = get_class($color);
+            $this->assertEquals(1.0, (new $class((string) $color))->alpha());
+        }
+    }
+
+    #[Group('alpha')]
+    public function testInRangeAlphaPassesThroughUnchanged()
+    {
+        foreach ([0.0, 0.5, 1.0] as $value) {
+            foreach ($this->alphaColors() as $color) {
+                $color->alpha($value);
+                $this->assertEquals($value, $color->alpha(), get_class($color));
+            }
+        }
+    }
+
+    protected function alphaColors(): array
+    {
+        return [new Rgba('10,20,30,0.5'), new Hsla('120,50%,50%,0.5'), new Hexa('112233ff')];
+    }
+
     protected function getBaseValues(): array
     {
         return [new Rgba('rgba(102, 102, 102, 0.5)'), new Hex('b2b2b2')];
