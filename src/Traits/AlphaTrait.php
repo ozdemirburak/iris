@@ -17,7 +17,7 @@ trait AlphaTrait
     public function alpha($alpha = null): float|static
     {
         if ($alpha !== null) {
-            $this->alpha = min((float) $alpha, 1.0);
+            $this->alpha = max(0.0, min((float) $alpha, 1.0));
             return $this;
         }
         return round($this->alpha, 2);
