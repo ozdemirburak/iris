@@ -47,10 +47,10 @@ class RgbTest extends TestCase
 
     private function validateFuchsia(Rgb $rgb)
     {
-        $this->assertEquals(255, $rgb->red());
-        $this->assertEquals(0, $rgb->green());
-        $this->assertEquals(255, $rgb->blue());
-        $this->assertEquals([255, 0, 255], $rgb->values());
+        $this->assertSame(255, $rgb->red());
+        $this->assertSame(0, $rgb->green());
+        $this->assertSame(255, $rgb->blue());
+        $this->assertSame([255, 0, 255], $rgb->values());
         $this->assertEquals('rgb(255,0,255)', $rgb);
         $this->assertEquals(new Hex('ff00ff'), $rgb->toHex());
         $this->assertEquals(new Hexa('ff00ffff'), $rgb->toHexa());

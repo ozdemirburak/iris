@@ -46,11 +46,11 @@ class HexTest extends TestCase
 
     private function validateFuchsia(Hex $hex)
     {
-        $this->assertEquals('ff', $hex->red());
-        $this->assertEquals('00', $hex->green());
-        $this->assertEquals('ff', $hex->blue());
+        $this->assertSame('ff', $hex->red());
+        $this->assertSame('00', $hex->green());
+        $this->assertSame('ff', $hex->blue());
         $this->assertEquals('#ff00ff', $hex);
-        $this->assertEquals(['ff', '00', 'ff'], $hex->values());
+        $this->assertSame(['ff', '00', 'ff'], $hex->values());
         $this->assertEquals(new Hex('ff00ff'), $hex->toHex());
         $this->assertEquals(new Hexa('ff00ffff'), $hex->toHexa());
         $this->assertEquals(new Hsl('300,100,50'), $hex->toHsl());

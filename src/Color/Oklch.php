@@ -3,9 +3,13 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
+use OzdemirBurak\Iris\Traits\AlphaTrait;
 
 class Oklch extends BaseColor
 {
+    use AlphaTrait;
+
     protected float $lightness;
     protected float $chroma;
     protected float $hue;
@@ -17,93 +21,107 @@ class Oklch extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace(['oklch', '(', ')', '%'], '', strtolower($code));
-        // Remove alpha channel if present (e.g., "/ 0.5" or "/0.5")
-        $color = preg_replace('/\s*\/\s*[\d.]+/', '', $color);
-        // Normalize: convert spaces to commas, then collapse multiple commas, trim edges
-        $color = preg_replace('/[\s,]+/', ',', trim($color));
-        $color = trim($color, ',');
-        if (preg_match('/^([\d.]+),([\d.]+),([\d.]+)$/', $color, $matches)) {
-            if ($matches[1] > 100 || $matches[2] > 0.5 || $matches[3] > 360) {
-                return false;
-            }
-            return $color;
+        if (($parts = ColorString::split($code, ['oklch'], 3, true)) === false || ($alpha = ColorString::alpha($parts[1])) === false) {
+            return false;
         }
-        return false;
+        [$lightness, $chroma, $hue] = $parts[0];
+        $lightness = ColorString::number($lightness, ['', '%']);
+        $chroma = ColorString::number($chroma, ['', '%']);
+        if ($lightness === false || $chroma === false || ($hue = ColorString::hue($hue)) === false) {
+            return false;
+        }
+        // CSS Color 4: a lightness without "%" is a number from 0 to 1, and a chroma of 100% is 0.4
+        $lightness = $lightness[1] === '' && $lightness[0] <= 1 ? $lightness[0] * 100 : $lightness[0];
+        $chroma = $chroma[1] === '%' ? $chroma[0] * 0.004 : $chroma[0];
+        return $lightness <= 100 && $chroma <= 0.5 ? "{$lightness},{$chroma},{$hue},{$alpha}" : false;
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return array{float, float, float, float}
      */
     protected function initialize(string $color): array
     {
-        [$this->lightness, $this->chroma, $this->hue] = array_map('floatval', explode(',', $color));
+        [$this->lightness, $this->chroma, $this->hue, $this->alpha] = array_map('floatval', explode(',', $color));
         return $this->values();
     }
 
     /**
-     * @return array
+     * @return array{float, float, float, float}
      */
     public function values(): array
     {
         return [
             $this->lightness(),
             $this->chroma(),
-            $this->hue()
+            $this->hue(),
+            $this->alpha()
         ];
     }
 
     /**
-     * @param float|null $lightness
+     * @param float|null $lightness from 0 to 100, a value out of range is clamped
      *
-     * @return float|self
+     * @return ($lightness is null ? float : static)
      */
-    public function lightness(?float $lightness = null): float|self
+    public function lightness(?float $lightness = null): float|static
     {
         if ($lightness !== null) {
-            $this->lightness = max(0, min(100, $lightness));
+            $this->lightness = $this->limit($lightness, 100, $this->lightness);
             return $this;
         }
         return round($this->lightness, 2);
     }
 
     /**
-     * @param float|null $chroma
+     * @param float|null $chroma from 0 to 0.5, a value out of range is clamped
      *
-     * @return float|self
+     * @return ($chroma is null ? float : static)
      */
-    public function chroma(?float $chroma = null): float|self
+    public function chroma(?float $chroma = null): float|static
     {
         if ($chroma !== null) {
-            $this->chroma = max(0, min(0.5, $chroma));
+            $this->chroma = $this->limit($chroma, 0.5, $this->chroma);
             return $this;
         }
         return round($this->chroma, 4);
     }
 
     /**
-     * @param float|null $hue
+     * @param float|null $hue in degrees, wraps around 360
      *
-     * @return float|self
+     * @return ($hue is null ? float : static)
      */
-    public function hue(?float $hue = null): float|self
+    public function hue(?float $hue = null): float|static
     {
         if ($hue !== null) {
-            $this->hue = fmod(fmod($hue, 360) + 360, 360);
+            $this->hue = $this->wrapHue($hue, $this->hue);
             return $this;
         }
-        return round($this->hue, 2);
+        // A hue of 359.996 rounds to 360, which is 0
+        $hue = round($this->hue, 2);
+        return $hue >= 360 ? 0.0 : $hue;
     }
 
     /**
-     * Convert OKLCH to RGB
+     * Convert OKLCH to RGB, blended onto a white background when the alpha is below 1
      *
      * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
      * @return \OzdemirBurak\Iris\Color\Rgb
      */
     public function toRgb(): Rgb
+    {
+        return $this->toRgba()->toRgb();
+    }
+
+    /**
+     * Convert OKLCH to RGB, without the alpha
+     *
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Rgb
+     */
+    protected function opaqueRgb(): Rgb
     {
         // Convert OKLCH to Oklab
         $L = $this->lightness / 100;
@@ -169,7 +187,7 @@ class Oklch extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this->toHex()->toHexa();
+        return $this->toRgba()->toHexa();
     }
 
     /**
@@ -187,7 +205,7 @@ class Oklch extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this->toHsl()->toHsla();
+        return $this->toRgba()->toHsla();
     }
 
     /**
@@ -205,7 +223,9 @@ class Oklch extends BaseColor
      */
     public function toRgba(): Rgba
     {
-        return $this->toRgb()->toRgba();
+        $rgba = $this->opaqueRgb()->toRgba();
+        $rgba->alpha($this->alpha);
+        return $rgba;
     }
 
     /**
@@ -222,7 +242,7 @@ class Oklch extends BaseColor
      */
     public function toOklch(): Oklch
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -230,7 +250,18 @@ class Oklch extends BaseColor
      */
     public function __toString(): string
     {
-        return 'oklch(' . $this->lightness() . '% ' . $this->chroma() . ' ' . $this->hue() . ')';
+        // As in CSS, the alpha is only written when it is below 1
+        $alpha = $this->alpha() < 1 ? ' / ' . $this->alpha() : '';
+        return 'oklch(' . $this->lightness() . '% ' . $this->chroma() . ' ' . $this->hue() . $alpha . ')';
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hsl
+     */
+    protected function opaqueHsl(): Hsl
+    {
+        return $this->opaqueRgb()->toHsl();
     }
 
     /**
@@ -243,30 +274,7 @@ class Oklch extends BaseColor
      */
     public static function fromRgb(int $r, int $g, int $b): self
     {
-        // Normalize RGB to 0-1
-        $r = $r / 255;
-        $g = $g / 255;
-        $b = $b / 255;
-
-        // Apply inverse gamma correction (linearize sRGB)
-        $r = self::linearize($r);
-        $g = self::linearize($g);
-        $b = self::linearize($b);
-
-        // Convert linear sRGB to LMS
-        $l = 0.4122214708 * $r + 0.5363325363 * $g + 0.0514459929 * $b;
-        $m = 0.2119034982 * $r + 0.6806995451 * $g + 0.1073969566 * $b;
-        $s = 0.0883024619 * $r + 0.2817188376 * $g + 0.6299787005 * $b;
-
-        // Apply cube root
-        $l_ = $l >= 0 ? pow($l, 1/3) : -pow(-$l, 1/3);
-        $m_ = $m >= 0 ? pow($m, 1/3) : -pow(-$m, 1/3);
-        $s_ = $s >= 0 ? pow($s, 1/3) : -pow(-$s, 1/3);
-
-        // Convert to Oklab
-        $L = 0.2104542553 * $l_ + 0.7936177850 * $m_ - 0.0040720468 * $s_;
-        $a = 1.9779984951 * $l_ - 2.4285922050 * $m_ + 0.4505937099 * $s_;
-        $bVal = 0.0259040371 * $l_ + 0.7827717662 * $m_ - 0.8086757660 * $s_;
+        [$L, $a, $bVal] = self::rgbToOklab($r, $g, $b);
 
         // Convert Oklab to OKLCH
         $C = sqrt($a * $a + $bVal * $bVal);
@@ -275,24 +283,12 @@ class Oklch extends BaseColor
             $h += 360;
         }
 
-        $lightness = round($L * 100, 2);
-        $chroma = round($C, 4);
-        $hue = round($h, 2);
-
-        return new self("{$lightness},{$chroma},{$hue}");
-    }
-
-    /**
-     * Linearize sRGB value (inverse gamma correction)
-     *
-     * @param float $value
-     * @return float
-     */
-    protected static function linearize(float $value): float
-    {
-        if ($value <= 0.04045) {
-            return $value / 12.92;
-        }
-        return pow(($value + 0.055) / 1.055, 2.4);
+        // Not rounded, so that a conversion back to RGB gives the same color; the getters round
+        $oklch = new self('0% 0 0');
+        $oklch->lightness($L * 100);
+        $oklch->chroma($C);
+        // The hue of an achromatic color (gray, white, black) is only float noise
+        $oklch->hue(round($C, 4) == 0 ? 0 : $h);
+        return $oklch;
     }
 }

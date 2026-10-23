@@ -47,11 +47,11 @@ class HslTest extends TestCase
 
     private function validateFuchsia(Hsl $hsl)
     {
-        $this->assertEquals('300', $hsl->hue());
-        $this->assertEquals('100', $hsl->saturation());
-        $this->assertEquals('50', $hsl->lightness());
-        $this->assertEquals([300, '100%', '50%'], $hsl->values());
-        $this->assertEquals([300/360, 100/100, 50/100], $hsl->valuesInUnitInterval());
+        $this->assertSame(300.0, $hsl->hue());
+        $this->assertSame(100.0, $hsl->saturation());
+        $this->assertSame(50.0, $hsl->lightness());
+        $this->assertSame([300.0, '100%', '50%'], $hsl->values());
+        $this->assertSame([300 / 360, 1.0, 0.5], $hsl->valuesInUnitInterval());
         $this->assertEquals('hsl(300,100%,50%)', $hsl);
         $this->assertEquals(new Hex('ff00ff'), $hsl->toHex());
         $this->assertEquals(new Hexa('ff00ffff'), $hsl->toHexa());

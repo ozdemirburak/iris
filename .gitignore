@@ -1,9 +1,20 @@
-.claude/
+# Dependencies
+/vendor/
+composer.lock
+
+# Local copies of the .dist configuration files, and caches
+phpunit.xml
+phpstan.neon
+.phpunit.cache/
+.phpunit.result.cache
+/build/
+
+# Editors and operating systems
 .idea/
 .vscode/
-/build/
-/vendor/
-.phpunit.cache
-.phpunit.result.cache
-composer.lock
-CLAUDE.MD
+.DS_Store
+
+# AI assistants
+.claude/
+CLAUDE.md
+CLAUDE.local.md

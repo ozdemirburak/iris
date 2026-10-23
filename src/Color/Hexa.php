@@ -3,13 +3,14 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 use OzdemirBurak\Iris\Traits\AlphaTrait;
-use OzdemirBurak\Iris\Traits\RgbTrait;
+use OzdemirBurak\Iris\Traits\HexTrait;
 
 class Hexa extends BaseColor
 {
-    use AlphaTrait, RgbTrait;
+    use AlphaTrait, HexTrait;
 
     /**
      * @param string $code
@@ -18,24 +19,29 @@ class Hexa extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace('#', '', DefinedColor::find($code));
+        $color = ColorString::isTransparent($code) ? '00000000' : DefinedColor::find($code);
+        $color = str_starts_with($color, '#') ? substr($color, 1) : $color;
+        if (strlen($color) === 3 || strlen($color) === 4) {
+            $color = implode('', array_map(fn (string $digit) => $digit . $digit, str_split($color)));
+        }
         return preg_match('/^[a-f0-9]{6}([a-f0-9]{2})?$/i', $color) ? $color : false;
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float|string>
      */
     protected function initialize(string $color): array
     {
-        [$this->red, $this->green, $this->blue, $this->alpha] = array_merge(str_split($color, 2), ['ff']);
-        $this->alpha = $this->alphaHexToFloat($this->alpha ?? 'ff');
+        $parts = str_split($color, 2);
+        [$this->red, $this->green, $this->blue] = $parts;
+        $this->alpha = $this->alphaHexToFloat($parts[3] ?? 'ff');
         return $this->values();
     }
 
     /**
-     * @return array
+     * @return array{string, string, string, float}
      */
     public function values(): array
     {
@@ -60,7 +66,7 @@ class Hexa extends BaseColor
      */
     public function toHexa(): Hexa
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -96,8 +102,7 @@ class Hexa extends BaseColor
      */
     public function toRgb(): Rgb
     {
-        $rgb = implode(',', array_map('hexdec', [$this->red(), $this->green(), $this->blue()]));
-        return new Rgb($rgb);
+        return $this->hexToRgb();
     }
 
     /**
@@ -124,7 +129,9 @@ class Hexa extends BaseColor
      */
     public function toOklch(): Oklch
     {
-        return $this->toRgb()->toOklch();
+        $oklch = $this->opaqueRgb()->toOklch();
+        $oklch->alpha($this->alpha);
+        return $oklch;
     }
 
     /**

@@ -12,15 +12,15 @@ class Hsl extends BaseColor
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float>
      */
     protected function initialize(string $color): array
     {
-        return [$this->hue, $this->saturation, $this->lightness] = explode(',', $color);
+        return [$this->hue, $this->saturation, $this->lightness] = array_map('floatval', explode(',', $color));
     }
 
     /**
-     * @return array
+     * @return array{float, string, string}
      */
     public function values(): array
     {
@@ -50,7 +50,7 @@ class Hsl extends BaseColor
      */
     public function toHsl(): Hsl
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -73,7 +73,7 @@ class Hsl extends BaseColor
         [$h, $s, $l] = $this->valuesInUnitInterval();
         $v = $s * min($l, 1 - $l) + $l;
         $s = $v ? 2 * (1 - $l / $v) : 0;
-        $code = implode(',', [round($h * 360), round($s * 100), round($v * 100)]);
+        $code = implode(',', [round($h * 360, 1), round($s * 100, 1), round($v * 100, 1)]);
         return new Hsv($code);
     }
 

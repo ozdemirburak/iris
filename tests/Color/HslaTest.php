@@ -43,7 +43,7 @@ class HslaTest extends TestCase
     #[Group('hsla-construction')]
     public function testFuchsiaString()
     {
-        $hsla = new Hsla('FUCHSIA');
+        $hsla = new Hsla('hsla(300, 100%, 50%, 1)');
         $this->validateFuchsia($hsla);
     }
 
@@ -56,11 +56,19 @@ class HslaTest extends TestCase
     }
 
     #[Group('hsla-construction')]
-    public function testGarbageColor()
+    public function testHueWrapsAround()
+    {
+        // CSS Color 4: any angle is valid and wraps around 360
+        $this->assertEquals('hsla(1,1%,1%,0.3)', (string) new Hsla('hsla(361,1%,1%,0.3)'));
+        $this->assertEquals('hsla(330,1%,1%,0.3)', (string) new Hsla('hsla(-30,1%,1%,0.3)'));
+    }
+
+    #[Group('hsla-construction')]
+    public function testOutOfRangeValueMustThrow()
     {
         $this->expectException(\OzdemirBurak\Iris\Exceptions\InvalidColorException::class);
         $this->expectExceptionMessage('Invalid HSLA value');
-        new Hsla('hsla(361,1%,1%,0.3)');
+        new Hsla('hsla(120,101%,1%,0.3)');
     }
 
     #[Group('hsla-conversion')]
@@ -68,7 +76,7 @@ class HslaTest extends TestCase
     {
         $hsla = new Hsla('hsla(150,100%,50%,0.3)');
         // toHex applies alpha compositing against white background
-        $this->assertEquals(new Hex('b2ffd8'), $hsla->toHex());
+        $this->assertEquals(new Hex('b3ffd9'), $hsla->toHex());
         $this->assertEquals(new Rgba('0,255,128,0.3'), $hsla->toRgba());
         // toHexa preserves original color values with alpha
         $this->assertEquals('#00ff804d', (string) $hsla->toHexa());
@@ -84,5 +92,18 @@ class HslaTest extends TestCase
         $this->assertEquals(new Rgb('255,0,255'), $hsla->toRgb());
         $this->assertEquals(new Rgba('255,0,255,1.0'), $hsla->toRgba());
         $this->assertEquals(new Cmyk('0,100,0,0'), $hsla->toCmyk());
+    }
+
+    #[Group('hsla-construction')]
+    public function testAlphaWithoutLeadingZero()
+    {
+        $this->assertEquals('hsla(0,0%,0%,0.5)', (string) new Hsla('hsla(0,0%,0%,.5)'));
+    }
+
+    #[Group('hsla-conversion')]
+    public function testToRgbaKeepsAlphaPrecision()
+    {
+        $this->assertEquals('#ff000055', (string) (new Hsla('hsla(0,100%,50%,0.333333)'))->toHexa());
+        $this->assertEquals('#ff00ff4c', (string) (new Hexa('#ff00ff4c'))->toHsla()->toHexa());
     }
 }

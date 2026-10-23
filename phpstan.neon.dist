@@ -1,0 +1,8 @@
+parameters:
+    level: max
+    # Report code that does not work on every supported PHP version
+    phpVersion:
+        min: 80400
+        max: 80599
+    paths:
+        - src

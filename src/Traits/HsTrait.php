@@ -2,6 +2,8 @@
 
 namespace OzdemirBurak\Iris\Traits;
 
+use OzdemirBurak\Iris\Color\Hex;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 
 trait HsTrait
@@ -23,79 +25,85 @@ trait HsTrait
      */
     protected function validate(string $code): bool|string
     {
-        [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
-        $color = str_replace([$class, '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
-        if (preg_match($this->validationRules(), $color, $matches)) {
-            if ($matches[1] > 360 || $matches[2] > 100 || $matches[3] > 100) {
-                return false;
-            }
-            return $color;
+        $name = property_exists($this, 'lightness') ? 'hsl' : 'hsv';
+        // A color name comes from its exact hex value; the hsl and hsv columns of the table are rounded
+        if (($hex = DefinedColor::hex($code)) !== null) {
+            $color = $name === 'hsl' ? (new Hex($hex))->toHsl() : (new Hex($hex))->toHsv();
+            return implode(',', array_map('floatval', $color->getValues()));
         }
-        return false;
+        if (($parts = ColorString::split($code, [$name], 3, false)) === false) {
+            return false;
+        }
+        [$hue, $saturation, $third] = $parts[0];
+        return ColorString::join([
+            ColorString::hue($hue),
+            ColorString::percentage($saturation),
+            ColorString::percentage($third),
+        ]);
     }
 
     /**
-     * @return string
-     */
-    protected function validationRules(): string
-    {
-        if (property_exists($this, 'alpha')) {
-            return '/^(\d{1,3}(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d+(?:\.\d+)?)$/';
-        }
-        return '/^(\d{1,3}(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?),(\d{1,3}%?(?:\.\d+)?)$/';
-    }
-
-    /**
-     * @param float|string $hue
+     * @param float|int|string|null $hue in degrees, wraps around 360, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($hue is null ? float : static)
      */
     public function hue($hue = null): float|static
     {
-        if (is_numeric($hue)) {
-            $this->hue = $hue >= 0 && $hue <= 360 ? $hue : $this->hue;
+        if ($hue !== null) {
+            if (is_numeric($hue)) {
+                $this->hue = $this->wrapHue((float) $hue, $this->hue);
+            }
             return $this;
         }
         return (float) $this->hue;
     }
 
     /**
-     * @param float|string $saturation
+     * @param float|int|string|null $saturation a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($saturation is null ? float : static)
      */
     public function saturation($saturation = null): float|static
     {
-        if (is_numeric($saturation)) {
-            $this->saturation = $saturation >= 0 && $saturation <= 100 ? $saturation : $this->saturation;
+        if ($saturation !== null) {
+            if (is_numeric($saturation)) {
+                $this->saturation = $this->limit((float) $saturation, 100, $this->saturation);
+            }
             return $this;
         }
         return (float) $this->saturation;
     }
 
     /**
-     * @return array
+     * The third component: the lightness of HSL, the value of HSV
+     *
+     * @return float
+     */
+    abstract protected function lightnessOrValue(): float;
+
+    /**
+     * @return array{float, string, string}
      */
     public function getValues(): array
     {
         return [
             $this->hue(),
             $this->saturation() . '%',
-            (property_exists($this, 'lightness') ? $this->lightness() : $this->value()) . '%'
+            $this->lightnessOrValue() . '%'
         ];
     }
 
     /**
      * Values in [0, 1] range
      *
-     * @return array
+     * @return array{float, float, float}
      */
     public function valuesInUnitInterval(): array
     {
         return [
             $this->hue() / 360,
             $this->saturation() / 100,
-            (property_exists($this, 'lightness') ? $this->lightness() : $this->value()) / 100
+            $this->lightnessOrValue() / 100
         ];
     }
 }

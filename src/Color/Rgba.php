@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 use OzdemirBurak\Iris\Traits\AlphaTrait;
 use OzdemirBurak\Iris\Traits\RgbTrait;
@@ -14,7 +15,14 @@ class Rgba extends BaseColor
     /**
      * @var \OzdemirBurak\Iris\Color\Rgb
      */
-    protected $background;
+    protected Rgb $background;
+
+    /**
+     * The default background, created only once
+     *
+     * @var \OzdemirBurak\Iris\Color\Rgb|null
+     */
+    private static ?Rgb $white = null;
 
     /**
      * @param string $code
@@ -23,36 +31,32 @@ class Rgba extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace(['rgba', '(', ')', ' '], '', DefinedColor::find($code, 1));
-        if (substr_count($color, ',') === 2) {
-            $color = "{$color},1.0";
+        if (ColorString::isTransparent($code)) {
+            return '0,0,0,0';
         }
-        $color = $this->fixPrecision($color);
-        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d\.\d{1,})$/', $color, $matches)) {
-            if ($matches[1] > 255 || $matches[2] > 255 || $matches[3] > 255 || $matches[4] > 1) {
-                return false;
-            }
-            return $color;
+        if (($parts = ColorString::split(DefinedColor::find($code, 1), ['rgba', 'rgb'], 3, true)) === false) {
+            return false;
         }
-        return false;
+        [$channels, $alpha] = $parts;
+        return ColorString::join([...array_map([ColorString::class, 'channel'], $channels), ColorString::alpha($alpha)]);
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float|int>
      */
     protected function initialize(string $color): array
     {
         $colors = explode(',', $color);
         [$this->red, $this->green, $this->blue] = array_map('intval', $colors);
-        $this->alpha = (double) $colors[3];
+        $this->alpha = (float) $colors[3];
         $this->background = $this->defaultBackground();
         return $this->values();
     }
 
     /**
-     * @return array
+     * @return array{int, int, int, float}
      */
     public function values(): array
     {
@@ -71,8 +75,9 @@ class Rgba extends BaseColor
     public function toRgb(): Rgb
     {
         [$red, $green, $blue] = array_map(function ($attribute) {
-            $value = (1 - $this->alpha()) * $this->background->{$attribute}() + $this->alpha() * $this->{$attribute}();
-            return floor($value);
+            $value = (1 - $this->alpha) * $this->background->{$attribute}() + $this->alpha * $this->{$attribute}();
+            // Round away float noise first, so that e.g. 2.9999999999 does not floor to 2
+            return round($value);
         }, ['red', 'green', 'blue']);
         return new Rgb(implode(',', [$red, $green, $blue]));
     }
@@ -82,7 +87,7 @@ class Rgba extends BaseColor
      */
     public function toRgba(): Rgba
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -102,7 +107,8 @@ class Rgba extends BaseColor
     {
         $hex = sprintf('%02x%02x%02x', $this->red(), $this->green(), $this->blue());
         $hexa = new Hexa($hex . 'ff');
-        return $hexa->alpha($this->alphaRaw());
+        $hexa->alpha($this->alphaRaw());
+        return $hexa;
     }
 
     /**
@@ -121,8 +127,10 @@ class Rgba extends BaseColor
     public function toHsla(): Hsla
     {
         [$h, $s, $l] = $this->getHslValues();
-        [$h, $s, $l, $a] = [round($h * 360, 1), round($s * 100, 1), round($l * 100, 1), $this->alpha];
-        return new Hsla("{$h},{$s}%,{$l}%,{$a}");
+        [$h, $s, $l] = [round($h * 360, 1), round($s * 100, 1), round($l * 100, 1)];
+        $hsla = new Hsla("{$h},{$s}%,{$l}%,1.0");
+        $hsla->alpha($this->alpha);
+        return $hsla;
     }
 
     /**
@@ -149,7 +157,9 @@ class Rgba extends BaseColor
      */
     public function toOklch(): Oklch
     {
-        return $this->toRgb()->toOklch();
+        $oklch = $this->opaqueRgb()->toOklch();
+        $oklch->alpha($this->alpha);
+        return $oklch;
     }
 
     /**
@@ -161,14 +171,44 @@ class Rgba extends BaseColor
     }
 
     /**
-     * @param \OzdemirBurak\Iris\Color\Rgb $rgb
+     * @param \OzdemirBurak\Iris\Color\Rgb|null $rgb the background to blend onto, null to read it
      *
-     * @return $this
+     * @return ($rgb is null ? \OzdemirBurak\Iris\Color\Rgb : static)
      */
-    public function background(Rgb $rgb): static
+    public function background(?Rgb $rgb = null): Rgb|static
     {
-        $this->background = $rgb;
+        // Copies, so that a later change to the given or the returned object does not change this color
+        if ($rgb === null) {
+            return clone $this->background;
+        }
+        $this->background = clone $rgb;
         return $this;
+    }
+
+    /**
+     * A clone must not share the background object
+     */
+    public function __clone()
+    {
+        $this->background = clone $this->background;
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Rgb
+     */
+    protected function opaqueRgb(): Rgb
+    {
+        return new Rgb(implode(',', $this->rgbValues()));
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hsl
+     */
+    protected function opaqueHsl(): Hsl
+    {
+        return $this->opaqueRgb()->toHsl();
     }
 
     /**
@@ -176,6 +216,6 @@ class Rgba extends BaseColor
      */
     protected function defaultBackground(): Rgb
     {
-        return new Rgb('255,255,255');
+        return clone (self::$white ??= new Rgb('255,255,255'));
     }
 }

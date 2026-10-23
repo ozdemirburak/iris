@@ -2,75 +2,78 @@
 
 namespace OzdemirBurak\Iris\Traits;
 
+/**
+ * Integer RGB channels, from 0 to 255
+ */
 trait RgbTrait
 {
     /**
-     * @var string|int
+     * @var int
      */
-    protected string|int $red;
+    protected int $red;
 
     /**
-     * @var string|int
+     * @var int
      */
-    protected string|int $green;
+    protected int $green;
 
     /**
-     * @var string|int
+     * @var int
      */
-    protected string|int $blue;
+    protected int $blue;
 
     /**
-     * @param int|string $red
+     * @param float|int|string|null $red from 0 to 255, a value out of range is clamped
      *
-     * @return int|string|$this
+     * @return ($red is null ? int : static)
      */
-    public function red($red = null): int|string|static
+    public function red($red = null): int|static
     {
         if ($red !== null) {
-            $this->validateAndSet('red', $red);
+            $this->red = $this->toChannel($red, $this->red);
             return $this;
         }
-        return !empty($this->castsInteger) ? (int) $this->red : $this->red;
+        return $this->red;
     }
 
     /**
-     * @param float|int|string $green
+     * @param float|int|string|null $green from 0 to 255, a value out of range is clamped
      *
-     * @return float|int|string|$this
+     * @return ($green is null ? int : static)
      */
-    public function green($green = null): float|int|string|static
+    public function green($green = null): int|static
     {
         if ($green !== null) {
-            $this->validateAndSet('green', $green);
+            $this->green = $this->toChannel($green, $this->green);
             return $this;
         }
-        return !empty($this->castsInteger) ? (int) $this->green : $this->green;
+        return $this->green;
     }
 
     /**
-     * @param float|int|string $blue
+     * @param float|int|string|null $blue from 0 to 255, a value out of range is clamped
      *
-     * @return float|int|string|$this
+     * @return ($blue is null ? int : static)
      */
-    public function blue($blue = null): float|int|string|static
+    public function blue($blue = null): int|static
     {
         if ($blue !== null) {
-            $this->validateAndSet('blue', $blue);
+            $this->blue = $this->toChannel($blue, $this->blue);
             return $this;
         }
-        return !empty($this->castsInteger) ? (int) $this->blue : $this->blue;
+        return $this->blue;
     }
 
     /**
-     * @return array
+     * @return array{int, int, int}
      */
     public function rgbValues(): array
     {
-        return [$this->red(), $this->green(), $this->blue()];
+        return [$this->red, $this->green, $this->blue];
     }
 
     /**
-     * @return array
+     * @return list<float|int|string>
      */
     public function values(): array
     {
@@ -78,33 +81,28 @@ trait RgbTrait
     }
 
     /**
-     * @param string           $property
      * @param float|int|string $value
+     * @param int              $current kept when $value is not a finite number
+     *
+     * @return int
      */
-    protected function validateAndSet(string $property, float|int|string $value): void
+    protected function toChannel(float|int|string $value, int $current): int
     {
-        if (!empty($this->castsInteger)) {
-            $this->{$property} = $value >= 0 && $value <= 255 ? (int) round($value) : $this->{$property};
-        } else {
-            $value = strlen($value) === 1 ? $value . $value : $value;
-            $this->{$property} = preg_match('/^[a-f0-9]{2}$/i', $value) ? $value : $this->{$property};
-        }
+        return is_numeric($value) ? (int) round($this->limit((float) $value, 255, $current)) : $current;
     }
 
     /**
-     * @return array
+     * @return array{float|int, float|int, float|int, float|int, float|int}
      */
     protected function getHValues(): array
     {
-        [$r, $g, $b] = $values = array_map(function ($value) {
-            return $value / 255;
-        }, $this->rgbValues());
+        [$r, $g, $b] = $values = array_map(fn (int $value) => $value / 255, $this->rgbValues());
         [$min, $max] = [min($values), max($values)];
         return [$r, $g, $b, $min, $max];
     }
 
     /**
-     * @return array
+     * @return array{float|int, float|int, float|int}
      */
     protected function getHslValues(): array
     {
@@ -129,7 +127,7 @@ trait RgbTrait
      *
      * @return float
      */
-    protected function getH($max, $r, $g, $b, $d): float
+    protected function getH(float $max, float $r, float $g, float $b, float $d): float
     {
         $h = match ($max) {
             $r => ($g - $b) / $d + ($g < $b ? 6 : 0),

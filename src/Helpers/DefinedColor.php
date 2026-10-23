@@ -5,20 +5,46 @@ namespace OzdemirBurak\Iris\Helpers;
 class DefinedColor
 {
     /**
-     * @param string $code
-     * @param int    $index
+     * @param string   $code
+     * @param int<0, 4> $index 0 hex, 1 rgb, 2 hsl, 3 hsv, 4 cmyk
      *
      * @return string
      */
     public static function find(string $code, int $index = 0): string
     {
-        $code = strtolower($code);
+        $code = strtolower(trim($code, ColorString::WHITESPACE));
         $colors = static::get();
         return isset($colors[$code]) ? $colors[$code][$index] : $code;
     }
 
     /**
-     * @return array
+     * @param string $code
+     *
+     * @return string|null the hex value of a color name, or null when $code is not a color name
+     */
+    public static function hex(string $code): ?string
+    {
+        return static::get()[strtolower(trim($code, ColorString::WHITESPACE))][0] ?? null;
+    }
+
+    /**
+     * @param string $hex e.g. "#ff6347" or "ff6347"
+     *
+     * @return string|null the first color name in alphabetical order with this hex value, or null
+     */
+    public static function name(string $hex): ?string
+    {
+        $hex = strtolower(ltrim($hex, '#'));
+        foreach (static::get() as $name => [$value]) {
+            if ($value === $hex) {
+                return $name;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return array<string, array{string, string, string, string, string}>
      */
     public static function get(): array
     {

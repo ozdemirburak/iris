@@ -98,6 +98,6 @@ class AlphaTest extends TestCase
 
     protected function getBaseValues(): array
     {
-        return [new Rgba('rgba(102, 102, 102, 0.5)'), new Hex('b2b2b2')];
+        return [new Rgba('rgba(102, 102, 102, 0.5)'), new Hex('b3b3b3')];
     }
 }

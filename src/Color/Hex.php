@@ -4,11 +4,11 @@ namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
-use OzdemirBurak\Iris\Traits\RgbTrait;
+use OzdemirBurak\Iris\Traits\HexTrait;
 
 class Hex extends BaseColor
 {
-    use RgbTrait;
+    use HexTrait;
 
     /**
      * @param string $code
@@ -17,7 +17,8 @@ class Hex extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace('#', '', DefinedColor::find($code));
+        $color = DefinedColor::find($code);
+        $color = str_starts_with($color, '#') ? substr($color, 1) : $color;
         if (strlen($color) === 3) {
             $color = $color[0] . $color[0] . $color[1] . $color[1] . $color[2] . $color[2];
         }
@@ -27,7 +28,7 @@ class Hex extends BaseColor
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<string>
      */
     protected function initialize(string $color): array
     {
@@ -39,7 +40,7 @@ class Hex extends BaseColor
      */
     public function toHex(): Hex
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -83,8 +84,7 @@ class Hex extends BaseColor
      */
     public function toRgb(): Rgb
     {
-        $rgb = implode(',', array_map('hexdec', $this->values()));
-        return new Rgb($rgb);
+        return $this->hexToRgb();
     }
 
     /**

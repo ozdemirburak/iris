@@ -41,9 +41,9 @@ class HexaTest extends TestCase
 
     private function validateNonAlpha(Hexa $hexa)
     {
-        $this->assertEquals('ff', $hexa->red());
-        $this->assertEquals('00', $hexa->green());
-        $this->assertEquals('ff', $hexa->blue());
+        $this->assertSame('ff', $hexa->red());
+        $this->assertSame('00', $hexa->green());
+        $this->assertSame('ff', $hexa->blue());
         $this->assertEquals(new Hex('ff00ff'), $hexa->toHex());
         $this->assertEquals(new Hsl('300,100,50'), $hexa->toHsl());
         $this->assertEquals(new Hsv('300,100,100'), $hexa->toHsv());
@@ -53,9 +53,9 @@ class HexaTest extends TestCase
 
     private function validateAlpha(Hexa $hexa, string $expectedAlphaHex, float $expectedAlphaFloat)
     {
-        $this->assertEquals($expectedAlphaFloat, $hexa->alpha());
+        $this->assertSame($expectedAlphaFloat, $hexa->alpha());
         $this->assertEquals("#ff00ff{$expectedAlphaHex}", (string)$hexa);
-        $this->assertEquals(['ff', '00', 'ff', $expectedAlphaFloat], $hexa->values());
+        $this->assertSame(['ff', '00', 'ff', $expectedAlphaFloat], $hexa->values());
         $this->assertEquals(new Rgba("255,0,255,{$expectedAlphaFloat}"), $hexa->toRgba());
         $this->assertEquals(new Hsla("300,100,50,{$expectedAlphaFloat}"), $hexa->toHsla());
     }

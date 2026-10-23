@@ -14,17 +14,27 @@ trait HslTrait
     protected float $lightness;
 
     /**
-     * @param float|string $lightness
+     * @param float|int|string|null $lightness a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($lightness is null ? float : static)
      */
     public function lightness($lightness = null): float|static
     {
-        if (is_numeric($lightness)) {
-            $this->lightness = $lightness >= 0 && $lightness <= 100 ? $lightness : $this->lightness;
+        if ($lightness !== null) {
+            if (is_numeric($lightness)) {
+                $this->lightness = $this->limit((float) $lightness, 100, $this->lightness);
+            }
             return $this;
         }
         return (float) $this->lightness;
+    }
+
+    /**
+     * @return float
+     */
+    protected function lightnessOrValue(): float
+    {
+        return $this->lightness;
     }
 
     /**
@@ -34,7 +44,7 @@ trait HslTrait
     public function convertToRgb(): Rgb
     {
         [$h, $s, $l] = $this->valuesInUnitInterval();
-        if ($s === 0) {
+        if ($s == 0) {
             $r = $g = $b = $l;
         } else {
             $q = $l < 0.5 ? $l * (1 + $s) :
@@ -55,9 +65,9 @@ trait HslTrait
      * @param float $q
      * @param float $t
      *
-     * @return mixed
+     * @return float
      */
-    protected function hueToRgb($p, $q, $t)
+    protected function hueToRgb(float $p, float $q, float $t): float
     {
         if ($t < 0) {
             $t++;

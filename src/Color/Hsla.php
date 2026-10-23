@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 use OzdemirBurak\Iris\Traits\AlphaTrait;
 use OzdemirBurak\Iris\Traits\HslTrait;
@@ -18,35 +19,38 @@ class Hsla extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        [$class, $index] = property_exists($this, 'lightness') ? ['hsl', 2] : ['hsv', 3];
-        $color = str_replace(["{$class}a", '(', ')', ' ', '%'], '', DefinedColor::find($code, $index));
-        if (substr_count($color, ',') === 2) {
-            $color = "{$color},1.0";
+        if (ColorString::isTransparent($code)) {
+            return '0,0,0,0';
         }
-        $color = $this->fixPrecision($color);
-        if (preg_match($this->validationRules(), $color, $matches)) {
-            if ($matches[1] > 360 || $matches[2] > 100 || $matches[3] > 100 || $matches[4] > 1) {
-                return false;
-            }
-            return $color;
+        // A color name comes from its exact hex value; the hsl column of the table is rounded
+        if (($hex = DefinedColor::hex($code)) !== null) {
+            return implode(',', [...array_map('floatval', (new Hex($hex))->toHsl()->getValues()), 1]);
         }
-        return false;
+        if (($parts = ColorString::split($code, ['hsla', 'hsl'], 3, true)) === false) {
+            return false;
+        }
+        [[$hue, $saturation, $lightness], $alpha] = $parts;
+        return ColorString::join([
+            ColorString::hue($hue),
+            ColorString::percentage($saturation),
+            ColorString::percentage($lightness),
+            ColorString::alpha($alpha),
+        ]);
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float|string>
      */
     protected function initialize(string $color): array
     {
-        [$this->hue, $this->saturation, $this->lightness, $this->alpha] = explode(',', $color);
-        $this->alpha = (double) $this->alpha;
+        [$this->hue, $this->saturation, $this->lightness, $this->alpha] = array_map('floatval', explode(',', $color));
         return $this->values();
     }
 
     /**
-     * @return array
+     * @return list<float|string>
      */
     public function values(): array
     {
@@ -68,7 +72,7 @@ class Hsla extends BaseColor
      */
     public function toRgba(): Rgba
     {
-        return $this->convertToRgb()->toRgba()->alpha($this->alpha());
+        return $this->convertToRgb()->toRgba()->alpha($this->alphaRaw());
     }
 
     /**
@@ -85,7 +89,7 @@ class Hsla extends BaseColor
      */
     public function toHsla(): Hsla
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -130,7 +134,9 @@ class Hsla extends BaseColor
      */
     public function toOklch(): Oklch
     {
-        return $this->toRgb()->toOklch();
+        $oklch = $this->opaqueRgb()->toOklch();
+        $oklch->alpha($this->alpha);
+        return $oklch;
     }
 
     /**
@@ -139,5 +145,27 @@ class Hsla extends BaseColor
     public function __toString(): string
     {
         return 'hsla(' . implode(',', $this->values()) . ')';
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Rgb
+     */
+    protected function opaqueRgb(): Rgb
+    {
+        return $this->convertToRgb();
+    }
+
+    /**
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hsl
+     */
+    protected function opaqueHsl(): Hsl
+    {
+        $hsl = new Hsl('0,0,0');
+        $hsl->hue($this->hue);
+        $hsl->saturation($this->saturation);
+        $hsl->lightness($this->lightness);
+        return $hsl;
     }
 }

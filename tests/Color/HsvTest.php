@@ -95,4 +95,22 @@ class HsvTest extends TestCase
         $this->assertEquals(new Rgba('255,0,255,1.0'), $hsv->toRgba());
         $this->assertEquals(new Cmyk('0,100,0,0'), $hsv->toCmyk());
     }
+
+    #[Group('hsv-construction')]
+    public function testDecimalValues()
+    {
+        $hsv = new Hsv('hsv(120,50%,50.5%)');
+        $this->assertSame(50.5, $hsv->value());
+        $this->assertEquals('hsv(120,50%,50.5%)', (string) $hsv);
+        $this->assertEquals(new Rgb('64,129,64'), $hsv->toRgb());
+        $this->assertSame(60.7, $hsv->value(60.7)->value());
+    }
+
+    #[Group('hsv-conversion')]
+    public function testConversionsKeepOneDecimal()
+    {
+        $this->assertEquals('hsv(303.5,96.7%,96.5%)', (string) (new Hex('#f608e8'))->toHsv());
+        $this->assertEquals('#f608e8', (string) (new Hex('#f608e8'))->toHsv()->toHex());
+        $this->assertEquals('#f608e8', (string) (new Hex('#f608e8'))->toHsv()->lighten(0)->toHex());
+    }
 }

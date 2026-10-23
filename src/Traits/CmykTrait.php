@@ -25,63 +25,71 @@ trait CmykTrait
     public float $black;
 
     /**
-     * @param float|string $cyan
+     * @param float|int|string|null $cyan a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($cyan is null ? float : static)
      */
     public function cyan($cyan = null): float|static
     {
-        if (is_numeric($cyan)) {
-            $this->cyan = $cyan >= 0 && $cyan <= 100 ? $cyan : $this->cyan;
+        if ($cyan !== null) {
+            if (is_numeric($cyan)) {
+                $this->cyan = $this->limit((float) $cyan, 100, $this->cyan);
+            }
             return $this;
         }
         return (float) $this->cyan;
     }
 
     /**
-     * @param float|string $magenta
+     * @param float|int|string|null $magenta a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($magenta is null ? float : static)
      */
     public function magenta($magenta = null): float|static
     {
-        if (is_numeric($magenta)) {
-            $this->magenta = $magenta >= 0 && $magenta <= 100 ? $magenta : $this->magenta;
+        if ($magenta !== null) {
+            if (is_numeric($magenta)) {
+                $this->magenta = $this->limit((float) $magenta, 100, $this->magenta);
+            }
             return $this;
         }
         return (float) $this->magenta;
     }
 
     /**
-     * @param float|string $yellow
+     * @param float|int|string|null $yellow a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($yellow is null ? float : static)
      */
     public function yellow($yellow = null): float|static
     {
-        if (is_numeric($yellow)) {
-            $this->yellow = $yellow >= 0 && $yellow <= 100 ? $yellow : $this->yellow;
+        if ($yellow !== null) {
+            if (is_numeric($yellow)) {
+                $this->yellow = $this->limit((float) $yellow, 100, $this->yellow);
+            }
             return $this;
         }
         return (float) $this->yellow;
     }
 
     /**
-     * @param float|string $black
+     * @param float|int|string|null $black a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return float|$this
+     * @return ($black is null ? float : static)
      */
     public function black($black = null): float|static
     {
-        if (is_numeric($black)) {
-            $this->black = $black >= 0 && $black <= 100 ? $black : $this->black;
+        if ($black !== null) {
+            if (is_numeric($black)) {
+                $this->black = $this->limit((float) $black, 100, $this->black);
+            }
             return $this;
         }
         return (float) $this->black;
     }
 
     /**
-     * @return array
+     * @return array{float, float, float, float}
      */
     public function values(): array
     {
@@ -91,19 +99,5 @@ trait CmykTrait
             $this->yellow(),
             $this->black()
         ];
-    }
-
-    /**
-     * @param string           $property
-     * @param float|int|string $value
-     */
-    protected function validateAndSet(string $property, float|int|string $value): void
-    {
-        if (!empty($this->castsInteger)) {
-            $this->{$property} = $value >= 0 && $value <= 100 ? (int) round($value) : $this->{$property};
-        } else {
-            $value = strlen($value) === 1 ? $value . $value : $value;
-            $this->{$property} = preg_match('/^[a-f0-9]{2}$/i', $value) ? $value : $this->{$property};
-        }
     }
 }

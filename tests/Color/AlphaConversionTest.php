@@ -189,11 +189,11 @@ class AlphaConversionTest extends TestCase
         $this->assertEquals('rgba(102,102,102,0.5)', (string) $rgba);
 
         // toRgb applies alpha compositing against white background
-        // (1-0.5)*255 + 0.5*102 = 127.5 + 51 = 178.5 ≈ 178
-        $this->assertEquals('rgb(178,178,178)', (string) $rgba->toRgb());
+        // (1-0.5)*255 + 0.5*102 = 127.5 + 51 = 178.5, rounded to 179
+        $this->assertEquals('rgb(179,179,179)', (string) $rgba->toRgb());
 
         // toHex also applies alpha compositing
-        $this->assertEquals('#b2b2b2', (string) $rgba->toHex());
+        $this->assertEquals('#b3b3b3', (string) $rgba->toHex());
 
         // toHexa MUST preserve original RGB values with alpha
         // This was the bug: it returned #b2b2b27f instead of #66666680
@@ -233,7 +233,8 @@ class AlphaConversionTest extends TestCase
         $color = new Hsla('hsla(150,100%,50%,0.7)');
 
         // toHex applies alpha compositing against white
-        $this->assertEquals('#4cffa6', (string) $color->toHex());
+        // 0.3 * 255 = 76.5 is rounded to 77 (4d)
+        $this->assertEquals('#4dffa6', (string) $color->toHex());
 
         // toHexa preserves original HSL color with alpha
         $this->assertEquals('#00ff80b3', (string) $color->toHexa());
@@ -247,7 +248,7 @@ class AlphaConversionTest extends TestCase
         $this->assertEquals('hsla(150,100%,50%,0.7)', (string) $color->toHsla());
 
         // toRgb applies alpha compositing against white
-        $this->assertEquals('rgb(76,255,166)', (string) $color->toRgb());
+        $this->assertEquals('rgb(77,255,166)', (string) $color->toRgb());
 
         // toRgba preserves original RGB with alpha
         $this->assertEquals('rgba(0,255,128,0.7)', (string) $color->toRgba());

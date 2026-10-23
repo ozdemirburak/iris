@@ -10,22 +10,22 @@ class Hsv extends BaseColor
     use HsTrait;
 
     /**
-     * @var int
+     * @var float
      */
-    protected int $value;
+    protected float $value;
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float>
      */
     protected function initialize(string $color): array
     {
-        return [$this->hue, $this->saturation, $this->value] = explode(',', $color);
+        return [$this->hue, $this->saturation, $this->value] = array_map('floatval', explode(',', $color));
     }
 
     /**
-     * @return array
+     * @return array{float, string, string}
      */
     public function values(): array
     {
@@ -58,12 +58,35 @@ class Hsv extends BaseColor
      */
     public function toHsl(): Hsl
     {
+        return new Hsl(implode(',', array_map(fn (float $value) => round($value, 1), $this->hslValues())));
+    }
+
+    /**
+     * Not rounded, so that an operation on a color rounds only once, when it converts back to HSV
+     *
+     * @throws \OzdemirBurak\Iris\Exceptions\InvalidColorException
+     * @return \OzdemirBurak\Iris\Color\Hsl
+     */
+    protected function opaqueHsl(): Hsl
+    {
+        [$hue, $saturation, $lightness] = $this->hslValues();
+        $hsl = new Hsl('0,0,0');
+        $hsl->hue($hue);
+        $hsl->saturation($saturation);
+        $hsl->lightness($lightness);
+        return $hsl;
+    }
+
+    /**
+     * @return array{float, float, float} the hue in degrees, the saturation and the lightness in percent
+     */
+    private function hslValues(): array
+    {
         [$h, $s, $v] = $this->valuesInUnitInterval();
         $l = $v * (1 - $s / 2);
         $m = min($l, 1 - $l);
-        $s = $l && $l < 1 ? ($v - $l) / $m : 0;
-        $code = implode(',', [round($h * 360), round($s * 100), round($l * 100)]);
-        return new Hsl($code);
+        $s = $l > 0 && $l < 1 ? ($v - $l) / $m : 0;
+        return [$h * 360, $s * 100, $l * 100];
     }
 
     /**
@@ -80,7 +103,7 @@ class Hsv extends BaseColor
      */
     public function toHsv(): Hsv
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -95,26 +118,14 @@ class Hsv extends BaseColor
         $p = $v * (1 - $s);
         $q = $v * (1 - $f * $s);
         $t = $v * (1 - (1 - $f) * $s);
-        switch ($i % 6) {
-            case 0:
-                [$r, $g, $b] = [$v, $t, $p];
-                break;
-            case 1:
-                [$r, $g, $b] = [$q, $v, $p];
-                break;
-            case 2:
-                [$r, $g, $b] = [$p, $v, $t];
-                break;
-            case 3:
-                [$r, $g, $b] = [$p, $q, $v];
-                break;
-            case 4:
-                [$r, $g, $b] = [$t, $p, $v];
-                break;
-            case 5:
-                [$r, $g, $b] = [$v, $p, $q];
-                break;
-        }
+        [$r, $g, $b] = match ((int) $i % 6) {
+            0 => [$v, $t, $p],
+            1 => [$q, $v, $p],
+            2 => [$p, $v, $t],
+            3 => [$p, $q, $v],
+            4 => [$t, $p, $v],
+            default => [$v, $p, $q],
+        };
         $code = implode(',', [round($r * 255), round($g * 255), round($b * 255)]);
         return new Rgb($code);
     }
@@ -155,16 +166,26 @@ class Hsv extends BaseColor
     }
 
     /**
-     * @param int|string $value
-     *
-     * @return int|$this
+     * @return float
      */
-    public function value($value = null): int|static
+    protected function lightnessOrValue(): float
     {
-        if (is_numeric($value)) {
-            $this->value = $value >= 0 && $value <= 100 ? $value : $this->value;
+        return $this->value;
+    }
+
+    /**
+     * @param float|int|string|null $value a value out of range is clamped, a value that is not a number is ignored
+     *
+     * @return ($value is null ? float : static)
+     */
+    public function value($value = null): float|static
+    {
+        if ($value !== null) {
+            if (is_numeric($value)) {
+                $this->value = $this->limit((float) $value, 100, $this->value);
+            }
             return $this;
         }
-        return (int) $this->value;
+        return (float) $this->value;
     }
 }

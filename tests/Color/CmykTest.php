@@ -61,4 +61,12 @@ class CmykTest extends TestCase
         $this->assertEquals(new Rgb('255,0,255'), $cmyk->toRgb());
         $this->assertEquals(new Rgba('255,0,255,1.0'), $cmyk->toRgba());
     }
+
+    public function testSetters()
+    {
+        $cmyk = new Cmyk('10,20,30,40');
+        $this->assertSame(55.5, $cmyk->yellow(55.5)->yellow());
+        $this->assertEquals('cmyk(10,20,55.5,40)', (string) $cmyk);
+        $this->assertEquals('cmyk(10,20,55.5,40)', (string) $cmyk->toCmyk());
+    }
 }

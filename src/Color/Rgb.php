@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 use OzdemirBurak\Iris\Traits\RgbTrait;
 
@@ -11,35 +12,30 @@ class Rgb extends BaseColor
     use RgbTrait;
 
     /**
-     * @var bool
-     */
-    protected bool $castsInteger = true;
-
-    /**
      * @param string $code
      *
      * @return string|bool
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace(['rgb', '(', ')', ' '], '', DefinedColor::find($code, 1));
-        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
-            if ($matches[1] > 255 || $matches[2] > 255 || $matches[3] > 255) {
-                return false;
-            }
-            return $color;
+        // Fast path for the plain "r,g,b" form that the conversions create
+        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $code, $matches)) {
+            return max((int) $matches[1], (int) $matches[2], (int) $matches[3]) <= 255 ? $code : false;
         }
-        return false;
+        if (($parts = ColorString::split(DefinedColor::find($code, 1), ['rgb'], 3, false)) === false) {
+            return false;
+        }
+        return ColorString::join(array_map([ColorString::class, 'channel'], $parts[0]));
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<int>
      */
     protected function initialize(string $color): array
     {
-        return [$this->red, $this->green, $this->blue] = explode(',', $color);
+        return [$this->red, $this->green, $this->blue] = array_map('intval', explode(',', $color));
     }
 
     /**
@@ -90,9 +86,9 @@ class Rgb extends BaseColor
         [$r, $g, $b, $min, $max] = $this->getHValues();
         $v = $max;
         $d = $max - $min;
-        $s = $max === 0 ? 0 : $d / $max;
+        $s = $max == 0 ? 0 : $d / $max;
         $h = $max === $min ? 0 : $this->getH($max, $r, $g, $b, $d);
-        $code = implode(',', [round($h * 360), round($s * 100), round($v * 100)]);
+        $code = implode(',', [round($h * 360, 1), round($s * 100, 1), round($v * 100, 1)]);
         return new Hsv($code);
     }
 
@@ -101,7 +97,7 @@ class Rgb extends BaseColor
      */
     public function toRgb(): Rgb
     {
-        return $this;
+        return clone $this;
     }
 
     /**
@@ -119,12 +115,13 @@ class Rgb extends BaseColor
      */
     public function toCmyk(): Cmyk
     {
-        [$r, $g, $b] = $this->values();
+        [$r, $g, $b] = $this->rgbValues();
         $k = 1 - (max($r, $g, $b) / 255);
         $c = $k < 1 ? (1 - $r / 255 - $k) / (1 - $k) : 0;
         $m = $k < 1 ? (1 - $g / 255 - $k) / (1 - $k) : 0;
         $y = $k < 1 ? (1 - $b / 255 - $k) / (1 - $k) : 0;
-        $code = implode(',', [round($c * 100), round($m * 100), round($y * 100), round($k * 100)]);
+        // One decimal, so that RGB to CMYK to RGB gives the same color for all 16.7 million colors
+        $code = implode(',', [round($c * 100, 1), round($m * 100, 1), round($y * 100, 1), round($k * 100, 1)]);
         return new Cmyk($code);
     }
 

@@ -2,7 +2,7 @@
 
 namespace OzdemirBurak\Iris\Exceptions;
 
-class AmbiguousColorString extends \Exception
+class AmbiguousColorString extends \InvalidArgumentException
 {
 
 }

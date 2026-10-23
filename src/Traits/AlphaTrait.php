@@ -5,19 +5,21 @@ namespace OzdemirBurak\Iris\Traits;
 trait AlphaTrait
 {
     /**
-     * @var double
+     * @var float
      */
-    protected $alpha;
+    protected float $alpha;
 
     /**
-     * @param $alpha
+     * @param float|int|string|null $alpha from 0 to 1, a value out of range is clamped, a value that is not a number is ignored
      *
-     * @return $this|float
+     * @return ($alpha is null ? float : static)
      */
     public function alpha($alpha = null): float|static
     {
         if ($alpha !== null) {
-            $this->alpha = max(0.0, min((float) $alpha, 1.0));
+            if (is_numeric($alpha)) {
+                $this->alpha = $this->limit((float) $alpha, 1, $this->alpha);
+            }
             return $this;
         }
         return round($this->alpha, 2);
@@ -31,21 +33,6 @@ trait AlphaTrait
     protected function alphaRaw(): float
     {
         return $this->alpha;
-    }
-
-    /**
-     * @param $color
-     *
-     * @return string
-     */
-    protected function fixPrecision($color): string
-    {
-        if (str_contains($color, ',')) {
-            $parts = explode(',', $color);
-            $parts[3] = !str_contains($parts[3], '.') ? $parts[3] . '.0' : $parts[3];
-            $color = implode(',', $parts);
-        }
-        return $color;
     }
 
     /**

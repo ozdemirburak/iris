@@ -23,7 +23,7 @@ class OklchTest extends TestCase
         $this->assertEquals(70, $oklch->lightness());
         $this->assertEquals(0.15, $oklch->chroma());
         $this->assertEquals(150, $oklch->hue());
-        $this->assertEquals([70.0, 0.15, 150.0], $oklch->values());
+        $this->assertEquals([70.0, 0.15, 150.0, 1.0], $oklch->values());
     }
 
     #[Group('oklch-construction')]
@@ -36,7 +36,7 @@ class OklchTest extends TestCase
     }
 
     #[Group('oklch-construction')]
-    public function testSpaceSeparatedSyntaxWithoutPercent(): void
+    public function testSpaceSeparatedSyntaxWithoutCommas(): void
     {
         $oklch = new Oklch('oklch(59.69% 0.156 49.77)');
         $this->assertEquals(59.69, $oklch->lightness());
@@ -47,11 +47,12 @@ class OklchTest extends TestCase
     #[Group('oklch-construction')]
     public function testSpaceSeparatedWithAlpha(): void
     {
-        // Alpha is stripped but the color should still parse
+        // The alpha is kept, see testAlpha()
         $oklch = new Oklch('oklch(59.69% 0.156 49.77 / .5)');
         $this->assertEquals(59.69, $oklch->lightness());
         $this->assertEquals(0.156, $oklch->chroma());
         $this->assertEquals(49.77, $oklch->hue());
+        $this->assertEquals(0.5, $oklch->alpha());
     }
 
     #[Group('oklch-construction')]
@@ -61,6 +62,7 @@ class OklchTest extends TestCase
         $this->assertEquals(59.69, $oklch->lightness());
         $this->assertEquals(0.156, $oklch->chroma());
         $this->assertEquals(49.77, $oklch->hue());
+        $this->assertEquals(0.5, $oklch->alpha());
     }
 
     #[Group('oklch-construction')]
@@ -211,5 +213,95 @@ class OklchTest extends TestCase
 
         $oklch->hue(-30);
         $this->assertEquals(330, $oklch->hue());
+    }
+
+    #[Group('oklch-construction')]
+    public function testUnitlessLightnessIsAFraction(): void
+    {
+        // CSS Color 4: a lightness without "%" is a number from 0 to 1
+        $this->assertEquals('#ffffff', (string) (new Oklch('oklch(1 0 0)'))->toHex());
+        $this->assertEquals('#ff0000', (string) (new Oklch('oklch(0.628 0.2577 29.23)'))->toHex());
+        $this->assertEquals(62.8, (new Oklch('oklch(0.628 0.2577 29.23)'))->lightness());
+        // Values above 1 are still percentages
+        $this->assertEquals(70, (new Oklch('oklch(70, 0.15, 150)'))->lightness());
+    }
+
+    #[Group('oklch-construction')]
+    public function testCssSyntaxVariants(): void
+    {
+        $this->assertEquals('oklch(70% 0.15 150 / 0.5)', (string) new Oklch('oklch(70% 0.15 150deg / 50%)'));
+        $this->assertEquals('oklch(70% 0.15 150 / 0.5)', (string) new Oklch('oklch(70% .15 150 / .5)'));
+    }
+
+    #[Group('oklch-construction')]
+    public function testMalformedNumbersMustThrow(): void
+    {
+        foreach (['oklch(1.2.3 0.1 20)', 'oklch(. . .)', 'oklch(50% 0.1)', 'oklch(50% 0.1 20 30)'] as $code) {
+            try {
+                new Oklch($code);
+                $this->fail("$code must be rejected");
+            } catch (\OzdemirBurak\Iris\Exceptions\InvalidColorException $e) {
+                $this->assertStringContainsString('Invalid OKLCH value', $e->getMessage());
+            }
+        }
+    }
+
+    #[Group('oklch-conversion')]
+    public function testAchromaticColorsHaveZeroHue(): void
+    {
+        $this->assertEquals('oklch(100% 0 0)', (string) (new Hex('#ffffff'))->toOklch());
+        $this->assertEquals('oklch(59.99% 0 0)', (string) (new Hex('#808080'))->toOklch());
+        $this->assertEquals('oklch(0% 0 0)', (string) (new Hex('#000000'))->toOklch());
+    }
+
+    #[Group('oklch-alpha')]
+    public function testAlpha(): void
+    {
+        $oklch = new Oklch('oklch(62.8% 0.2577 29.23 / 0.5)');
+        $this->assertEquals(0.5, $oklch->alpha());
+        $this->assertEquals([62.8, 0.2577, 29.23, 0.5], $oklch->values());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.5)', (string) $oklch);
+        $this->assertEquals($oklch, new Oklch((string) $oklch), 'The string form must parse again');
+        $this->assertEquals('oklch(62.8% 0.2577 29.23)', (string) $oklch->alpha(1), 'An alpha of 1 is not written');
+    }
+
+    #[Group('oklch-alpha')]
+    public function testAlphaInConversions(): void
+    {
+        $oklch = new Oklch('oklch(62.8% 0.2577 29.23 / 0.5)');
+        // Alpha models keep the color and the alpha
+        $this->assertEquals('rgba(255,0,0,0.5)', (string) $oklch->toRgba());
+        $this->assertEquals('#ff000080', (string) $oklch->toHexa());
+        $this->assertEquals('hsla(0,100%,50%,0.5)', (string) $oklch->toHsla());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.5)', (string) (new Rgba('255,0,0,0.5'))->toOklch());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.5)', (string) (new Hexa('#ff000080'))->toOklch());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.5)', (string) (new Hsla('0,100,50,0.5'))->toOklch());
+        // Models without alpha blend onto white, like Rgba and Hsla do
+        $this->assertEquals('#ff8080', (string) $oklch->toHex());
+        $this->assertEquals((string) (new Rgba('255,0,0,0.5'))->toRgb(), (string) $oklch->toRgb());
+    }
+
+    #[Group('oklch-alpha')]
+    public function testOperationsKeepAlpha(): void
+    {
+        $oklch = new Oklch('oklch(62.8% 0.2577 29.23 / 0.5)');
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.5)', (string) $oklch->spin(0));
+        $this->assertEquals(0.5, $oklch->lighten(10)->alpha());
+        $faded = (new Oklch('oklch(62.8% 0.2577 29.23)'))->fade(30);
+        $this->assertInstanceOf(Oklch::class, $faded);
+        $this->assertEquals('oklch(62.8% 0.2577 29.23 / 0.3)', (string) $faded);
+        $gradient = $oklch->gradient(new Oklch('oklch(45.2% 0.3132 264.05)'), 3);
+        $this->assertEquals([0.5, 0.75, 1.0], array_map(fn (Oklch $color) => $color->alpha(), $gradient));
+    }
+
+    #[Group('oklch-conversion')]
+    public function testConversionValues(): void
+    {
+        $red = new Oklch('oklch(62.8% 0.2577 29.23)');
+        $this->assertEquals('hsl(0,100%,50%)', (string) $red->toHsl());
+        $this->assertEquals('hsv(0,100%,100%)', (string) $red->toHsv());
+        $this->assertEquals('cmyk(0,100,100,0)', (string) $red->toCmyk());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23)', (string) (new Hsv('0,100,100'))->toOklch());
+        $this->assertEquals('oklch(62.8% 0.2577 29.23)', (string) (new Cmyk('0,100,100,0'))->toOklch());
     }
 }

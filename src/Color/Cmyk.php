@@ -3,6 +3,7 @@
 namespace OzdemirBurak\Iris\Color;
 
 use OzdemirBurak\Iris\BaseColor;
+use OzdemirBurak\Iris\Helpers\ColorString;
 use OzdemirBurak\Iris\Helpers\DefinedColor;
 use OzdemirBurak\Iris\Traits\CmykTrait;
 
@@ -17,37 +18,24 @@ class Cmyk extends BaseColor
      */
     protected function validate(string $code): bool|string
     {
-        $color = str_replace(['cmyk', '(', ')', ' ', '%'], '', DefinedColor::find($code, 4));
-        if (preg_match('/^(\d{1,3}),(\d{1,3}),(\d{1,3}),(\d{1,3})$/', $color, $matches)) {
-            if ($matches[1] > 100 || $matches[2] > 100 || $matches[3] > 100 || $matches[4] > 100) {
-                return false;
-            }
-            return $color;
+        // A color name comes from its exact hex value; the cmyk column of the table is rounded
+        if (($hex = DefinedColor::hex($code)) !== null) {
+            return implode(',', (new Hex($hex))->toCmyk()->values());
         }
-        return false;
+        if (($parts = ColorString::split($code, ['cmyk'], 4, false)) === false) {
+            return false;
+        }
+        return ColorString::join(array_map([ColorString::class, 'percentage'], $parts[0]));
     }
 
     /**
      * @param string $color
      *
-     * @return array
+     * @return list<float>
      */
     protected function initialize(string $color): array
     {
-        return [$this->cyan, $this->magenta, $this->yellow, $this->black] = explode(',', $color);
-    }
-
-    /**
-     * @return array
-     */
-    public function values(): array
-    {
-        return [
-            $this->cyan(),
-            $this->magenta(),
-            $this->yellow(),
-            $this->black(),
-        ];
+        return [$this->cyan, $this->magenta, $this->yellow, $this->black] = array_map('floatval', explode(',', $color));
     }
 
     /**
@@ -115,7 +103,7 @@ class Cmyk extends BaseColor
      */
     public function toCmyk(): Cmyk
     {
-        return $this;
+        return clone $this;
     }
 
     /**
